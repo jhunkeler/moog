@@ -1,5 +1,4 @@
 #     makefile for MOOG with all of the common block assignments;
-#     this is for my Mac laptop
 
 #     here are the object files
 OBJECTS = Abfind.o Abpop.o Abunplot.o Batom.o Begin.o Binary.o \
@@ -34,7 +33,7 @@ X11LIB = /usr/X11/lib
 SMLIB = /usr/local/lib
 
 FC = gfortran
-FFLAGS = -std=legacy -w -ff2c
+FFLAGS = -w -ff2c -fdefault-double-8 -fdefault-real-8
 LDFLAGS = -L$(X11LIB) -lX11 -ltcl -ltk -L$(SMLIB) -lplotsub -ldevices -lutils
 
 #        here are the compilation and linking commands
