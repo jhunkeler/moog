@@ -5,7 +5,7 @@ c     this routine makes tic marks at nice round intervals.
 c******************************************************************************
 
       implicit real*8(a-h,o-z)
-      real*4 end1, end2, bigtic, smltic, span, spanlog
+      real*8 end1, end2, bigtic, smltic, span, spanlog
 
 
       span = end2 - end1

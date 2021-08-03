@@ -15,7 +15,7 @@ c******************************************************************************
       real*4 style(1)
       real*4 yup,ydown
       integer iflip
-
+      real*8 inx1,inx2,iny1,iny2
 
 c*****for grid syntheses, dump out relevant information to a file
       if (choice .eq. 'g') then
@@ -25,9 +25,15 @@ c*****for grid syntheses, dump out relevant information to a file
  
 
 c*****begin with a default window
+      inx1 = 0.0
+      inx2 = 1.0
+      iny1 = 0.0
+      iny2 = 1.0
+
       call sm_location (3500,31000,4000,30000)
       call sm_window (1,1,1,1,1,1)
-      call sm_limits (0.0,1.0,0.0,1.0)
+c      call sm_limits (inx1, inx2, iny1, iny2)
+      call sm_limits (0d0, 1d0, 0d0, 1d0)
       call defcolor (1)
 
 
@@ -53,7 +59,6 @@ c*****write smoothing information at the top of the plot
          write (nf6out,3002) isoitle(1:120)
          write (nf6out,3002) isoitle(121:240)
       endif
- 
 
 c*****define the real plot limits
       if (xlo .lt. xhi) then

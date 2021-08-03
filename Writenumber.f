@@ -6,7 +6,7 @@ c     writes it to a character string in a reasonable format
 c******************************************************************************
 
       include 'Pstuff.com'
-      real*4 xnum, lognum
+      real*8 xnum, lognum
       integer numdec
 
 

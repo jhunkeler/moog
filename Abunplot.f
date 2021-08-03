@@ -91,7 +91,6 @@ c*****draw and label the box for the excitation potential plot
       call sm_angle (90.)
       call sm_putlabel (5,array)
       call sm_angle (0.)
-      
 
 c*****make the excitation potential plot
       call defcolor (2)

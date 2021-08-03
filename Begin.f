@@ -10,6 +10,8 @@ c***************************************************************************
       include 'Pstuff.com'
       character*80 line, systemcall
       integer num
+      integer nargs
+      logical fexist
 
 
 c*****define the number of text screen lines for silent mode;
@@ -26,17 +28,26 @@ c*****define the number of lines available on the text screen for
 c     interactive mode; this number is discovered from the "stty -a"
 c     command, for which the output format is unique to the operating
 c     system.
-      write (systemcall,*) 'stty -a > tmpsize'
+      write (systemcall,*) 'uname -s > /tmp/moog.tmpuname'
       call system (systemcall)
-      open (99,file='tmpsize')
+      open (99,file='/tmp/moog.tmpuname')
+      read (99,1010,end=15) line
+      machine = line
+      close(99,status='delete')
+      write (systemcall,*) 'rm -f /tmp/moog.tmpuname'
+      call system (systemcall)
+
+      write (systemcall,*) 'stty -a > /tmp/moog.tmpsize'
+      call system (systemcall)
+      open (99,file='/tmp/moog.tmpsize')
 5     read (99,1010,end=15) line
       do i=1,77
          if (line(i:i+3) .eq. 'rows') then
-            if     (machine .eq. 'pcl') then
+            if     (machine .eq. 'Linux') then
             read (line(i+4:i+6),1011) maxline
-            elseif (machine .eq. 'mac') then
+            elseif (machine .eq. 'Darwin') then
                read (line(i-4:i-2),1011) maxline
-            elseif (machine .eq. 'uni') then
+            elseif (machine .eq. 'Solaris') then
                read (line(i+6:i+8),1011) maxline
             endif
             go to 10
@@ -54,7 +65,7 @@ c     system.
          call finish (0)
       endif
 10    close (99,status='delete')
-      write (systemcall,*) '\\rm -f tmpsize'
+      write (systemcall,*) 'rm -f /tmp/moog.tmpsize'
       call system (systemcall)
       if (maxline .lt. 10) then
          maxline = 24
@@ -103,11 +114,24 @@ c  write a header and find the appropriate parameter file, and exit normally
       nchars = 15
       nfparam = 50     
       lscreen = 4
-      if (silent .eq. 'y') then
-         fparam = 'batch.par'
+      
+      nargs = command_argument_count()
+      if (nargs .gt. 0) then
+        call get_command_argument(1, fparam)
       else
-         fparam = 'no_filename_given'     
+        if (silent .eq. 'y') then
+          fparam = 'batch.par'
+        else
+          fparam = 'no_filename_given'     
+        endif
       endif
+
+      inquire(FILE=fparam, EXIST=fexist)
+      if (.NOT. fexist) then
+        write(0,*) "Input file does not exist"
+        call exit(1)
+      endif
+
       call infile ('input  ',nfparam,'formatted  ',0,nchars,
      .             fparam,lscreen)
       read (nfparam,1002) control

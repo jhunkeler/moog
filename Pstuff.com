@@ -18,8 +18,8 @@ c******************************************************************************
      .              half, power, powerrot, powermac,
      .              average, deviate, oldhalf
       real*4        xobs(500000), yobs(500000)
-      real*4        xlo, xhi, ylo, yhi, 
-     .              origxlo, origxhi, origylo, origyhi,
+      real*8        xlo, xhi, ylo, yhi
+      real*8        origxlo, origxhi, origylo, origyhi,
      .              oldxlo, oldxhi, oldylo, oldyhi,
      .              xadd, yadd, ymult, veladd, deltavel,
      .              origxadd, origyadd, origymult, origveladd,

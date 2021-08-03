@@ -1,3 +1,5 @@
 *.o
+*.orig
 *.swp
+*.rej
 .smhist
