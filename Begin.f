@@ -126,10 +126,12 @@ c  write a header and find the appropriate parameter file, and exit normally
         endif
       endif
 
-      inquire(FILE=fparam, EXIST=fexist)
-      if (.NOT. fexist) then
-        write(0,*) "Input file does not exist"
-        call exit(1)
+      if (fparam /= 'no_filename_given') then
+        inquire(FILE=fparam, EXIST=fexist)
+        if (.NOT. fexist) then
+          write(0,*) "Input file does not exist"
+          call exit(1)
+        endif
       endif
 
       call infile ('input  ',nfparam,'formatted  ',0,nchars,
