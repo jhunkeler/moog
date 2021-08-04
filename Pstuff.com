@@ -17,7 +17,7 @@ c******************************************************************************
      .              origfwhmgauss, origfwhmloren,
      .              half, power, powerrot, powermac,
      .              average, deviate, oldhalf
-      real*4        xobs(500000), yobs(500000)
+      real*8        xobs(500000), yobs(500000)
       real*8        xlo, xhi, ylo, yhi
       real*8        origxlo, origxhi, origylo, origyhi,
      .              oldxlo, oldxhi, oldylo, oldyhi,
