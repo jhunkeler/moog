@@ -32,8 +32,12 @@ COMMON =  Atmos.com Dummy.com Equivs.com Factor.com Kappa.com Linex.com \
 X11LIB = /usr/X11/lib
 SMLIB = /usr/local/lib
 
+ifeq ($(MODERN_GCC), 1)
+FFLAGS_GCC10PLUS=-fallow-argument-mismatch
+endif
+
 FC = gfortran
-FFLAGS = -w -ff2c -fdefault-double-8 -fdefault-real-8
+FFLAGS = -Wall -Wextra -ff2c -fdefault-double-8 -fdefault-real-8 $(FFLAGS_GCC10PLUS)
 LDFLAGS = -L$(X11LIB) -lX11 -ltcl -ltk -L$(SMLIB) -lplotsub -ldevices -lutils
 
 #        here are the compilation and linking commands
