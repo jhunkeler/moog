@@ -42,7 +42,7 @@ c
        equivalence (dummy,string(1))
 c
        count = ccount
-       if (y .gt. maxline .or. x .gt. 79) then
+       if (y > maxline .or. x > 79) then
           ivwrite = -1
           return
        endif
@@ -51,8 +51,8 @@ c
        dummy = arr
        count = min0(80-x,count)
 c       
-       if (x .lt. 10) then
-          if (y .lt. 10) then
+       if (x < 10) then
+          if (y < 10) then
              write (*,1007) esc,y,x,(string(i),i=1,count)
 1007         format(1x,a1,'[',i1,';',i1,'H',80a1)
           else
@@ -60,7 +60,7 @@ c
 1006         format(1x,a1,'[',i2,';',i1,'H',80a1)
           endif
        else 
-          if (y .lt. 10) then
+          if (y < 10) then
              write (*,1005) esc,y,x,(string(i),i=1,count)
 1005         format(1x,a1,'[',i1,';',i2,'H',80a1)
           else
@@ -88,15 +88,15 @@ c
        integer y,x
        character esc*1
 c
-       if (y .gt. maxline .or. x .gt. 79) then
+       if (y > maxline .or. x > 79) then
           ivmove = -1
           return
        endif
 c
        esc = char(27)
 c       
-       if (x .lt. 10) then
-          if (y .lt. 10) then
+       if (x < 10) then
+          if (y < 10) then
              write (*,1007) esc,y,x
 1007         format(1x,a1,'[',i1,';',i1,'H')
           else
@@ -104,7 +104,7 @@ c
 1006         format(1x,a1,'[',i2,';',i1,'H')
           endif
        else 
-          if (y .lt. 10) then
+          if (y < 10) then
              write (*,1005) esc,y,x
 1005         format(1x,a1,'[',i1,';',i2,'H')
           else
@@ -148,7 +148,7 @@ c
        character*1 esc
 c
        esc = char(27)
-       if(on.eq.1) then
+       if(on==1) then
              write(*,'(1x,a1,a)') esc,'[1m'
        else
              write(*,'(1x,a1,a)') esc,'[0m'
@@ -171,7 +171,7 @@ c
        character*1 esc
 c
        esc = char(27)
-       if(on.eq.1) then
+       if(on==1) then
              write(*,'(1x,a1,a)') esc,'[4m'
        else
              write(*,'(1x,a1,a)') esc,'[0m'

@@ -13,19 +13,19 @@ c******************************************************************************
 
 c  decide on the file status desired
       jstat = 0
-      if     (type .eq. 'input  ') then
+      if     (type == 'input  ') then
          kstat = 'old    '
-      elseif (type .eq. 'output ') then
+      elseif (type == 'output ') then
          kstat = 'new    '
-      elseif (type .eq. 'overout') then
+      elseif (type == 'overout') then
          kstat = 'unknown'
       endif
 
 c  write out the appropriate message about this file
 5     nchars = charcount
-      if (fname .eq. 'optional_output_file') then
+      if (fname == 'optional_output_file') then
          return
-      elseif (fname .eq. 'no_filename_given') then
+      elseif (fname == 'no_filename_given') then
          array(charcount+1:charcount+24) ='; what is the filename? '
          charcount = charcount + 24
          call getasci (charcount,line)
@@ -35,11 +35,11 @@ c  write out the appropriate message about this file
          array(charcount+25:79) = fname
          charcount = 79
          call putasci (charcount,line)
-         if (type .ne. 'input  ') kstat = 'unknown'
+         if (type /= 'input  ') kstat = 'unknown'
       endif
      
 c  open the file specified by the user, earlier or now
-6     if (mode .eq. 'formatted  ') then
+6     if (mode == 'formatted  ') then
          open (unit=iunit,file=fname,access='sequential',
      .         form=mode,blank='null',status=kstat,
      .         iostat=jstat,err=10)
@@ -55,8 +55,8 @@ c  open the file specified by the user, earlier or now
 c  here are the file reading error messages;
 c  if an expected file is not found, 118 is the error code for SunOS, 1018
 c  is for Solaris, and 2 is for Redhat Linux operating systems.
-10    if (jstat .eq. 118 .or. jstat .eq. 1018 .or.
-     .    jstat .eq. 2) then
+10    if (jstat == 118 .or. jstat == 1018 .or.
+     .    jstat == 2) then
          write (errmess,1001) jstat
          istat = ivwrite (line+2,3,errmess,44)
          fname = 'no_filename_given'
@@ -64,12 +64,12 @@ c  is for Solaris, and 2 is for Redhat Linux operating systems.
          go to 5
 c  if a file is in danger of being over-written, 117 is the error code for 
 c  SunOS, 1017 is for Solaris, and 128 is for Redhat Linux operating systems.
-      elseif (jstat .eq. 117 .or. jstat .eq. 1017 .or.
-     .        jstat .eq. 128) then
+      elseif (jstat == 117 .or. jstat == 1017 .or.
+     .        jstat == 128) then
          write (errmess,1002) jstat
          istat = ivwrite (line+2,3,errmess,41)
          read (*,*) yesno
-         if (yesno .eq. 'y') then
+         if (yesno == 'y') then
             kstat = 'unknown'
             go to 6
          else

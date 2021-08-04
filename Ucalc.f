@@ -11,7 +11,7 @@ c******************************************************************************
       dimension scale(4) 
       data scale/0.001,0.01,0.1,1.0/ 
 
-      if (level .gt. 500) then
+      if (level > 500) then
          temp = level               
       else
          temp = t(level)           
@@ -21,9 +21,9 @@ c******************************************************************************
       ion = nint(10.*(atom - float(iatom)))
       j = 4*(iatom-1) + ion + 1
     
-      if (ion .eq. 0) then
+      if (ion == 0) then
          chix = xchi1(iatom)      
-      elseif (ion .eq. 1) then
+      elseif (ion == 1) then
          chix = xchi2(iatom)     
       else
          chix = xchi3(iatom)
@@ -38,7 +38,7 @@ c******************************************************************************
       k2 = nudata(i,j) - k1*100000          
       k3 = k2/10                           
       kscale = k2 - k3*10                 
-      if (mod(it,2) .eq. 0) then
+      if (mod(it,2) == 0) then
          p1 = float(k3)*scale(kscale)    
          k1 = nudata(i+1,j)/100000      
          kscale = mod(nudata(i+1,j),10)
@@ -46,10 +46,10 @@ c******************************************************************************
       else
          p1 = float(k1)*scale(kscale)
          p2 = float(k3)*scale(kscale)            
-         if (dt .ge. 0.) go to 13                
-         if (kscale .gt. 1.) go to 13           
+         if (dt >= 0.) go to 13
+         if (kscale > 1.) go to 13
          kp1 = p1                              
-         if (kp1 .ne. idint(p2+0.5)) go to 13 
+         if (kp1 /= idint(p2+0.5)) go to 13
          pmin = kp1                          
       endif
 13    ucalc = dmax1(pmin,p1+(p2-p1)*dt)

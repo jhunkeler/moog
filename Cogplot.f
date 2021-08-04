@@ -25,8 +25,8 @@ c*****define the plot boundaries
       ylo = real(nint(rwlow*10))/10. - 0.1
       yhi = real(nint(rwhigh*10))/10. + 0.1
       do i=1,ncurve
-         if (rwplot(i) .gt. rwlow) then
-            if (gfplot(i) .gt. 0) then
+         if (rwplot(i) > rwlow) then
+            if (gfplot(i) > 0) then
                xlo = real(int(gfplot(i)*10))/10
             else
                xlo = real(int(gfplot(i)*10))/10 - 0.1
@@ -35,8 +35,8 @@ c*****define the plot boundaries
          endif
       enddo
 10    do i=1,ncurve
-         if (rwplot(i) .gt. rwhigh) then
-            if (gfplot(i) .gt. 0) then
+         if (rwplot(i) > rwhigh) then
+            if (gfplot(i) > 0) then
                xhi = real(int(gfplot(i)*10))/10 + 0.1
             else
                xhi = real(int(gfplot(i)*10))/10
@@ -83,11 +83,11 @@ c*****plot the computed curve-of-growth points; exit normally
       call sm_points (gfplot,rwplot,ncurve)
       call defcolor (1)
       ich = idint(charge(lim1) + 0.1)
-      if (ich .eq. 1) then
+      if (ich == 1) then
          ion = ' I  '
-      elseif (ich .eq. 2) then
+      elseif (ich == 2) then
          ion = ' II '
-      elseif (ich .eq. 3) then
+      elseif (ich == 3) then
          ion = ' III'
       endif
       iatom = idint(atom1(lim1))

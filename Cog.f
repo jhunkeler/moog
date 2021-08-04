@@ -61,7 +61,7 @@ c*****open and read the line list file; get ready for the line calculations
 c*****define the range of lines (the whole list, in this case)
       mode = 1
       call linlimit
-      if (lim1line .lt. 0) then
+      if (lim1line < 0) then
          call finish (0)
          return
       endif
@@ -72,7 +72,7 @@ c*****do the curves of growth, making plots if desired
          lim2 = lim1
          call curve
          call pltcog
-         if (choice .eq. 'm') then
+         if (choice == 'm') then
             close (unit=nfmodel)
             close (unit=nflines)
             rewind nf1out
@@ -83,13 +83,13 @@ c*****do the curves of growth, making plots if desired
             fmodel =  'no_filename_given'
             go to 102
          endif
-         if (choice .eq. 'v') go to 101
+         if (choice == 'v') go to 101
          array = 'DO ANOTHER CURVE-OF-GROWTH ([y]/n)? '
          nchars = 36
          lscreen = 16
          call getasci (nchars,lscreen)
          choice = chinfo(1:1)
-         if (choice .eq. 'n') then
+         if (choice == 'n') then
             call finish (0)
             return
          endif

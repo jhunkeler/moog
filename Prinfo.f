@@ -11,25 +11,25 @@ c******************************************************************************
 
 c*****do not print out information in real time if the code is in 
 c     batch mode
-      if (silent .eq. 'y') return
+      if (silent == 'y') return
 
        
-      if (line .eq. 1) then
+      if (line == 1) then
          istat = ivcleof(4,1)
       endif
 
-      if (line .eq. maxline-5) then
+      if (line == maxline-5) then
          errm1 = errmess
          array1 = array
 10       array = 'WANT TO SEE MORE ([y]/n)? '
          nchars = 26
          call getasci (nchars,4+line)
-         if (chinfo(1:1).eq.'y' .or. nchars.le.0) then
+         if (chinfo(1:1)=='y' .or. nchars<=0) then
             istat = ivcleof(4,1)
             line = 1
             array = array1
             errmess = errm1
-         elseif (chinfo(1:1) .eq. 'n') then
+         elseif (chinfo(1:1) == 'n') then
             errmess = 'stopinfo!'
             return
          else

@@ -16,7 +16,7 @@ c******************************************************************************
       istat = ivmove(line-1,1)
       istat = ivcleol()
       istat = ivmove(line-1,1)
-      if (num .lt. 10) then
+      if (num < 10) then
          write (errmess,1001) num
 1001     format ('(a',i1,'$)')
       else
@@ -25,7 +25,7 @@ c******************************************************************************
       endif
       write (*,errmess) array
       num = 80 - num
-      if (num .lt. 10) then
+      if (num < 10) then
          write (errmess,1003) num
 1003     format ('(a',i1,')')
       else

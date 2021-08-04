@@ -80,22 +80,22 @@ c*****compute the line opacities
 c*****calculate continuum quantities at the line list wavelength middle
       wave = (wave1(1)+wave1(nlines))/2.
       call opacit (2,wave)
-      if (modprintopt .ge. 2) 
+      if (modprintopt >= 2)
      .   write(nf1out,1006) wave,(kaplam(i),i=1,ntau)
 
 
 c*****divide the lines into keepers and discards
       do j=1,nlines
          residual = 10.*atom1(j) - dble(nint(10.*(atom1(j))))
-         if (strength(j)/kaplam(jtau5) .ge. xratio) then
-            if (atom1(j) .lt. 100.) then
-               if (residual .gt. 0. .and. dampnum(j) .gt. 0.) then
+         if (strength(j)/kaplam(jtau5) >= xratio) then
+            if (atom1(j) < 100.) then
+               if (residual > 0. .and. dampnum(j) > 0.) then
                   write (nf8out,1007) wave1(j), atom1(j), e(j,1), 
      .            dlog10(gf(j)), dlog10(dampnum(j)), dlog10(strength(j))
-               else if (residual .gt. 0. .and. dampnum(j) .le. 0.) then
+               else if (residual > 0. .and. dampnum(j) <= 0.) then
                   write (nf8out,1007) wave1(j), atom1(j), e(j,1), 
      .            dlog10(gf(j)), 0.0, dlog10(strength(j))
-               else if (residual .le. 0. .and. dampnum(j) .gt. 0.) then
+               else if (residual <= 0. .and. dampnum(j) > 0.) then
                   write (nf8out,1004) wave1(j), atom1(j), e(j,1),
      .            dlog10(gf(j)), dlog10(dampnum(j)), dlog10(strength(j))
                else 
@@ -103,7 +103,7 @@ c*****divide the lines into keepers and discards
      .            dlog10(gf(j)), 0.0, dlog10(strength(j))
                endif
             else 
-               if (residual .gt. 0.) then
+               if (residual > 0.) then
                   write (nf8out, 1008) wave1(j), atom1(j), e(j,1),
      .            dlog10(gf(j)), d0(j), dlog10(strength(j))
                else
@@ -112,14 +112,14 @@ c*****divide the lines into keepers and discards
                endif
             endif
          else
-            if (atom1(j) .lt. 100.) then
-               if (residual .gt. 0. .and. dampnum(j) .gt. 0.) then
+            if (atom1(j) < 100.) then
+               if (residual > 0. .and. dampnum(j) > 0.) then
                   write (nf9out,1007) wave1(j), atom1(j), e(j,1),
      .            dlog10(gf(j)), dlog10(dampnum(j)), dlog10(strength(j))
-               else if (residual .gt. 0. .and. dampnum(j) .le. 0.) then
+               else if (residual > 0. .and. dampnum(j) <= 0.) then
                   write (nf9out,1007) wave1(j), atom1(j), e(j,1),
      .            dlog10(gf(j)), 0.0, dlog10(strength(j))
-               else if (residual .le. 0. .and. dampnum(j) .gt. 0.) then
+               else if (residual <= 0. .and. dampnum(j) > 0.) then
                   write (nf9out,1004) wave1(j), atom1(j), e(j,1),
      .            dlog10(gf(j)), dlog10(dampnum(j)), dlog10(strength(j))
                else
@@ -127,7 +127,7 @@ c*****divide the lines into keepers and discards
      .            dlog10(gf(j)), 0.0, dlog10(strength(j))
                endif
             else
-               if (residual .gt. 0.) then
+               if (residual > 0.) then
                   write (nf9out, 1008) wave1(j), atom1(j), e(j,1),
      .                     dlog10(gf(j)), d0(j), dlog10(strength(j))
                else
@@ -137,7 +137,7 @@ c*****divide the lines into keepers and discards
             endif
          endif
       enddo
-      if (nlines +nstrong .eq. 2500) then
+      if (nlines +nstrong == 2500) then
          call inlines (6)
          go to 1
       endif

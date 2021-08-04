@@ -32,14 +32,14 @@ c     spectra, and (if desired) IRAF-style smoothed spectra
       nchars = 20
       call infile ('output ',nf2out,'formatted  ',0,nchars,
      .             f2out,lscreen)
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          nf3out = 22               
          lscreen = lscreen + 2
          array = 'SMOOTHED SYNTHESES OUTPUT'
          nchars = 25
          call infile ('output ',nf3out,'formatted  ',0,nchars,
      .                f3out,lscreen)
-         if (f5out .ne. 'optional_output_file') then
+         if (f5out /= 'optional_output_file') then
             nf5out = 26
             lscreen = lscreen + 2
             array = 'POSTSCRIPT PLOT OUTPUT'
@@ -48,7 +48,7 @@ c     spectra, and (if desired) IRAF-style smoothed spectra
      .                   f5out,lscreen)
          endif
       endif
-      if (iraf .ne. 0) then
+      if (iraf /= 0) then
          nf4out = 23               
          lscreen = lscreen + 2
          array = 'IRAF ("rtext") OUTPUT'
@@ -75,7 +75,7 @@ c*****open the line list file and the strong line list file
       nchars = 13
       call infile ('input  ',nflines,'formatted  ',0,nchars,
      .              flines,lscreen)
-      if (dostrong .gt. 0) then
+      if (dostrong > 0) then
          nfslines = 32
          lscreen = lscreen + 2
          array = 'THE STRONG LINE LIST'
@@ -88,7 +88,7 @@ c*****open the line list file and the strong line list file
 c*****do the syntheses
       choice = '1'
       do i=1,100
-         if (i .eq. 100) then
+         if (i == 100) then
             write (*,1002) 
             stop
          endif
@@ -100,21 +100,21 @@ c*****now either don't make a plot (plotopt = 0)
 c                plot the synthetic spectrum, (plotopt = 1)
 c                plot syntheses and observation (plotopt = 2) 
 c                or just smooth the syntheses (plotopt = 3)
-         if (choice .eq. 'n') then
+         if (choice == 'n') then
             ncall = 2
          else
             ncall = 1
          endif
-         if     (plotopt .eq. 0) then
+         if     (plotopt == 0) then
             choice = 'q'
-         elseif (plotopt .eq. 1) then
+         elseif (plotopt == 1) then
             call pltspec (lscreen,ncall)
-         elseif (plotopt .eq. 2) then
+         elseif (plotopt == 2) then
             nfobs = 33               
             lscreen = lscreen + 2
             array = 'THE OBSERVED SPECTRUM'
             nchars = 21
-            if (specfileopt .eq. 1) then
+            if (specfileopt == 1) then
                call infile ('input  ',nfobs,'unformatted',2880,nchars,
      .                      fobs,lscreen)
             else
@@ -122,14 +122,14 @@ c                or just smooth the syntheses (plotopt = 3)
      .                      fobs,lscreen)
             endif
             call pltspec (lscreen,ncall)
-         elseif (plotopt .eq. 3) then
+         elseif (plotopt == 3) then
             call smooth (-1,ncall)
             choice = 'q'
          else
             write (*,1001)
             stop
          endif
-         if (choice .eq. 'q') then
+         if (choice == 'q') then
             call finish (0)
             exit
          endif

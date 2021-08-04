@@ -68,7 +68,7 @@ c*****start the large loop that will go through each blended feature
       ewsynthopt = -1
       mode = 4
 30    do lll=1,1000
-         if (lim2line .eq. nlines) exit
+         if (lim2line == nlines) exit
 
 
 c*****define the set of lines responsible for a blended feature
@@ -82,26 +82,26 @@ c*****make sure that the element whose abundance is to be fit has
 c     a representative line of the blend
          ifind = 0
          do j=lim1,lim2
-            if (atom1(j) .lt. 100.) then
-               if (iatom .eq. int(atom1(j))) then
+            if (atom1(j) < 100.) then
+               if (iatom == int(atom1(j))) then
                   ifind = 1
                   exit
                endif
             else
                call sunder (atom1(j),ia,ib)
-               if (iatom.eq.ia .or. iatom.eq.ib) then
+               if (iatom==ia .or. iatom==ib) then
                   ifind = 1
                   exit
                endif
             endif
          enddo
-         if (ifind .eq. 0) then
+         if (ifind == 0) then
             do j=lim1,lim2
                abundout(j) = 999.99
             enddo
             write (nf1out,1002)
             lim1line = lim2line + 1
-            if (lim1line .le. nlines+nstrong) cycle
+            if (lim1line <= nlines+nstrong) cycle
          endif
  
 
@@ -127,31 +127,31 @@ c     arbitrarily
 
 
 c*****here we go for another iteration
-            if (dabs(error) .ge. 0.0075) then
+            if (dabs(error) >= 0.0075) then
                rwlcomp = dlog10(w(ncurve-1)/wave1(lim1))
-               if     (rwlcomp.lt.-5.2 .and. rwlgobs.lt.-5.2) then 
+               if     (rwlcomp<-5.2 .and. rwlgobs<-5.2) then
                   ratio = ratio
-               elseif (rwlcomp.ge.-5.2 .and. rwlgobs.ge.-5.2) then 
+               elseif (rwlcomp>=-5.2 .and. rwlgobs>=-5.2) then
                   ratio = ratio**2.0
                else   
                   ratio = ratio**1.5
                endif
                gf1(ncurve) = gf1(ncurve-1)*ratio
                do j=lim1,lim2
-                  if (atom1(j) .gt. 100.) then
+                  if (atom1(j) > 100.) then
                      call sunder (atom1(j),ia,ib)
-                     if (ia.eq.iatom .or. ib.eq.iatom) then
+                     if (ia==iatom .or. ib==iatom) then
                         do i=1,ntau                                
                            kapnu0(j,i) = kapnu0(j,i)*ratio            
                         enddo
                      endif
-                  elseif (int(atom1(j)) .eq. iatom) then
+                  elseif (int(atom1(j)) == iatom) then
                      do i=1,ntau                                
                         kapnu0(j,i) = kapnu0(j,i)*ratio            
                      enddo
                   endif
                enddo
-               if (k .eq. 20) then
+               if (k == 20) then
                   write (*,1008)
                   stop
                endif
@@ -164,14 +164,14 @@ c*****here we go for another iteration
 c*****here we do the final calculation when the predicted and observed are close
          gf1(ncurve) = gf1(ncurve-1)*ratio
          do j=lim1,lim2
-            if (atom1(j) .gt. 100.) then
+            if (atom1(j) > 100.) then
                call sunder (atom1(j),ia,ib)
-               if (ia.eq.iatom .or. ib.eq.iatom) then
+               if (ia==iatom .or. ib==iatom) then
                   do i=1,ntau                                
                      kapnu0(j,i) = kapnu0(j,i)*ratio            
                   enddo
                endif
-            elseif (int(atom1(j)) .eq. iatom) then
+            elseif (int(atom1(j)) == iatom) then
                do i=1,ntau                                
                   kapnu0(j,i) = kapnu0(j,i)*ratio            
                enddo
@@ -182,13 +182,13 @@ c*****here we do the final calculation when the predicted and observed are close
          widout(lim1) = w(ncurve)
          diff = dlog10(gf1(ncurve))
          abundout(lim1) = dlog10(xabund(iatom)) + 12.0 + diff
-         if (ncurve .ne. 1) then
+         if (ncurve /= 1) then
             write (nf1out,1001) ncurve
          endif
 
 
 c*****here is where some auxiliary things like mean depth are computed
-         if (lim1.eq.lim2 .and. linprintopt.ge.3) then
+         if (lim1==lim2 .and. linprintopt>=3) then
             wave = wave1(lim1)
             call taukap
             call cdcalc(2)
@@ -201,11 +201,11 @@ c*****here is where some auxiliary things like mean depth are computed
             cdmean = rinteg(xref,dummy1,dummy2,ntau,first)/
      .      rinteg(xref,cd,dummy2,ntau,first)
             do i=1,ntau
-               if (cdmean .lt. cd(i)) exit
+               if (cdmean < cd(i)) exit
             enddo
             write (nf1out,1005) lim1, cdmean, i, xref(i)
             do i=1,ntau
-               if (taunu(i)+taulam(i) .ge. 1.) exit
+               if (taunu(i)+taulam(i) >= 1.) exit
             enddo
             write (nf1out,1006) lim1, i, dlog10(tauref(i)),
      .                          dlog10(taulam(i)), dlog10(taunu(i))
@@ -215,7 +215,7 @@ c*****here is where some auxiliary things like mean depth are computed
 c*****assign the abundance to the strongest line of the blend that
 c     contains cogatom; put 999.99's as the abundances of all but 
 c     this line; go back for another blended feature
-         if (lim2 .gt. lim1) then
+         if (lim2 > lim1) then
             abunblend = abundout(lim1)
             widblend = widout(lim1)
             strongest = 0.
@@ -224,17 +224,17 @@ c     this line; go back for another blended feature
                abundout(j) = 999.99
             enddo
             do j=lim1,lim2
-               if (atom1(j) .lt. 100.) then
-                  if (dint(atom1(j)) .eq. cogatom) then
-                     if (kapnu0(j,jtau5) .gt. strongest) then
+               if (atom1(j) < 100.) then
+                  if (dint(atom1(j)) == cogatom) then
+                     if (kapnu0(j,jtau5) > strongest) then
                         strongest = kapnu0(j,jtau5)
                         linstrongest = j
                      endif
                   endif
                else
                   call sunder (atom1(j),ia,ib)
-                  if (dble(ia).eq.cogatom .or. dble(ib).eq.cogatom) then
-                     if (kapnu0(j,jtau5) .gt. strongest) then
+                  if (dble(ia)==cogatom .or. dble(ib)==cogatom) then
+                     if (kapnu0(j,jtau5) > strongest) then
                         strongest = kapnu0(j,jtau5)
                         linstrongest = j
                      endif
@@ -245,7 +245,7 @@ c     this line; go back for another blended feature
             widout(linstrongest) = widblend
          endif
          lim1line = lim2line + 1
-         if (lim1line .le. nlines+nstrong) cycle
+         if (lim1line <= nlines+nstrong) cycle
       enddo
 
 
@@ -260,23 +260,23 @@ c*****do abundance statistics; print out a summary of the abundances
 c*****here a plot may be made on the terminal (and paper) if there
 c     are enough lines; then the user will be prompted on some
 c     options concerning what is seen on the plot
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          call pltabun
-         if (choice.eq.'v' .or. choice.eq.'m') go to 100
+         if (choice=='v' .or. choice=='m') go to 100
       endif
 
 
 c*****now the option will be to redo the molecular equilibrium and redo
 c     the last species, at the user's option.
-      if (neq .ne. 0) then
+      if (neq /= 0) then
          do n=1,neq
-            if (iatom .eq. iorder(n)) then
+            if (iatom == iorder(n)) then
                write (array,1004)
                ikount = min0(nlines+11,maxline)
                nchars = 70
 35             call getasci (nchars,ikount)
                choice = chinfo(1:1)
-               if (choice.eq.'y' .or. nchars.le.0) then
+               if (choice=='y' .or. nchars<=0) then
                   xabund(iatom) = 10.**(average-12.)
                   call eqlib
                   call nearly (1)
@@ -284,7 +284,7 @@ c     the last species, at the user's option.
                   lim2line = 0
                   rewind nf2out
                   go to 30
-               elseif (choice .eq. 'n') then
+               elseif (choice == 'n') then
                   call finish (0)
                else
                   go to 35

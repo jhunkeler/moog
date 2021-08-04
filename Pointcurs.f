@@ -9,9 +9,9 @@ c******************************************************************************
 
 
       call sm_graphics
-      if     (whichwin .eq. '1of1') then
+      if     (whichwin == '1of1') then
          call sm_window (1,1,1,1,1,1)
-      elseif (whichwin .eq. '2of2') then
+      elseif (whichwin == '2of2') then
          call sm_defvar ('y_gutter','0.0')
          call sm_window (1,2,1,1,1,1)
       endif

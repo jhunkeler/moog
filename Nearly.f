@@ -23,14 +23,14 @@ c******************************************************************************
 
 c*****load in data for damping factors to be computed from the data
 c     of Barklem, if desired
-      if (numpass.eq.1 .and. dampingopt.eq.1) call gammabark
+      if (numpass==1 .and. dampingopt==1) call gammabark
 
 
 c*****Locate the atmosphere level where taulam is near 0.5
-      if (numpass.eq.1 .or. numpass.eq.3) then
+      if (numpass==1 .or. numpass==3) then
          call opacit (2,wave1(1))
          do i=1,ntau
-            if (taulam(i) .ge. 0.5) go to 180
+            if (taulam(i) >= 0.5) go to 180
          enddo
 180      jtau5 = i
       endif
@@ -41,13 +41,13 @@ c     if iterating "abfind" on a species affected by mol. eq.,
 c     do just that species (numpass=2); if doing a fake line, or
 c     maybe one line for a special purpose, do just the first line 
 c     in the "list" (numpass=3)
-      if     (numpass .eq. 1) then
+      if     (numpass == 1) then
          j1 = 1
          j2 = nlines + nstrong
-      elseif (numpass .eq. 2) then
+      elseif (numpass == 2) then
          j1 = lim1line
          j2 = lim2line
-      elseif (numpass .eq. 3) then
+      elseif (numpass == 3) then
          j1 = 1
          j2 = 1
       endif
@@ -61,7 +61,7 @@ c*****now make the calculations:  set up some parameters
     
                   
 c*****compute the Doppler factors
-         if (numpass.eq.1 .or. numpass.eq.3) then
+         if (numpass==1 .or. numpass==3) then
             do i=1,ntau
                dopp(j,i) = dsqrt(1.6631d8*t(i)/amass(j)+vturb(i)**2)
             enddo
@@ -76,7 +76,7 @@ c*****either: compute lower state number densities for atomic lines;
 c     q21 is the ion/neutral ratio, etc., and q is the ratio of the total
 c     to the species of interest; do the Saha equation first, then
 c     the Boltzmann equation
-         if     (iatom .lt. 100) then
+         if     (iatom < 100) then
             do i=1,ntau
                q21 = 4.825d15*u(iatom,2,i)/(u(iatom,1,i)*ne(i))*
      .               t(i)**1.5*dexp(-chi(j,1)/tkev(i)) 
@@ -84,15 +84,15 @@ c     the Boltzmann equation
      .               t(i)**1.5*dexp(-chi(j,2)/tkev(i)) 
                q43 = 4.825d15*u(iatom,4,i)/(u(iatom,3,i)*ne(i))*
      .               t(i)**1.5*dexp(-chi(j,3)/tkev(i)) 
-               if (neq .ne. 0) then
+               if (neq /= 0) then
                   do n=1,neq
-                     if (iatom .eq. iorder(n)) then
+                     if (iatom == iorder(n)) then
                         xxnum = xamol(n,i)
-                        if     (ich .eq. 1) then
+                        if     (ich == 1) then
                            q = 1.0
-                        elseif (ich .eq. 2) then
+                        elseif (ich == 2) then
                            q = 1.0/q21
-                        elseif (ich .eq. 3) then
+                        elseif (ich == 3) then
                            q = 1.0/(q21*q32) + 1.0/q32 + 1.0 + q43
                         endif
                         xnum(i) = xxnum/q*dexp(-e(j,1)/tkev(i))/
@@ -100,14 +100,14 @@ c     the Boltzmann equation
                      endif
                   enddo
                endif
-               if     (ich .eq. 1) then
+               if     (ich == 1) then
                   q = 1.0 + q21 + q32*q21 + q43*q32*q21
-               elseif (ich .eq. 2) then
+               elseif (ich == 2) then
                   q = 1.0/q21 + 1.0 + q32 + q43*q32
-               elseif (ich .eq. 3) then
+               elseif (ich == 3) then
                   q = 1.0/(q21*q32) + 1.0/q32 + 1.0 + q43
                endif
-               if (control .eq. 'abandy') then
+               if (control == 'abandy') then
                   xxab = xabund(iatom)*10**deltaabund
                else
                   xxab = xabund(iatom)
@@ -118,11 +118,11 @@ c     the Boltzmann equation
 
 
 c*****or: compute lower state number densities for molecular lines
-         elseif (iatom .lt. 10000) then
+         elseif (iatom < 10000) then
             call sunder(atom1(j),iaa,ibb)
             do n=1,neq
-               if(iorder(n) .eq. iaa) ia = n
-               if(iorder(n) .eq. ibb) ib = n
+               if(iorder(n) == iaa) ia = n
+               if(iorder(n) == ibb) ib = n
             enddo
             do i=1,ntau
                psipri = 
@@ -133,11 +133,11 @@ c*****or: compute lower state number densities for molecular lines
      .                   xamol(ia,i)*xamol(ib,i)
             enddo
          else
-            if     (iatom .eq. 10108) then
+            if     (iatom == 10108) then
                do i=1,ntau
                   xnum(i) = xnh2o(i)/uh2o(i)*dexp(-e(j,1)/tkev(i))
                enddo
-            elseif (iatom .eq. 60808) then
+            elseif (iatom == 60808) then
                do i=1,ntau
                   xnum(i) = xnco2(i)/uco2(i)*dexp(-e(j,1)/tkev(i))
                enddo
@@ -149,9 +149,9 @@ c*****or: compute lower state number densities for molecular lines
 
 
 c*****finally, compute line opacities at line centers
-         if (atom1(j)-float(iatom) .ge. 0.0) then
+         if (atom1(j)-float(iatom) >= 0.0) then
             do n=1,numiso
-               if (atom1(j) .eq. isotope(n)) then
+               if (atom1(j) == isotope(n)) then
                   factoriso = isoabund(n,isorun)
                endif
             enddo
@@ -167,9 +167,9 @@ c*****finally, compute line opacities at line centers
 
 c*****output regular line information, and strong line information 
 c     if appropriate; exit routine normally
-      if (numpass.eq.1 .or. numpass.eq.3) then
-         if (linprintopt .ge. 0) then
-            if (dostrong .gt. 0) call lineinfo (2)
+      if (numpass==1 .or. numpass==3) then
+         if (linprintopt >= 0) then
+            if (dostrong > 0) call lineinfo (2)
             call lineinfo (1)
          endif
       endif

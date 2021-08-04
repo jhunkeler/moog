@@ -13,8 +13,8 @@ c******************************************************************************
 
 
 c  open the plot device: screen terminal
-      if (plotroutine(1:4) .eq. 'term') then
-         if (sm_device(smterm) .lt. 0) then
+      if (plotroutine(1:4) == 'term') then
+         if (sm_device(smterm) < 0) then
             write (array,1001) smterm
             istat = ivwrite(lscreen+1,1,array,79)
             write (nf1out,1007) array(1:79)
@@ -24,16 +24,16 @@ c  open the plot device: screen terminal
 
 
 c  open the plot device: hardcopy sent to printer
-      if (plotroutine(1:4) .eq. 'hard') then
-         if     (plotroutine(6:9) .eq. 'land') then
-            if     (sm_device('postland') .lt. 0) then
+      if (plotroutine(1:4) == 'hard') then
+         if     (plotroutine(6:9) == 'land') then
+            if     (sm_device('postland') < 0) then
                write (array,1002)
                istat = ivwrite(lscreen+1,1,array,34)
                write (nf1out,1007) array(1:34)
                stop
             endif
-         elseif (plotroutine(6:9) .eq. 'port') then
-            if (sm_device('postport') .lt. 0) then
+         elseif (plotroutine(6:9) == 'port') then
+            if (sm_device('postport') < 0) then
                write (array,1009)
                istat = ivwrite(lscreen+1,1,array,34)
                write (nf1out,1007) array(1:34)
@@ -45,8 +45,8 @@ c  open the plot device: hardcopy sent to printer
 
 
 c  open the plot device: postscript file
-      if (plotroutine(1:4) .eq. 'file') then
-         if (f5out .eq. 'optional_output_file') then
+      if (plotroutine(1:4) == 'file') then
+         if (f5out == 'optional_output_file') then
             array = 'Give the file name for the POSTSRIPT plot image: '
             nchars = 49
             call getasci (nchars,maxline)
@@ -55,21 +55,21 @@ c  open the plot device: postscript file
             nchars = 80
             call getcount (nchars,f5out)
          endif
-         if     (plotroutine(6:9) .eq. 'land') then
-            if (nchars .lt. 10) then
+         if     (plotroutine(6:9) == 'land') then
+            if (nchars < 10) then
                write (errmess,1003) nchars
             else
                write (errmess,1004) nchars
             endif
-         elseif (plotroutine(6:9) .eq. 'port') then
-            if (nchars .lt. 10) then
+         elseif (plotroutine(6:9) == 'port') then
+            if (nchars < 10) then
                write (errmess,1005) nchars
             else
                write (errmess,1006) nchars
             endif
          endif
          write (array,errmess) f5out(1:nchars)
-         if (sm_device(array(1:nchars+13)) .lt. 0) then
+         if (sm_device(array(1:nchars+13)) < 0) then
             write (nf1out,1007) array(1:nchars+9)
             istat = ivwrite(lscreen+1,1,array,nchars+9)
             stop
@@ -83,26 +83,26 @@ c  issue standard beginning commands
 
 
 c  call the routine that makes the desired plot
-      if     (plotroutine(11:14) .eq. 'cog ') then
+      if     (plotroutine(11:14) == 'cog ') then
          call cogplot
-      elseif (plotroutine(11:14) .eq. 'abun') then
+      elseif (plotroutine(11:14) == 'abun') then
          call abunplot
-      elseif (plotroutine(11:14) .eq. 'spec') then
+      elseif (plotroutine(11:14) == 'spec') then
          call specplot
-      elseif (plotroutine(11:14) .eq. 'bin ') then
+      elseif (plotroutine(11:14) == 'bin ') then
          call binplot
-      elseif (plotroutine(11:14) .eq. 'flux') then
+      elseif (plotroutine(11:14) == 'flux') then
          call fluxplot
       endif
 
 
 c  issue standard ending commands; exit normally
-      if (plotroutine(1:4) .eq. 'file') then
+      if (plotroutine(1:4) == 'file') then
          f5out = 'optional_output_file'
       endif
       call sm_gflush
-      if (plotroutine(1:4).eq.'hard' .or. 
-     .    plotroutine(1:4).eq.'file') call sm_hardcopy
+      if (plotroutine(1:4)=='hard' .or.
+     .    plotroutine(1:4)=='file') call sm_hardcopy
       call sm_alpha
       return
 

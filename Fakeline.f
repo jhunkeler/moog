@@ -30,11 +30,11 @@ c*****here we use a real Fe I line because it has Barklem damping data
       alphabk(1) = 0.238
       gambark(1) = 10.**gammabk(1)             
       alpbark(1) = (1.-alphabk(1))/2. 
-      if     (dampingopt .eq. 0) then
+      if     (dampingopt == 0) then
          damptype(1) = 'UNSLDc6'
-      elseif (dampingopt .eq. 1) then
+      elseif (dampingopt == 1) then
          damptype(1) = 'BKgamma'
-      elseif (dampingopt .eq. 2) then
+      elseif (dampingopt == 2) then
          damptype(1) = 'BLKWLc6'
       else
          damptype(1) = 'NEXTGEN'

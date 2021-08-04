@@ -29,18 +29,18 @@ c******************************************************************************
 
 c  here begins the inversion                                             
       do n=1,order                                                   
-         if (n .eq. order) go to 244
+         if (n == order) go to 244
          g = a(n,n)
          n1 = n+1
          ng = n
          do m=n1,order                                                  
             f = a(m,n)
-            if (f .gt. g) then
+            if (f > g) then
                g = f
                ng = m
             endif
          enddo
-         if (ng .eq. n) go to 244
+         if (ng == n) go to 244
          do k=1,order
             d = i(n,k)
             e = i(ng,k)
@@ -52,7 +52,7 @@ c  here begins the inversion
             a(n,k) = g
          enddo
 244      g = a(n,n)
-         if (g .eq. 0.0) then
+         if (g == 0.0) then
             write (nf1out,1001)     
             return
          endif
@@ -60,7 +60,7 @@ c  here begins the inversion
             a(n,k) = a(n,k)/g
             i(n,k) = i(n,k)/g
          enddo
-         if (n .eq. order) go to 27
+         if (n == order) go to 27
          do k=n1,order
             f = -a(k,n)
             do j=1,order

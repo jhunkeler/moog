@@ -22,7 +22,7 @@ c*****compute partition functions for 4 ionization states of an element.
       do k=1,4
          iat = iat + 1
          at = dfloat(iat)/10.
-         if (partflag(iatom,k) .gt. 0) then
+         if (partflag(iatom,k) > 0) then
             do i=1,ntau   
                u(jmark,k,i) = partnew(at,k,i)
             enddo

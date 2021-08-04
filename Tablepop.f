@@ -30,27 +30,27 @@ c*****open the model table input file and the summary table output file
 
 
 c*****read the table input for integrated light EW matching
-      if (option .eq. 1) then
+      if (option == 1) then
          read (nftable,1001) line
-         if (line(1:5) .ne. 'abpop' ) then
+         if (line(1:5) /= 'abpop' ) then
             write(*,*) 'OOPS!  WRONG TABLE FOR ABPOP; I QUIT!'
             stop
          endif
          do i=1,1000
             read (nftable,1001) line
-            if     (line(1:5) .eq. 'modpr') then
+            if     (line(1:5) == 'modpr') then
                call blankstring (modpre)
                modpre(1:70) = line(11:80)
-            elseif (line(1:5) .eq. 'synpr') then
+            elseif (line(1:5) == 'synpr') then
                call blankstring (synpre)
                synpre(1:70) = line(11:80)
-            elseif (line(1:5) .eq. 'title') then
+            elseif (line(1:5) == 'title') then
                call blankstring (abitle)
                popitle(1:74) = line(7:80)
                write (nf7out,1002) popitle(1:73)
-            elseif (line(1:5) .eq. 'model') then
+            elseif (line(1:5) == 'model') then
                do mmod=1,100
-                  if (mmod .eq. 100) then
+                  if (mmod == 100) then
                      write(*,*) 'MORE THAN 99 MODELS; I QUIT!'
                      stop
                   endif
@@ -66,60 +66,60 @@ c*****read the table input for integrated light spectrum syntheses
          nabs = 0
          nisos = 0
          read (nftable,1001) line(1:80)
-         if (line(1:6) .ne. 'synpop') then
+         if (line(1:6) /= 'synpop') then
             write (*,*) 'OOPS!  WRONG TABLE FOR SYNPOP; I QUIT!'
             stop
          endif
          do k=1,1000
             call blankstring (line)
             read (nftable,1001) line(1:80)
-            if     (line(1:5) .eq. 'modpr') then
+            if     (line(1:5) == 'modpr') then
                call blankstring (modpre)
                modpre(1:70) = line(11:80)
-            elseif (line(1:5) .eq. 'synpr') then
+            elseif (line(1:5) == 'synpr') then
                call blankstring (synpre)
                synpre(1:70) = line(11:80)
-            elseif (line(1:5) .eq. 'title') then
+            elseif (line(1:5) == 'title') then
                call blankstring (popitle)
                popitle(1:74) = line(7:80)
                write (nf7out,1003) popitle(1:74)
-            elseif (line(1:5) .eq. 'abund') then
+            elseif (line(1:5) == 'abund') then
                read (line(12:80),*) nabs
-               if (nabs .gt. 0) then
+               if (nabs > 0) then
                   read (nftable,1001) line(1:80)
                   read (line(1:80),*) (elspecial(i),i=1,nabs)
                   write (nf7out,1009) (nint(elspecial(i)),i=1,nabs)
                else
                   write (nf7out,1010)
                endif
-            elseif (line(1:5) .eq. 'isoto') then
+            elseif (line(1:5) == 'isoto') then
                read (line(10:80),*) nisos
-               if (nisos .gt. 0) then
+               if (nisos > 0) then
                   read (nftable,1001) line(1:80)
                   read (line(1:80),*) (isospecial(i),i=1,nisos)
                   write (nf7out,1011) (isospecial(i),i=1,nisos)
                else
                   write (nf7out,1012)
                endif
-            elseif (line(1:5) .eq. 'model') then
+            elseif (line(1:5) == 'model') then
                do mmod=1,100
-                  if (mmod .eq. 100) then
+                  if (mmod == 100) then
                      write (*,*) 'MORE THAN 99 MODELS; I QUIT!'
                      stop
                   endif
-                  if     (nabs.le.0 .and. nisos.le.0) then
+                  if     (nabs<=0 .and. nisos<=0) then
                      read (nftable,*,end=10) j, radius(mmod),
      .                                       relcount(mmod)
                      write (nf7out,1006) j, radius(mmod), 
      .                                   relcount(mmod)     
-                  elseif (nabs.gt.0 .and. nisos.le.0) then       
+                  elseif (nabs>0 .and. nisos<=0) then
                      read (nftable,*,end=10) j, radius(mmod),    
      .                                       relcount(mmod),     
      .                                      (abspecial(mmod,i),i=1,nabs)
                      write (nf7out,1006) j, radius(mmod), 
      .                                   relcount(mmod),       
      .                                   (abspecial(mmod,i),i=1,nabs)  
-                  elseif (nabs.le.0 .and. nisos.gt.0) then       
+                  elseif (nabs<=0 .and. nisos>0) then
                      read (nftable,*,end=10) j, radius(mmod),    
      .                                       relcount(mmod),     
      .                                   (fracspecial(mmod,i),i=1,nisos)

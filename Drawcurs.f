@@ -10,9 +10,9 @@ c******************************************************************************
 
 
       call sm_graphics
-      if     (whichwin .eq. '1of1') then
+      if     (whichwin == '1of1') then
          call sm_window (1,1,1,1,1,1)
-      elseif (whichwin .eq. '2of2') then
+      elseif (whichwin == '2of2') then
          call sm_defvar ('y_gutter','0.0')
          call sm_window (1,2,1,1,1,1)
       endif
@@ -29,11 +29,11 @@ c******************************************************************************
       call sm_relocate (xplotpos,yplotpos-0.11*(yhi-ylo))
       call sm_putlabel (5,array)
       call writenumber (yplotpos)
-      if     (whichwin(4:4) .eq. '1') then
+      if     (whichwin(4:4) == '1') then
          call sm_relocate (xplotpos,yplotpos-0.15*(yhi-ylo))
-      elseif (whichwin(4:4) .eq. '2') then
+      elseif (whichwin(4:4) == '2') then
          call sm_relocate (xplotpos,yplotpos-0.18*(yhi-ylo))
-      elseif (whichwin(4:4) .eq. '3') then
+      elseif (whichwin(4:4) == '3') then
          call sm_relocate (xplotpos,yplotpos-0.21*(yhi-ylo))
       endif
       call sm_putlabel (5,array)

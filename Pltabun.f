@@ -14,8 +14,8 @@ c******************************************************************************
       real*4 shortnum
 
 
-      if (kount .ge. plotopt) then
-         if (plotopt .eq. 0) return
+      if (kount >= plotopt) then
+         if (plotopt == 0) return
 10       choice = 'y'
          plotroutine = 'term_port_abun'
          lscreen = maxline -2
@@ -25,11 +25,11 @@ c******************************************************************************
          nchars = 35
          call getasci (nchars,maxline)
          choice = chinfo(1:1)
-         if (choice.eq.'n' .or. nchars.le.0) then
+         if (choice=='n' .or. nchars<=0) then
             return
-         elseif (choice .eq. 'm') then
+         elseif (choice == 'm') then
             return   
-         elseif (choice .eq. 'v') then
+         elseif (choice == 'v') then
             write (array,*) 'What is the new microturbulence (km/s)? '
             nchars = 41
             call getnum (nchars,lscreen,xnum,shortnum)
@@ -42,12 +42,12 @@ c******************************************************************************
             lim1obs = 0
             lim2obs = 0
             return   
-         elseif (choice .eq. 'h') then
+         elseif (choice == 'h') then
             plotroutine = 'hard_port_abun'
             call makeplot (lscreen)
-         elseif (choice .eq. 'r') then
+         elseif (choice == 'r') then
             go to 10
-         elseif (choice .eq. 'f') then
+         elseif (choice == 'f') then
             plotroutine = 'file_port_abun'
             call makeplot (lscreen)
          endif

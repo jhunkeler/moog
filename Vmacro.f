@@ -85,7 +85,7 @@ c
      . 0.000190,0.000180,0.000170,0.000161,0.000152/
      
  
-      if (xprofile.lt.xrt(1) .or. xprofile.ge.xrt(250)) then
+      if (xprofile<xrt(1) .or. xprofile>=xrt(250)) then
          vmacro = 0.
          return
       endif

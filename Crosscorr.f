@@ -17,7 +17,7 @@ c******************************************************************************
       xysum = 0.
       x2sum = 0.
       y2sum = 0.
-      if (ishift .ge. 0) then
+      if (ishift >= 0) then
          minpt = 1
          maxpt = npx - ishift
       else

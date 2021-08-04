@@ -32,7 +32,7 @@ c     spectra, and (if desired) IRAF-style smoothed spectra
       nchars = 20
       call infile ('output ',nf2out,'formatted  ',0,nchars,
      .             f2out,lscreen)
-      if (plotopt .gt. 0) then
+      if (plotopt > 0) then
          nf3out = 22               
          lscreen = lscreen + 2
          array = 'SMOOTHED SYNTHESES OUTPUT'
@@ -46,7 +46,7 @@ c     spectra, and (if desired) IRAF-style smoothed spectra
          call infile ('output ',nf5out,'formatted  ',0,nchars,
      .                f5out,lscreen)
       endif
-      if (plotopt .gt. 1) then
+      if (plotopt > 1) then
          nf6out = 27
          lscreen = lscreen + 2
          array = 'SPECTRUM COMPARISON OUTPUT'
@@ -54,7 +54,7 @@ c     spectra, and (if desired) IRAF-style smoothed spectra
          call infile ('output ',nf6out,'formatted  ',0,nchars,
      .                f6out,lscreen)
       endif
-      if (iraf .ne. 0) then
+      if (iraf /= 0) then
          nf4out = 23               
          lscreen = lscreen + 2
          array = 'IRAF ("rtext") OUTPUT'
@@ -81,7 +81,7 @@ c*****open the line list file and the strong line list file
       nchars = 13
       call infile ('input  ',nflines,'formatted  ',0,nchars,
      .              flines,lscreen)
-      if (dostrong .gt. 0) then
+      if (dostrong > 0) then
          nfslines = 32
          lscreen = lscreen + 2
          array = 'THE STRONG LINE LIST'
@@ -92,7 +92,7 @@ c*****open the line list file and the strong line list file
       
 
 c*****do the syntheses
-      if (numpecatom .eq. 0 .or. numatomsyn .eq. 0) then
+      if (numpecatom == 0 .or. numatomsyn == 0) then
          isorun = 1
          isynth = 1
          nlines = 0
@@ -119,12 +119,12 @@ c*****do the syntheses
          
 
 c*****now plot the spectrum
-      if (plotopt.eq.2 .and. specfileopt.gt.0) then
+      if (plotopt==2 .and. specfileopt>0) then
          nfobs = 33               
          lscreen = lscreen + 2
          array = 'THE OBSERVED SPECTRUM'
          nchars = 21
-         if (plotopt.eq.1 .or. specfileopt.eq.3) then
+         if (plotopt==1 .or. specfileopt==3) then
             call infile ('input  ',nfobs,'unformatted',2880,nchars,
      .                   fobs,lscreen)
          else
@@ -132,14 +132,14 @@ c*****now plot the spectrum
      .                   fobs,lscreen)
          endif
       endif
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          ncall = 1
          call pltspec (lscreen,ncall)
       endif
 
 
 c*****finish
-      if (control .ne. 'gridend') then
+      if (control /= 'gridend') then
          call finish (1)
          go to 1
       else

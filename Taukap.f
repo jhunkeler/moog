@@ -23,7 +23,7 @@ c*****compute the total line opacity at each depth
          dummy1(i) = tauref(i)*kapnu(i)/(0.4343*kapref(i))
                                                        
 c*****do the same for the strong lines
-         if (dostrong .gt. 0) then
+         if (dostrong > 0) then
             do j=nlines+1,nlines+nstrong
                v = 2.997929d10*dabs(wave-wave1(j))/
      .             (wave1(j)*dopp(j,i)) 

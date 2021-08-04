@@ -12,7 +12,7 @@ c******************************************************************************
 
 
 c*****start the computations for a line
-      if (dabs(rwlgerror) .lt. 0.01) write (nf7out,1001)
+      if (dabs(rwlgerror) < 0.01) write (nf7out,1001)
       ewweighttot = 0.
       weighttot = 0
       modcount = 0
@@ -25,7 +25,7 @@ c     for the assumed abundance
       do mmod=1,modtot
          ncurvetot = nmodcurve(mmod,lim1)
          do icurve=3,ncurvetot-2
-            if (gfmodtab(mmod,lim1,icurve) .gt. xngf) then
+            if (gfmodtab(mmod,lim1,icurve) > xngf) then
                ic = icurve - 1
                pp = (xngf-gfmodtab(mmod,lim1,ic))/0.15
                rw = rwmodtab(mmod,lim1,ic-1)*(-pp)*(pp-1.)*(pp-2.)/6. +
@@ -41,7 +41,7 @@ c*****add this EW to the total, weighting it by flux*radius^2*relcount
 10       ewweight = ew*weightmod(mmod,lim1)
          weighttot = weighttot + weightmod(mmod,lim1)
          ewweighttot = ewweighttot + ewweight
-         if (dabs(rwlgerror) .lt. 0.01) 
+         if (dabs(rwlgerror) < 0.01)
      .       write (nf7out,1005) fmodinput(mmod), 
      .       fmodoutput(mmod), radius(mmod), relcount(mmod), 
      .       fluxmod(mmod,lim1), weightmod(mmod,lim1), 
@@ -52,7 +52,7 @@ c*****add this EW to the total, weighting it by flux*radius^2*relcount
 c*****write out the mean EW
       ewmod(lim1) = ewweighttot/weighttot
       abundout(lim1) =dlog10(xabund(iatom))+deltangf+12.
-      if (dabs(rwlgerror) .lt. 0.01) then
+      if (dabs(rwlgerror) < 0.01) then
          write(nf7out,1006) atom1(lim1), wave1(lim1), e(lim1,1),
      .                       dlog10(gf(lim1)), 1000.*ewmod(lim1), 
      .                       abundout(lim1)

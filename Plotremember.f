@@ -14,8 +14,8 @@ c******************************************************************************
 c*****initialize the plot parameters; iscale=0 is simple default;
 c     iscale=1 is when these parameters have been read from the
 c     parameter file
-      if     (option .eq. 0) then
-         if (iscale .eq. 0) then
+      if     (option == 0) then
+         if (iscale == 0) then
             xlo       = oldstart
             xhi       = oldstop
             ylo       = 0.
@@ -35,7 +35,7 @@ c     parameter file
 
 
 c*****store the original plot parameters
-      elseif (option .eq. 1) then
+      elseif (option == 1) then
          origxlo       = xlo
          origxhi       = xhi
          origylo       = ylo
@@ -54,7 +54,7 @@ c*****store the original plot parameters
 
 
 c*****re-set the plot parameters to their original values
-      elseif (option .eq. 2) then
+      elseif (option == 2) then
          xlo       = origxlo
          xhi       = origxhi
          ylo       = origylo
@@ -73,7 +73,7 @@ c*****re-set the plot parameters to their original values
 
 
 c*****store the plot parameters from the last entry into pltspec
-      elseif (option .eq. 3) then
+      elseif (option == 3) then
          oldxlo       = xlo
          oldxhi       = xhi
          oldylo       = ylo
@@ -92,7 +92,7 @@ c*****store the plot parameters from the last entry into pltspec
 
 
 c*****re-set plot parameters to values from the last entry into pltspec
-      elseif (option .eq. 4) then
+      elseif (option == 4) then
          xlo       = oldxlo
          xhi       = oldxhi
          ylo       = oldylo

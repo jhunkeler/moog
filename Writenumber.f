@@ -11,9 +11,9 @@ c******************************************************************************
 
 
       lognum = alog10(abs(xnum))
-      if     (lognum .ge. 6.) then
+      if     (lognum >= 6.) then
          write (errmess,1002) 
-      elseif (lognum .ge. 0.) then 
+      elseif (lognum >= 0.) then
          numdec = 5 - nint(lognum)
          write (errmess,1001) numdec
       else   

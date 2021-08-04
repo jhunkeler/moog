@@ -26,13 +26,13 @@ c******************************************************************************
 c*****find the array subscripts for the minimum and maximum 
 c     wavelengths in the synthetic spectrum.  
       do i=1,kount
-         if (xsyn(i) .ge. wavemin) then
+         if (xsyn(i) >= wavemin) then
             ilosyn = i
             go to 5
          endif
       enddo
 5     do i=ilosyn,kount
-         if (xsyn(i) .gt. wavemax) then
+         if (xsyn(i) > wavemax) then
             ihisyn = i - 1
             go to 10
          endif
@@ -51,7 +51,7 @@ c*****dump the synthetic spectrum wavelengths and fluxes into working arrays
 c*****find the array subscript for the minimum wavelength in the 
 c     observed spectrum 
       do j=1,lount
-         if (xobs(j) .ge. xgood(1)) then
+         if (xobs(j) >= xgood(1)) then
             jloobs = j
             go to 15
          endif
@@ -63,7 +63,7 @@ c     spectrum that matches the wavelength step size of the
 c     synthetic spectrum
 15    j = jloobs
       do i=1,itotsyn
-         if (xgood(i) .gt. (xobs(j+1)+xobs(j))/2.) j = j + 1
+         if (xgood(i) > (xobs(j+1)+xobs(j))/2.) j = j + 1
          q = xgood(i)
          zgood(i) = yobs(j-1)*(q-xobs(j))*(q-xobs(j+1))/
      .                  ((xobs(j-1)-xobs(j))*(xobs(j-1)-xobs(j+1))) +
@@ -89,12 +89,12 @@ c*****interpolate to find the maximum of the correlation function
       corrmax = spy(1)
       mc = 1
       do i=2,imax
-         if (spy(i) .gt. corrmax) then
+         if (spy(i) > corrmax) then
             corrmax = spy(i)
             mc = i
          endif
       enddo
-      if (mc.eq.1 .or. mc.eq.imax) then
+      if (mc==1 .or. mc==imax) then
          deltawave = 0.
          return
       endif
@@ -113,7 +113,7 @@ c*****interpolate to find the maximum of the correlation function
       jmax = 1
       corrmax = yinterp(1)
       do j=2,21
-         if (yinterp(j) .gt. corrmax) then
+         if (yinterp(j) > corrmax) then
             jmax = j
             corrmax = yinterp(j)
             shiftmax = xinterp(j)

@@ -11,14 +11,14 @@ c******************************************************************************
 
  
 c*****if a carriage return has been hit, return with -9999.
-      if (nchar .le. 0) then
+      if (nchar <= 0) then
          xnum = -9999.
          return
       endif
 
 
 c*****set the conversion format
-      if (nchar .lt. 10) then
+      if (nchar < 10) then
          write(form,1001) nchar
       else
          write(form,1002) nchar

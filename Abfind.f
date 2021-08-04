@@ -72,7 +72,7 @@ c*****set some parameters
 
 c*****find the range of lines of a species
 5     call linlimit
-      if (lim1line .lt. 0) then
+      if (lim1line < 0) then
          call finish (0)
          return
       endif
@@ -86,7 +86,7 @@ c*****find out whether molecular equilibrium is involved in the species
 
 c*****force each abundance of a species member to predict the 
 c     line equivalent width; here is the code for ordinary species
-      if (molflag .eq. 0) then
+      if (molflag == 0) then
          abundin =  dlog10(xabund(iabatom)) + 12.0
          do lim1=lim1line,lim2line
             call lineabund (abundin)
@@ -106,12 +106,12 @@ c     agreement
          enddo
          call stats
          call lineinfo (3)
-         if (t(jtau5).lt.3800                 .or. 
-     .       atom1(lim1line).gt.100.0         .or.
-     .       int(atom1(lim1line)+0.0001).eq.6 .or.
-     .       int(atom1(lim1line)+0.0001).eq.8) then
-            if (iternumber .lt. 6) then
-               if (dabs(average-abundin) .gt. 0.02) then
+         if (t(jtau5)<3800                 .or.
+     .       atom1(lim1line)>100.0         .or.
+     .       int(atom1(lim1line)+0.0001)==6 .or.
+     .       int(atom1(lim1line)+0.0001)==8) then
+            if (iternumber < 6) then
+               if (dabs(average-abundin) > 0.02) then
                   xabund(iabatom) = 10.**(average-12.)
                   iternumber = iternumber + 1
                   call eqlib
@@ -137,15 +137,15 @@ c     agreement
 c*****here a plot may be made on the terminal (and paper) if there 
 c     are enough lines; then the user will be prompted on some
 c     options concerning what is seen on the plot
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          call pltabun
-         if     (choice.eq.'v') then
+         if     (choice=='v') then
             rewind nf1out
             rewind nf2out
             write (nf2out,1002) linitle,moditle
             choice = ' '
             go to 100
-         elseif (choice .eq. 'm') then
+         elseif (choice == 'm') then
             close (unit=nfmodel)
             close (unit=nflines)
             rewind nf1out
@@ -166,7 +166,7 @@ c     options concerning what is seen on the plot
  
              
 c*****quit, or go on to another species?
-      if (silent .eq. 'y') then
+      if (silent == 'y') then
          choice = 'y'
          nchars = 0
       else
@@ -175,8 +175,8 @@ c*****quit, or go on to another species?
          call getasci (nchars,maxline)
          choice = chinfo(1:1)
       endif
-      if (choice.eq.'y' .or. nchars.le.0) then
-         if (mode .eq. 2) then
+      if (choice=='y' .or. nchars<=0) then
+         if (mode == 2) then
             go to 5
          else
             call finish (0)

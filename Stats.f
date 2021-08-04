@@ -13,18 +13,18 @@ c*****compute the average and standard deviation
       average = 0.
       kount = 0
       do l=lim1obs,lim2obs
-         if (abundout(l) .ne. 999.99) then
+         if (abundout(l) /= 999.99) then
             average = average + abundout(l)
             kount = kount + 1
          endif
       enddo
-      if (kount .gt. 0) then
+      if (kount > 0) then
          average = average/kount
       endif
       deviate = 0.
-      if (kount .gt. 1) then
+      if (kount > 1) then
          do l=lim1obs,lim2obs
-            if (abundout(l) .ne. 999.99) then
+            if (abundout(l) /= 999.99) then
                deviate = deviate + (abundout(l)-average)**2
             endif
          enddo
@@ -34,7 +34,7 @@ c*****compute the average and standard deviation
          
 c*****correlate the abundances with excitation potential, equivalent width,
 c     and wavelength
-      if (kount .gt. 2) then
+      if (kount > 2) then
          epmin = 999.
          epmax = -999.
          rwmin = 999.
@@ -54,7 +54,7 @@ c     and wavelength
          za = 0.
 
          do l=lim1obs,lim2obs
-            if (abundout(l) .ne. 999.99) then
+            if (abundout(l) /= 999.99) then
 c              rw = dlog10(wid1comp(l)/wave1(l))
                rw = dlog10(width(l)/wave1(l))
                x1 = x1 + e(l,1)
@@ -68,12 +68,12 @@ c              rw = dlog10(wid1comp(l)/wave1(l))
                xy = xy + e(l,1)*abundout(l)
                yz = yz + rw*abundout(l)
                za = za + wave1(l)*abundout(l)
-               if (e(l,1) .lt. epmin) epmin = e(l,1)
-               if (e(l,1) .gt. epmax) epmax = e(l,1)
-               if (rw .lt. rwmin) rwmin = rw
-               if (rw .gt. rwmax) rwmax = rw
-               if (wave1(l) .lt. wvmin) wvmin = wave1(l)
-               if (wave1(l) .gt. wvmax) wvmax = wave1(l)
+               if (e(l,1) < epmin) epmin = e(l,1)
+               if (e(l,1) > epmax) epmax = e(l,1)
+               if (rw < rwmin) rwmin = rw
+               if (rw > rwmax) rwmax = rw
+               if (wave1(l) < wvmin) wvmin = wave1(l)
+               if (wave1(l) > wvmax) wvmax = wave1(l)
             endif
          enddo
 

@@ -14,9 +14,9 @@ c******************************************************************************
 
       xnum = -9999.
 1     call getasci (nchars,line)
-      if (nchars .lt. 0) return
+      if (nchars < 0) return
       call number (nchars,line,xnum)
-         if (xnum .eq. -9999.) go to 1
+         if (xnum == -9999.) go to 1
       xnumsngl = sngl(xnum)
       return
 

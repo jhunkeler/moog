@@ -67,13 +67,13 @@ c*****do the syntheses
       nlines = 0
       call synspec
       call total
-      if (ncurve .eq. 1) then
+      if (ncurve == 1) then
          wstart = 10.**(rwlow)*wave1(lim1)
          wstop = 10.**(rwhigh)*wave1(lim1)
       endif
       molopt = 1
       linprintopt = 0
-      if (w(ncurve) .gt. wstart) then
+      if (w(ncurve) > wstart) then
          pecabund(iatom,1) = pecabund(iatom,1) - rwstep
          go to 10
       endif
@@ -84,7 +84,7 @@ c*****do the syntheses
       call total
       molopt = 1
       linprintopt = 0
-      if (w(ncurve) .lt. wstop) then
+      if (w(ncurve) < wstop) then
          pecabund(iatom,1) = pecabund(iatom,1) + rwstep
          go to 20
       endif

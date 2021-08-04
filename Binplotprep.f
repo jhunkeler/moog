@@ -35,7 +35,7 @@ c*****open the files
       nchars = 40
       call infile ('output ',nf9out,'formatted  ',0,nchars,
      .             f9out,lscreen)
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          nf10out = 24
          lscreen = lscreen + 2
          array = 'SMOOTHED SYNTHESIS OUTPUT FOR COMBINED BINARY'
@@ -49,7 +49,7 @@ c*****open the files
          call infile ('output ',nf5out,'formatted  ',0,nchars,
      .                f5out,lscreen)
       endif
-      if (plotopt .gt. 1) then
+      if (plotopt > 1) then
          nf6out = 27
          lscreen = lscreen + 2
          array = 'SPECTRUM COMPARISON OUTPUT'
@@ -86,19 +86,19 @@ c*****read back the header information from the individual star raw
 c     synthetic spectra
 99    read (nf7out,1004,end=100) array
       read (nf8out,1004) chinfo
-      if     (array(1:7).eq.'Isotopi') then
+      if     (array(1:7)=='Isotopi') then
          write (nf9out,1004) array
          go to 99
-      elseif (array(1:7).eq.'ALL abu') then
+      elseif (array(1:7)=='ALL abu') then
          write (nf9out,1010) array(1:59), chinfo(54:59)
          go to 99
-      elseif (array(1:7).eq.'Changin') then
+      elseif (array(1:7)=='Changin') then
          write (nf9out,1011) array(1:37), chinfo(31:37)
          go to 99
-      elseif (array(1:7).eq.'element') then
+      elseif (array(1:7)=='element') then
          write (nf9out,1012) array(1:30), chinfo(25:30)
          go to 99
-      elseif (array(1:7).eq.'MODEL: ') then 
+      elseif (array(1:7)=='MODEL: ') then
          write (nf9out,1013) array(8:43), chinfo(8:43)
          modbin(1) = array(1:80)
          modbin(2) = chinfo(1:80)
@@ -120,14 +120,14 @@ c     and dump to combined raw synthetic spectrum file
          z(i) = (1.0 - z(i))/lumratio
       enddo
       normalization = 1.0 + 1.0/lumratio
-      if (pshift .gt. 0) then
+      if (pshift > 0) then
          do i=1,pshift
             dev(i) = 1.0
          enddo
          do i=pshift+1,kount
             dev(i) = (y(i)+z(i-pshift))/normalization
          enddo
-      elseif (pshift .eq. 0) then
+      elseif (pshift == 0) then
          do i=1,kount
             dev(i) = (y(i)+z(i))/normalization
          enddo

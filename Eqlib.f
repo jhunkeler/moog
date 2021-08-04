@@ -33,9 +33,9 @@ c*****clear the arrays
 c*****the number of species to be considered has been defined in "Inmodel";
 c*****either read in the dissociation data for a molecular species
       do jmol=1,nmol                                                   
-         if (amol(jmol) .ge. 100.) then
+         if (amol(jmol) >= 100.) then
             do k=1,110                                                  
-               if (datmol(1,k) .eq. amol(jmol)) go to 11                
+               if (datmol(1,k) == amol(jmol)) go to 11
             enddo
             write (nf1out,1001) amol(jmol)                   
             stop                                                        
@@ -54,7 +54,7 @@ c*****or read the ionization data for an atomic species
                it = ti
                do jj=1,2
                   att = atom+0.1*(jj-1)
-                  if (partflag(iatom1,jj) .gt. 0) then
+                  if (partflag(iatom1,jj) > 0) then
                      uu(jj) = partnew(att,jj,it)
                   else
                      uu(jj) = ucalc(att,it)
@@ -64,7 +64,7 @@ c*****or read the ionization data for an atomic species
             enddo 
          endif
       enddo
-      if (molopt .ge. 2) 
+      if (molopt >= 2)
      .   write (nf1out,1002) (amol(i),(const(j,i),j=1,6),i=1,nmol)
 
 
@@ -77,24 +77,24 @@ c*****understood, but is not explicitly contained in 'ident'.
          atom = amol(jmol)                                              
 2        call sunder(atom,iatom1,iatom2)                                
          do k=1,30                                                      
-            if (iatom1 .eq. iorder(k)) go to 4                          
+            if (iatom1 == iorder(k)) go to 4
          enddo
          neq = neq + 1                                                  
          iorder(neq) = iatom1                                           
          ident(neq,1) = jmol                                            
          go to 6                                                        
 4        do kk=1,nmax                                                   
-            if (ident(k,kk).eq.0 .or. ident(k,kk).eq. jmol) go to 7     
+            if (ident(k,kk)==0 .or. ident(k,kk)== jmol) go to 7
          enddo 
          nmax = nmax + 1                                                
          kk = nmax                                                
 7        ident(k,kk) = jmol                                             
-6        if (iatom2 .ne. 0) then
+6        if (iatom2 /= 0) then
             atom = iatom2                                               
             go to 2                                                     
          endif
       enddo                                                           
-      if (molopt .ge. 2) then
+      if (molopt >= 2) then
          do i=1,neq
             dummy1(i) = iorder(i)
          enddo
@@ -114,7 +114,7 @@ c*****calculate *xfic* and make a first guess at *xatom*
          korder = iorder(k)                                             
          xfic(k) = xabund(korder)*nhtot(i)                              
       enddo
-      if (i .lt. ntau) then
+      if (i < ntau) then
          do k=1,neq                                                     
             xatom(k) = xatom(k)*nhtot(i)/nhtot(i+1)                     
          enddo
@@ -149,8 +149,8 @@ c        (1 eV = 1.60219E-12 ergs). Also, k = 1.38065E-16 erg/K,
 c        h = 6.626076E-27 erg s, and pi = 3.1415926536.
 27    do jmol=1,nmol                                                  
          atom = amol(jmol)                                              
-         if (atom .ge. 100.) then
-            if (t(i) .gt. 12000.) then
+         if (atom >= 100.) then
+            if (t(i) > 12000.) then
                xmol(jmol,i) = 1.0d-20
             else   
                xmol(jmol,i) = 1.
@@ -158,10 +158,10 @@ c        h = 6.626076E-27 erg s, and pi = 3.1415926536.
 37             call sunder(atom,iatom1,iatom2)
                count = count + 1.            
                do k=1,neq                   
-                  if (iorder(k) .eq. iatom1) 
+                  if (iorder(k) == iatom1)
      .               xmol(jmol,i) = xmol(jmol,i)*xatom(k)
                enddo                                    
-               if (iatom2 .ne. 0) then
+               if (iatom2 /= 0) then
                   atom = iatom2                        
                   go to 37                                         
                endif
@@ -185,7 +185,7 @@ c*****compute the number of ions:
      .           (const(m+1,jmol)-const(m,jmol))*delt          
             iatom1 = atom                                           
             do k=1,neq         
-               if (iorder(k) .eq. iatom1) xmol(jmol,i) = 
+               if (iorder(k) == iatom1) xmol(jmol,i) =
      .            4.825d15*u1*t(i)**1.5/ne(i)*dexp(-1.1605d4* 
      .            const(1,jmol)/t(i))*xatom(k)               
             enddo
@@ -206,12 +206,12 @@ c*****respect to each atom.
             kderiv = iorder(kk)                                         
             do 28 j=1,nmax                                              
                jmol = ident(k,j)                                        
-               if (jmol .eq. 0) go to 28                                
+               if (jmol == 0) go to 28
                call discov(amol(jmol),kderiv,num2)                      
-               if (num2 .eq. 0) go to 28                                
+               if (num2 == 0) go to 28
                call discov(amol(jmol),korder,num1)                      
                c(k,kk) = c(k,kk) + xmol(jmol,i)*num1*num2/xatom(kk)     
-               if (k .eq. kk) deltax(k) = deltax(k) + num1*xmol(jmol,i) 
+               if (k == kk) deltax(k) = deltax(k) + num1*xmol(jmol,i)
 28          continue                                                    
          enddo
       enddo
@@ -233,17 +233,17 @@ c*****decide if another iteration is needed
       iflag = 0                                                         
       do k=1,neq                                                      
 c*****here oscillations are damped out                                      
-         if (x1*xcorr(k) .lt. -0.5*x1**2) xcorr(k) = 0.5*xcorr(k)       
+         if (x1*xcorr(k) < -0.5*x1**2) xcorr(k) = 0.5*xcorr(k)
          x1 = xatom(k)                                                  
-         if (dabs(xcorr(k)/xatom(k)) .gt. 0.005) iflag = 1              
+         if (dabs(xcorr(k)/xatom(k)) > 0.005) iflag = 1
          xatom(k) = xatom(k) - xcorr(k)                                 
 c*****fix element number densities which are ridiculous                     
-         if (xatom(k).le.0.0 .or. xatom(k).ge.1.001*xfic(k)) then
+         if (xatom(k)<=0.0 .or. xatom(k)>=1.001*xfic(k)) then
             iflag = 1                                                   
             xatom(k) = 1.0d-2*dabs(xatom(k)+xcorr(k))                   
          endif
       enddo                                                           
-      if (iflag .ne. 0) go to 27                                        
+      if (iflag /= 0) go to 27
 
 
 c*****print out atomic and molecular partial pressures. *xamol* is the      
@@ -255,7 +255,7 @@ c*****number density for each neutral atom
       do jmol=1,nmol                                                 
          pmol(jmol) = dlog10(xmol(jmol,i)*tk)                           
       enddo
-      if (molopt .ge. 2) then
+      if (molopt >= 2) then
          pglog = dlog10(pgas(lev))
          write (nf1out,1004) lev,int(t(lev)+0.001),pglog,
      .                       (patom(i),i=1,neq), (pmol(i),i=1,nmol)

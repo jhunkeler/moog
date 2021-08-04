@@ -29,16 +29,16 @@ c     files, and get the synthesis range parameters from the 'dump' file
       rewind nf2out
       rewind nf3out
 55    read (nf2out,1002) moditle
-      if (moditle(1:15).eq.'        element' .or.  
-     .    moditle(1:15).eq.' ALL abundances' .or.
-     .    moditle(1:15).eq.'Isotope Ratio: ') go to 55
+      if (moditle(1:15)=='        element' .or.
+     .    moditle(1:15)==' ALL abundances' .or.
+     .    moditle(1:15)=='Isotope Ratio: ') go to 55
       read (nf2out,*) start, sstop, step
       kount = nint((sstop - start + (step/4.0) )/step) + 1
       rewind nf2out
 
 
 c*****the first time through, read in the Gaussian FWHM array
-      if (istart .eq. 0) then
+      if (istart == 0) then
          istart = 1
          nfsmooth = 35
          array = 'SMOOTHING FWHM DATA'
@@ -48,7 +48,7 @@ c*****the first time through, read in the Gaussian FWHM array
          j = 1
 39       read (nfsmooth,*,end=40) wavefwhm(j), fwhm(j)
          j = j + 1
-         if (j .le. 100) then
+         if (j <= 100) then
             go to 39
          else
             istat = ivcleof (line,1)
@@ -66,26 +66,26 @@ c*****now read in the raw spectrum and flip to a depth scale
       abitle(noff+1:noff+12) = '[M/H] 0.00  '
       nabunds = 0
 41    read (nf2out,1002,end=2000) array
-      if     (array(1:15).eq.' ALL abundances') then
+      if     (array(1:15)==' ALL abundances') then
          abitle(noff+6:noff+10) = array(56:60)
          go to 41
-      elseif (array(1:15).eq.'        element') then
+      elseif (array(1:15)=='        element') then
          nabunds = nabunds + 1
-         if (nabunds .le. 7) then
+         if (nabunds <= 7) then
             ioff = noff + 12 + 9*(nabunds-1)
             abitle(ioff+1:ioff+2) = array(17:18)
             abitle(ioff+3:ioff+7) = array(34:38)
             abitle(ioff+8:ioff+9) = '  '
          endif
          go to 41
-      elseif (array(1:15).eq.'Isotope Ratio: ') then
+      elseif (array(1:15)=='Isotope Ratio: ') then
          nabunds = nabunds + 1
-         if (nabunds .le. 7) then
+         if (nabunds <= 7) then
             ioff = noff + 12 + 9*(nabunds-1)
             abitle(ioff+1:ioff+4) = array(27:30)
             abitle(ioff+5:ioff+5) = ' '
             do k=33,44
-               if (array(k:k) .ne. ' ') then
+               if (array(k:k) /= ' ') then
                   abitle(ioff+6:ioff+8) = array(k:k+2)
                   go to 60
                endif
@@ -106,22 +106,22 @@ c     Gaussian smoothing will need to be different at each step
       i = 0
       oldhalf = 0.
 25    i = i + 1
-      if (i .gt. kount) go to 90
+      if (i > kount) go to 90
       synstep = start + (i-1)*step
 
 
 c*****interpolate linearly in the FWHM array to get the appropriate value 
 c     for the current wavelength step
-      if     (synstep .le. wavefwhm(1)) then
+      if     (synstep <= wavefwhm(1)) then
          half = fwhm(1)
-      elseif (synstep .ge. wavefwhm(jtotfwhm)) then
+      elseif (synstep >= wavefwhm(jtotfwhm)) then
          half = fwhm(jtotfwhm)
       else
          do j=2,jtotfwhm
-            if (synstep .le. wavefwhm(j)) then
+            if (synstep <= wavefwhm(j)) then
                half = fwhm(j-1) + (synstep-wavefwhm(j-1))*
      .                (fwhm(j)-fwhm(j-1))/(wavefwhm(j)-wavefwhm(j-1))
-               if (half .gt. 0.) then
+               if (half > 0.) then
                   go to 10
                else
                   go to 15
@@ -132,7 +132,7 @@ c     for the current wavelength step
 
 
 c*****compute the Gaussian smoothing function, if needed
-10    if (dabs(half-oldhalf)/half .lt. 0.03) go to 50
+10    if (dabs(half-oldhalf)/half < 0.03) go to 50
       oldhalf = half
       sigma = half/2
       aa = 0.6932/sigma**2
@@ -140,7 +140,7 @@ c*****compute the Gaussian smoothing function, if needed
       do k=1,1000
          p(k) = dexp(-aa*(step*k)**2 )
          power = power + 2*p(k)
-         if (p(k) .lt. 0.05) then
+         if (p(k) < 0.05) then
             jdel = k
             min = jdel + 1
             max = kount - jdel
@@ -161,7 +161,7 @@ c*****if no smoothing, just equate the smoothed to the unsmoothed point
 
   
 c*****otherwise smooth the spectrum
-50    if (i.lt.min .or. i.gt.max) then
+50    if (i<min .or. i>max) then
          z(i) = y(i)
       else
          z(i) = p0*y(i)
@@ -189,7 +189,7 @@ c     spectrum because of the way the equivalences were set up
 c*****dump the smoothed spectrum in a MONGO-style set of 
 c     (wavelength,flux) point pairs
       write (nf3out,1005) kount, start, sstop, step
-      if (xsyn(1) .le. 100.0) then
+      if (xsyn(1) <= 100.0) then
          write (nf3out,1009) (xsyn(i),z(i),i=1,kount)
       else 
          write (nf3out,1008) (xsyn(i),z(i),i=1,kount)

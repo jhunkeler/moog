@@ -21,7 +21,7 @@ c******************************************************************************
       iatom = nint(atom)
       iarray = partflag(iatom,k)
 
-      if (level .gt. 500) then
+      if (level > 500) then
          temp = dlog(dble(level))
       else
          temp = tlog(level)

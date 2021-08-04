@@ -16,7 +16,7 @@ c***************************************************************************
 
 c*****define the number of text screen lines for silent mode;
 c     this number is hardwired, since it is not really needed at run time.
-      if (silent .eq. 'y') then
+      if (silent == 'y') then
          maxline = 24
            write (*,*) 'maxline', maxline
            pause
@@ -42,12 +42,12 @@ c     system.
       open (99,file='/tmp/moog.tmpsize')
 5     read (99,1010,end=15) line
       do i=1,77
-         if (line(i:i+3) .eq. 'rows') then
-            if     (machine .eq. 'Linux') then
+         if (line(i:i+3) == 'rows') then
+            if     (machine == 'Linux') then
             read (line(i+4:i+6),1011) maxline
-            elseif (machine .eq. 'Darwin') then
+            elseif (machine == 'Darwin') then
                read (line(i-4:i-2),1011) maxline
-            elseif (machine .eq. 'Solaris') then
+            elseif (machine == 'Solaris') then
                read (line(i+6:i+8),1011) maxline
             endif
             go to 10
@@ -59,7 +59,7 @@ c     system.
       ikount = 2
       call getasci (nchars,ikount)
       choice = chinfo(1:1)
-      if (choice.eq.'y' .or. nchars.le.0) then
+      if (choice=='y' .or. nchars<=0) then
          go to 10
       else
          call finish (0)
@@ -67,7 +67,7 @@ c     system.
 10    close (99,status='delete')
       write (systemcall,*) 'rm -f /tmp/moog.tmpsize'
       call system (systemcall)
-      if (maxline .lt. 10) then
+      if (maxline < 10) then
          maxline = 24
       else
          maxline = maxline - 2
@@ -83,7 +83,7 @@ c*****open data files carried with the source code: Barklem damping
       nfbarklem = 35
       num = 60
       call getcount (num,moogpath)
-      if (moogpath(num:num) .ne. '/') then
+      if (moogpath(num:num) /= '/') then
          num = num + 1
          moogpath(num:num) = '/'
       endif
@@ -96,7 +96,7 @@ c*****open data files carried with the source code: Barklem UV damping
       nfbarklemUV = 36
       num = 60
       call getcount (num,moogpath)
-      if (moogpath(num:num) .ne. '/') then
+      if (moogpath(num:num) /= '/') then
          num = num + 1
          moogpath(num:num) = '/'
       endif
@@ -116,10 +116,10 @@ c  write a header and find the appropriate parameter file, and exit normally
       lscreen = 4
       
       nargs = command_argument_count()
-      if (nargs .gt. 0) then
+      if (nargs > 0) then
         call get_command_argument(1, fparam)
       else
-        if (silent .eq. 'y') then
+        if (silent == 'y') then
           fparam = 'batch.par'
         else
           fparam = 'no_filename_given'     

@@ -22,7 +22,7 @@ c*****set the local temporary parameters to what they were for the last synth
       newnumisosyn = numisosyn
       newnumpecatom = numpecatom
       newnumatomsyn = numatomsyn
-      if (newnumatomsyn .eq. 0) newnumatomsyn = 1
+      if (newnumatomsyn == 0) newnumatomsyn = 1
       do i=3,95
          newpec(i) = pec(i)
          do j=1,newnumatomsyn
@@ -30,23 +30,23 @@ c*****set the local temporary parameters to what they were for the last synth
          enddo
       enddo
       do i=1,newnumiso
-         if(newnumiso .ge. 1) then
+         if(newnumiso >= 1) then
             newisotope(i)=isotope(i)
             do j=1,newnumisosyn
                newisoabund(i,j)=isoabund(i,j)
             enddo
          endif
       enddo
-      if (newnumatomsyn .le. 0) newnumatomsyn = 1
+      if (newnumatomsyn <= 0) newnumatomsyn = 1
 
 
 c*****SPECIAL CASE
 c     for the "binary" driver, present a limited set of options; only
 c     the abundances of the elements already chosen for variation in
 c     the parameter file can be altered
-11    if (control .eq. 'binary ') then
+11    if (control == 'binary ') then
          istat = ivcleof(4,1)
-         if (syncount .eq. 1) then
+         if (syncount == 1) then
             array = 'Abundance Alterations for the PRIMARY STAR:   '
          else
             array = 'Abundance Alterations for the SECONDARY STAR: '
@@ -56,7 +56,7 @@ c     the parameter file can be altered
          istat = ivwrite(6,1,array,49)
          line = 6
          do i=3,95
-            if(newpec(i) .eq. 1) then
+            if(newpec(i) == 1) then
                line = line + 1
                write (array,1001) i,(newpecabund(i,j),j=1,newnumatomsyn)
                istat = ivwrite(line,1,array,57)
@@ -70,16 +70,16 @@ c     the parameter file can be altered
          nchars = 21
          call getasci (nchars,line+4)
          choice = chinfo(1:1)
-         if (choice.ne.'c' .and. choice.ne.'x' .and.
-     .       choice.ne.'q') go to 11
+         if (choice/='c' .and. choice/='x' .and.
+     .       choice/='q') go to 11
       endif
          
         
 c*****for the "synth" driver, present the user with the current abundance 
 c     alterations, and the options; find out what is desired
-1     if (control .eq. 'synth'  .or. 
-     .    control .eq. 'isotop' .or.
-     .    control .eq. 'synpop') then
+1     if (control == 'synth'  .or.
+     .    control == 'isotop' .or.
+     .    control == 'synpop') then
          line = 4
          istat = ivcleof(line,1)
          write (array,1006)
@@ -87,13 +87,13 @@ c     alterations, and the options; find out what is desired
          istat = ivwrite(6,1,array,72)
          line = line + 1
          do i=3,95
-            if(newpec(i) .eq. 1) then
+            if(newpec(i) == 1) then
                line = line + 1
                write (array,1001) i,(newpecabund(i,j),j=1,newnumatomsyn)
                istat = ivwrite(line,1,array,57)
             endif
          enddo
-         if (newnumiso .gt. 0) then
+         if (newnumiso > 0) then
             do i=1,newnumiso
                line = line + 1
                write (array,1002) i, newisotope(i), 
@@ -109,32 +109,32 @@ c     alterations, and the options; find out what is desired
          nchars = 21
          call getasci (nchars,line+3)
          choice = chinfo(1:1)
-         if (choice.ne.'c' .and. choice.ne.'i' .and.
-     .       choice.ne.'n' .and. choice.ne.'x' .and.
-     .       choice.ne.'q') go to 1
+         if (choice/='c' .and. choice/='i' .and.
+     .       choice/='n' .and. choice/='x' .and.
+     .       choice/='q') go to 1
       endif
 
          
 c*****for "synth", change elemental abundances
-      if     (choice .eq. 'c') then
+      if     (choice == 'c') then
 20       istat = ivcleof(line+1,1)
          array = 'Which element to change? '
          nchars = 25
          call getnum (nchars,line+1,xnum,shortnum)
-         if (xnum.lt.2.0 .or. xnum.gt.95.) go to 20
+         if (xnum<2.0 .or. xnum>95.) go to 20
          j = nint(xnum)
-         if (newpec(j) .eq. 1) then
+         if (newpec(j) == 1) then
 25          array = 'n = new abundances, or z = zero offsets? '
             nchars = 41
             call getasci (nchars,line+2)
             choice2 = chinfo(1:1)
-            if     (choice2 .eq. 'z') then 
+            if     (choice2 == 'z') then
                newpec(j) = 0
                do i=1,5
                   newpecabund(j,i) = 0.0
                enddo
                newnumpecatom = newnumpecatom - 1
-            elseif (choice2 .eq. 'n') then
+            elseif (choice2 == 'n') then
                write (array,1004)
                istat = ivwrite(line+3,1,array,40)
                read (*,*) (newpecabund(j,i),i=1,newnumatomsyn)
@@ -151,7 +151,7 @@ c*****for "synth", change elemental abundances
 
 
 c*****for "synth", change isotopic factors
-      elseif (choice .eq. 'i') then
+      elseif (choice == 'i') then
          istat = ivcleof(line+1,1)
          array = 'Options: c = change an isotopic factor'
          istat = ivwrite(line+1,1,array,49)
@@ -161,18 +161,18 @@ c*****for "synth", change isotopic factors
          nchars = 22
          call getasci (nchars,line+3)
          choice2 = chinfo(1:1)
-         if (choice2 .eq. 'c') then
+         if (choice2 == 'c') then
 35          istat = ivcleof(line+1,1)
             array =  'Which isotope number from the list? '
             nchars = 36
             call getnum (nchars,line+1,xnum,shortnum)
             j = nint(xnum)
-            if (j.lt.1 .or. j.gt.newnumiso) go to 35
+            if (j<1 .or. j>newnumiso) go to 35
             istat = ivcleof(line+2,1)
             array = 'What are the new division factors? '
             istat = ivwrite(line+2,1,array,35)
             read (*,*) (newisoabund(j,i),i=1,newnumisosyn)
-         elseif (choice2 .eq. 'n') then
+         elseif (choice2 == 'n') then
             newnumiso = newnumiso + 1
             istat = ivcleof(line+1,1)
             array = 'What is the new isotope designation? '
@@ -188,24 +188,24 @@ c*****for "synth", change isotopic factors
             
 
 c*****for "synth", change the number of syntheses
-      elseif (choice .eq. 'n') then
+      elseif (choice == 'n') then
 55       array = 'How many synths? '
          nchars = 17
          call getnum (nchars,line+5,xnum,shortnum)
-         if (xnum .gt. 5.) go to 55
+         if (xnum > 5.) go to 55
          newnumatomsyn = nint(xnum)
          go to 1
 
 
 c*****for "synth", exit the routine without changing anything
-      elseif (choice .eq. 'x') then
+      elseif (choice == 'x') then
          return
 
 
 c*****for "synth", make the proposed alterations permanent; then
 c     return to the calling routine, which allegedly will
 c     redo the syntheses.
-      elseif (choice .eq. 'q') then
+      elseif (choice == 'q') then
          numiso = newnumiso
          numisosyn = newnumisosyn
          numpecatom = newnumpecatom
@@ -217,7 +217,7 @@ c     redo the syntheses.
             enddo
          enddo
          do i=1,numiso
-            if(numiso .ge. 1) then
+            if(numiso >= 1) then
                isotope(i) = newisotope(i)
                do j=1,numisosyn
                   isoabund(i,j)=newisoabund(i,j)
@@ -229,7 +229,7 @@ c     redo the syntheses.
 
 
 c*****loop back and print out the main menu again
-      if (control .eq. 'synth  ') then
+      if (control == 'synth  ') then
          go to 1
       else
          go to 11

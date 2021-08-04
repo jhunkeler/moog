@@ -22,7 +22,7 @@ c*****begin with some calculations leading to a c6 value ("unsold")
 
 
 c*****Ca II "IR triplet" lines at the Ca II K line at 3934 A
-      if (iatom.eq.201 .and. iwave.eq.3933) then
+      if (iatom==201 .and. iwave==3933) then
          do i=1,ntau
             gammaa = 1.45d+8 
             gnature = gammaa + 0.5*1.5d-9*t(i)**(1/3)*numdens(1,1,i)
@@ -37,10 +37,10 @@ c*****Ca II "IR triplet" lines at the Ca II K line at 3934 A
 
 
 c*****Ca II "IR triplet" lines at 8498, 8542, and 8662 A
-      elseif (iatom10.eq.201 .and.
-     .        (iwave.eq.8498.or.
-     .         iwave.eq.8542.or.
-     .         iwave.eq.8662)) then
+      elseif (iatom10==201 .and.
+     .        (iwave==8498.or.
+     .         iwave==8542.or.
+     .         iwave==8662)) then
          write (nf1out,1000)
          do i=1,ntau
             nhe = xabund(2)*nhtot(i)
@@ -60,7 +60,7 @@ c*****Ca II "IR triplet" lines at 8498, 8542, and 8662 A
 
 
 c*****Ca I 6717 A
-      elseif (iatom10.eq.200 .and. iwave.eq.6717) then
+      elseif (iatom10==200 .and. iwave==6717) then
          write (nf1out,1002) iwave
          do i=1,ntau
             nhe = xabund(2)*nhtot(i)
@@ -80,13 +80,13 @@ c*****Ca I 6717 A
 
 
 c*****Ca I 6318, 6343, 6361 A autoionization lines
-      elseif (iatom10.eq.200 .and. 
-     .        (iwave.eq.6318 .or.
-     .         iwave.eq.6343 .or.
-     .         iwave.eq.6361)) then
+      elseif (iatom10==200 .and.
+     .        (iwave==6318 .or.
+     .         iwave==6343 .or.
+     .         iwave==6361)) then
          write (nf1out,1005) iwave
          do i=1,ntau
-            if (dampnum(j) .eq. 0) then
+            if (dampnum(j) == 0) then
                gnature = 1.5d12
             else
                gnature = dampnum(j)*1.5d12
@@ -99,7 +99,7 @@ c*****Ca I 6318, 6343, 6361 A autoionization lines
 
 
 c*****Na I lines
-      elseif (iatom .eq. 110) then
+      elseif (iatom == 110) then
          write (nf1out,1003) iwave
          do i=1,ntau
             gnature = 2.21e+15/wave1(j)**2
@@ -116,11 +116,11 @@ c*****Na I lines
 
 
 c*****CH autoionization line at 3693 A
-      elseif (iatom10.eq.1060 .and.
-     .        iwave.eq.3693) then
+      elseif (iatom10==1060 .and.
+     .        iwave==3693) then
          write (nf1out,1006) iwave
          do i=1,ntau
-            if (dampnum(j) .eq. 0) then
+            if (dampnum(j) == 0) then
                gnature = 4.0d11
             else
                gnature = dampnum(j)*4.0d11

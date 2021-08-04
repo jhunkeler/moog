@@ -22,7 +22,7 @@ c******************************************************************************
       data modcount/0/
 
 c  set up some data upon first entrance with a new model atmosphere
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             do n=1,8
@@ -46,7 +46,7 @@ c  set up some data upon first entrance with a new model atmosphere
       c = 2.815d29/freq3
       do i=1,ntau
          ex = boltex(i)
-         if (freq .lt. 4.05933d13) ex = exlim(i)/evhkt(i)
+         if (freq < 4.05933d13) ex = exlim(i)/evhkt(i)
          h = (cont(7)*bolt(i,7) + cont8*bolt(i,8) + 
      .       (ex - exlim(i))*c + 
      .       coulff(1,tlog(i),freq)*freet(i)*cfree)*(1.-evhkt(i))
@@ -134,7 +134,7 @@ C  Bell and Berrington (1987, J.Phys.B, 20, 801-806)
       data modcount,istart/ 0,0/
          
 c  fill some arrays once and for all
-      if (istart .eq. 0) then
+      if (istart == 0) then
          istart = 1
 c  91.134 number taken from Bell & Berrington
          do iwave=1,22
@@ -147,7 +147,7 @@ c  91.134 number taken from Bell & Berrington
 
 c  initialize some quantities for each new model atmosphere
 c  .754209 Hotop & Lineberger (1985, J. Phys. Chem. Ref. Data, 14,731-752)
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             xhmin(i) = dexp(.754209/tkev(i))/(2.*2.4148d15*t(i)**1.5)*
@@ -165,7 +165,7 @@ c  main opacity computation yielding "aHminus"
       enddo
       hminbf = 0.
       nnnn = 85
-      if (freq  .gt.  1.82365d14) 
+      if (freq  >  1.82365d14)
      .              maxwave = map1(wbf,bf,nnnn,wave,hminbf,1) 
       do i=1,ntau
          nnnn = 11
@@ -193,7 +193,7 @@ c******************************************************************************
         
       iold = 2
       do inew=1,nnew
-1       if (xnew(inew).lt.xold(iold) .or. iold.eq.nold) then
+1       if (xnew(inew)<xold(iold) .or. iold==nold) then
            ynew(inew) = yold(iold-1) + (yold(iold)-yold(iold-1))/
      .              (xold(iold)-xold(iold-1))*(xnew(inew)-xold(iold-1))
            return
@@ -222,20 +222,20 @@ c******************************************************************************
       l = 2
       ll = 0
       do 50 k=1,nnew
-10       if(xnew(k) .lt. xold(l)) go to 20
+10       if(xnew(k) < xold(l)) go to 20
          l = l + 1
-         if (l .gt. nold) go to 30
+         if (l > nold) go to 30
          go to 10
-20       if (l .eq. ll) go to 50
-         if (l .eq. 2) go to 30
-         if (l .eq. 3) go to 30
+20       if (l == ll) go to 50
+         if (l == 2) go to 30
+         if (l == 3) go to 30
          l1 = l - 1
-         if (l.gt.ll+1 .or. l.eq.3) go to 21
-         if (l.gt.ll+1 .or. l.eq.4) go to 21
+         if (l>ll+1 .or. l==3) go to 21
+         if (l>ll+1 .or. l==4) go to 21
          cbac = cfor
          bbac = bfor
          abac = afor
-         if (l .eq. nold) go to 22
+         if (l == nold) go to 22
          go to 25
 21       l2 = l - 2
          d = (fold(l1)-fold(l2))/(xold(l1)-xold(l2))
@@ -244,7 +244,7 @@ c******************************************************************************
      .      (xold(l1)-xold(l2))
          bbac = d - (xold(l1)+xold(l2))*cbac
          abac = fold(l2) - xold(l2)*d + xold(l1)*xold(l2)*cbac
-         if (l .lt. nold) go to 25
+         if (l < nold) go to 25
 22       c = cbac
          b = bbac
          a = abac
@@ -257,13 +257,13 @@ c******************************************************************************
          bfor = d - (xold(l)+xold(l1))*cfor
          afor = fold(l1) - xold(l1)*d + xold(l)*xold(l1)*cfor
          wt = 0.
-         if (dabs(cfor) .ne. 0.) wt = dabs(cfor)/(dabs(cfor)+dabs(cbac))
+         if (dabs(cfor) /= 0.) wt = dabs(cfor)/(dabs(cfor)+dabs(cbac))
          a = afor + wt*(abac-afor)
          b = bfor + wt*(bbac-bfor)
          c = cfor + wt*(cbac-cfor)
          ll = l
          go to 50
-30       if (l .eq. ll) go to 50
+30       if (l == ll) go to 50
          l = min0(nold,l)
          c = 0.
          b = (fold(l)-fold(l-1))/(xold(l)-xold(l-1))

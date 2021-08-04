@@ -24,7 +24,7 @@ c     with the H_2 molecule
 c     first do the neutrals
       do j=1,7
          do k=1,neq
-            if (nel(j) .eq. iorder(k)) then
+            if (nel(j) == iorder(k)) then
                do i=1,ntau
                   numdens(j,1,i) = xamol(k,i)
                enddo
@@ -39,7 +39,7 @@ c*****then do the ions
          ispec10 = nint(dble(10*nel(j)+1))
          do k=1,nmol
             kmol10 = nint(10.*amol(k))
-            if (ispec10 .eq. kmol10) then
+            if (ispec10 == kmol10) then
                do i=1,ntau
                   numdens(j,2,i) = xmol(k,i)
                enddo
@@ -52,7 +52,7 @@ c*****then do the ions
 c*****finally add in H_2
       do k=1,nmol
          ispec = 101
-         if (ispec .eq. nint(amol(k))) then
+         if (ispec == nint(amol(k))) then
             do i=1,ntau
                numdens(8,1,i) = xmol(k,i)
             enddo
@@ -65,7 +65,7 @@ c*****compute partitiion functions for H_2O and CO_2;
       do i=1,ntau
          h2olog = 0.
          co2log = 0.
-         if (t(i) .gt. 5000.) then
+         if (t(i) > 5000.) then
             uh2o(i) = 1.d8
             uco2(i) = 1.d8
          else
@@ -83,8 +83,8 @@ c*****transfer H_2O and CO_2 number densities from the molecular
 c     equilibrium output
 c     note:  HITRAN partition functions are given only for T < 5000K
       do j=1,nmol
-         if (nint(amol(j)) .eq. 10108) ih2o = j
-         if (nint(amol(j)) .eq. 60808) ico2 = j
+         if (nint(amol(j)) == 10108) ih2o = j
+         if (nint(amol(j)) == 60808) ico2 = j
       enddo
       do i=1,ntau
          xnh2o(i) = xmol(ih2o,i)

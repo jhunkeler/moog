@@ -19,7 +19,7 @@ c******************************************************************************
 c*****dump the data into working arrays
       j = 0
       do l=lim1obs,lim2obs
-         if (abundout(l) .ne. 999.99) then
+         if (abundout(l) /= 999.99) then
             j = j + 1
             ep(j) = e(l,1)
             abb(j) = abundout(l)
@@ -39,7 +39,7 @@ c*****find the plot boundaries for the excitation potential plot
       do j=1,kount
          xhi = amax1(xhi,ep(j))
       enddo
-      if (xhi-xlo .lt. 5.) then
+      if (xhi-xlo < 5.) then
          xlo = amax1((xlo+xhi)/2.-2.5,-0.2)
          xhi = xlo + 5.0
       else
@@ -54,10 +54,10 @@ c*****find the plot boundaries for the excitation potential plot
       do j=1,kount
          yhi = amax1(yhi,abb(j))
       enddo
-      if (yhi-ylo .lt. 0.5) then
+      if (yhi-ylo < 0.5) then
          ylo = (ylo+yhi)/2. - 0.30
          yhi = ylo + 0.60
-      elseif (yhi-ylo .lt. 1.0) then
+      elseif (yhi-ylo < 1.0) then
          ylo = (ylo+yhi)/2. - 0.55
          yhi = ylo + 1.10
       else
@@ -104,7 +104,7 @@ c*****make the excitation potential plot
       call sm_ltype (2)
       call sm_relocate (xlo,ymed)
       call sm_draw (xhi,ymed)
-      if (kount .gt. 2 .and. deltaep .gt. 1.5) then
+      if (kount > 2 .and. deltaep > 1.5) then
          call sm_ltype (3)
          call defcolor (3)
          call sm_relocate (xlo,real(xxm1*xlo+xxb1)) 
@@ -116,11 +116,11 @@ c*****make the excitation potential plot
       call sm_relocate (xlo+0.05*(xhi-xlo),ylo+0.15*(yhi-ylo))
       call sm_expand (0.8)
       ich = idint(charge(lim1obs) + 0.1)
-      if (ich .eq. 1) then 
+      if (ich == 1) then
          ion = ' I  '
-      elseif (ich .eq. 2) then
+      elseif (ich == 2) then
          ion = ' II '
-      elseif (ich .eq. 3) then
+      elseif (ich == 3) then
          ion = ' III'
       endif
       iatom = idint(atom1(lim1obs))
@@ -178,7 +178,7 @@ c*****make the equivalent width plot
       call sm_ltype (2)
       call sm_relocate (xlo,ymed)
       call sm_draw (xhi,ymed)
-      if (kount .gt. 2 .and. deltarw .gt. 0.5) then
+      if (kount > 2 .and. deltarw > 0.5) then
          call sm_ltype (3)
          call defcolor (3)
          call sm_relocate (xlo,real(xxm2*xlo+xxb2)) 
@@ -242,7 +242,7 @@ c*****make the wavelength plot, and exit normally
       call sm_lweight (4.0)
       call sm_ltype (2)
       call sm_draw (xhi,ymed)
-      if (kount .gt. 2 .and. deltawv .gt. 500.) then
+      if (kount > 2 .and. deltawv > 500.) then
          call sm_ltype (3)
          call defcolor (3)
          call sm_relocate (xlo,real(xxm3*xlo+xxb3))

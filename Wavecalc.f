@@ -8,12 +8,12 @@ c******************************************************************************
       real*4 point 
       real*8 c(9)
 
-      if (c(9) .eq. 1.) go to 20
-      if (c(9) .eq. 2.) go to 40
-      if (c(9) .eq. 3.) go to 30
+      if (c(9) == 1.) go to 20
+      if (c(9) == 2.) go to 40
+      if (c(9) == 3.) go to 30
 
 c*****no wavelength solution exists
-      if (c(1).eq.0. .or. c(2).eq.0.) then
+      if (c(1)==0. .or. c(2)==0.) then
          wavecalc = point
 
 c*****an ordinary polynomial solution

@@ -17,12 +17,12 @@ c******************************************************************************
 
 c*****the species is an atom:
 c*****search for it in the list of elements done in M.E.
-      if (atom1(lim1line) .lt. 100.) then
-         if (neq .eq. 0) then
+      if (atom1(lim1line) < 100.) then
+         if (neq == 0) then
             return
          else
             do n=1,neq
-               if (iabatom .eq. iorder(n)) molflag = 1
+               if (iabatom == iorder(n)) molflag = 1
                return
             enddo
          endif
@@ -31,7 +31,7 @@ c*****search for it in the list of elements done in M.E.
 c*****the species is a molecule:
 c*****halt if M.E. wasn't done or didn't include this species
       else
-         if (neq .eq. 0) then
+         if (neq == 0) then
             lscreen = lscreen + 2
             write (array,1001) iabatom
             call prinfo (lscreen)
@@ -41,9 +41,9 @@ c*****halt if M.E. wasn't done or didn't include this species
          iaa = ia
          ibb = ib
          do n=1,neq
-            if (ia.eq.iorder(n) .or. ib.eq.iorder(n)) molflag = ia
+            if (ia==iorder(n) .or. ib==iorder(n)) molflag = ia
          enddo
-         if (molflag .eq. 0) then
+         if (molflag == 0) then
             lscreen = lscreen + 2
             write (array,1002) iabatom
             call prinfo (lscreen)
@@ -52,8 +52,8 @@ c*****halt if M.E. wasn't done or didn't include this species
          molflag = 1
 
 c*****if molecule is a hydride, the non-H element will be varied
-         if (ia.eq.1 .or. ib.eq.1) then
-            if (ia .eq. 1) then
+         if (ia==1 .or. ib==1) then
+            if (ia == 1) then
                iabatom = ib
             else
                iabatom = ia
@@ -67,7 +67,7 @@ c*****for other molecules, the user specifies which element will be varied
             call getnum (nchars,ikount+1,xnum,shortnum)
             iabatom = int(xnum+0.0001)
          
-            if (iabatom.ne.ia .and. iabatom.ne.ib) then
+            if (iabatom/=ia .and. iabatom/=ib) then
                write (array,1003)
                stop
             endif

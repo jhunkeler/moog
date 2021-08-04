@@ -52,45 +52,45 @@ c*****invoke the overall starting routine
 
 
 c*****use one of the standard driver routines ("isotop" is obsolete): 
-      if     (control .eq. 'synplot') then
+      if     (control == 'synplot') then
          call plotit
-      elseif (control .eq. 'isoplot') then
+      elseif (control == 'isoplot') then
          call plotit
-      elseif (control .eq. 'synth  ') then
+      elseif (control == 'synth  ') then
          call synth
-      elseif (control .eq. 'cogsyn ') then
+      elseif (control == 'cogsyn ') then
          call cogsyn  
-      elseif (control .eq. 'blends ') then
+      elseif (control == 'blends ') then
          call blends  
-      elseif (control .eq. 'abfind ') then
+      elseif (control == 'abfind ') then
          call abfind
-      elseif (control .eq. 'ewfind ') then
+      elseif (control == 'ewfind ') then
          call ewfind
-      elseif (control .eq. 'cog    ') then
+      elseif (control == 'cog    ') then
          call cog
-      elseif (control .eq. 'calmod ') then
+      elseif (control == 'calmod ') then
          call calmod
-      elseif (control .eq. 'isotop ') then
+      elseif (control == 'isotop ') then
          control = 'synth  '
          call synth
-      elseif (control .eq. 'doflux ') then
+      elseif (control == 'doflux ') then
          call doflux   
-      elseif (control .eq. 'weedout') then
+      elseif (control == 'weedout') then
          call weedout  
-      elseif (control .eq. 'gridsyn') then
+      elseif (control == 'gridsyn') then
          call gridsyn  
-      elseif (control .eq. 'gridplo') then
+      elseif (control == 'gridplo') then
          call gridplo  
-      elseif (control .eq. 'binary ') then
+      elseif (control == 'binary ') then
          call binary
-      elseif (control .eq. 'abpop  ') then
+      elseif (control == 'abpop  ') then
          call abpop
-      elseif (control .eq. 'synpop ') then
+      elseif (control == 'synpop ') then
          call synpop
 
 
 c*****or, put in your own drivers in the form below....
-      elseif (control .eq. 'mine  ') then
+      elseif (control == 'mine  ') then
          call  mydriver 
 
 

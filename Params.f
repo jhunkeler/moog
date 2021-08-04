@@ -19,7 +19,7 @@ c******************************************************************************
       data newcount, linecount /0, 0/
 
 
-      if (linecount .eq. 0) oldcount = 0
+      if (linecount == 0) oldcount = 0
 
 
 c  IF DOING MULTIPLE RUNS: if this is not the first reading of the
@@ -28,7 +28,7 @@ c  using "linecount", and then skip the re-initialization of the
 c  various variables
       rewind nfparam
       read (nfparam,1001,end=100) arrayz
-      if (linecount .ne. 0) then
+      if (linecount /= 0) then
          do i=1,linecount
             read (nfparam,1001,end=100) arrayz
          enddo
@@ -210,9 +210,9 @@ c  rest of arrayz into "array"
 
 c  keyword 'RUN' signals that there are either multiple syntheses being
 c  done or multiple comparisons with observed spectra
-      if (keyword .eq. 'RUN') then
+      if (keyword == 'RUN') then
          read (array,*) newcount
-         if (newcount .gt. oldcount+1) then
+         if (newcount > oldcount+1) then
             linecount = linecount - 1
             oldcount = syncount
             go to 100
@@ -229,116 +229,116 @@ c  the default value, then the old-style formatted input will be used;
 c  If freeform = 1, unformatted read will be used, BUT the user must then
 c  give values for all quantities (that is, explicit zeros will need to
 c  be put instead of blank spaces.
-      if     (keyword .eq. 'freeform') then
+      if     (keyword == 'freeform') then
          read (array,*) linfileopt
  
  
 c  keyword 'standard_out' controls the name of the verbose standard output
-      elseif (keyword .eq. 'standard_out') then
+      elseif (keyword == 'standard_out') then
          read (array,*) f1out
 
 
 c  keyword 'summary_out' controls the name of either the EW summary or
 c  the raw synthesis output
-      elseif (keyword .eq. 'summary_out') then
+      elseif (keyword == 'summary_out') then
          read (array,*) f2out
 
 
 c  keyword 'hardpost_out' controls the name of a postscript plot output
-      elseif (keyword .eq. 'hardpost_out') then
+      elseif (keyword == 'hardpost_out') then
          read (array,*) f5out
 
 
 c  keyword 'speccomp_out' controls the name of a text file containing the
 c  comparisons (wavelength shifts, sigmas, etc.) between observed and
 c  synthetic spectra
-      elseif (keyword .eq. 'speccomp_out') then
+      elseif (keyword == 'speccomp_out') then
          read (array,*) f6out
 
 
 c  keyword 'bin_raw_out' controls the name of a file containing the
 c  raw synthesis of a spectroscopic binary, with an appropriate velocity 
 c  difference and luminosity ratio dialed in
-      elseif (keyword .eq. 'bin_raw_out') then
+      elseif (keyword == 'bin_raw_out') then
          read (array,*) f9out
 
 
 c  keyword 'bin_smo_out' controls the name of a file containing the
 c  smoothed synthesis of a spectroscopic binary
-      elseif (keyword .eq. 'bin_smo_out') then
+      elseif (keyword == 'bin_smo_out') then
          read (array,*) f10out
 
  
 c  keyword 'summary_in' controls the name of the raw synthesis file,
 c  created previously, that will be read in for plotting purposes
-      elseif (keyword .eq. 'summary_in') then
+      elseif (keyword == 'summary_in') then
          read (array,*) f2out
 
 
 c  keyword 'smoothed_out' controls the name of the smoothed synthesis output
-      elseif (keyword .eq. 'smoothed_out') then
+      elseif (keyword == 'smoothed_out') then
          read (array,*) f3out
 
 
 c  keyword 'keeplines_out' controls the name of the list of kept lines
 c  for future synthetic spectrum runs
-      elseif (keyword .eq. 'keeplines_out') then
+      elseif (keyword == 'keeplines_out') then
          read (array,*) f8out
 
 
 c  keyword 'tosslines_out' controls the name of the list of discarded lines
 c  that are too weak to keep in future synthetic spectrum runs
-      elseif (keyword .eq. 'tosslines_out') then
+      elseif (keyword == 'tosslines_out') then
          read (array,*) f9out
 
 
 c  keyword 'iraf_out' controls the name of the optional IRAF output
-      elseif (keyword .eq. 'iraf_out') then
+      elseif (keyword == 'iraf_out') then
          read (array,*) f4out
 
 
 c  keyword 'model_in' controls the name of input model atmosphere file
-      elseif (keyword .eq. 'model_in') then
+      elseif (keyword == 'model_in') then
          read (array,*) fmodel
 
 
 c  keyword 'lines_in' controls the name of the input line list
-      elseif (keyword .eq. 'lines_in') then
+      elseif (keyword == 'lines_in') then
          read (array,*) flines
 
 
 c  keyword 'stronglines_in' controls the name of the input strong line list
-      elseif (keyword .eq. 'stronglines_in') then
+      elseif (keyword == 'stronglines_in') then
          read (array,*) fslines
 
 
 c  keyword 'observed_in' controls the name of the input observed spectrum
-      elseif (keyword .eq. 'observed_in') then
+      elseif (keyword == 'observed_in') then
          read (array,*) fobs
 
 
 c  keyword 'table_in' controls the name of the extra input instruction file
-      elseif (keyword .eq. 'table_in   ') then
+      elseif (keyword == 'table_in   ') then
          read (array,*) ftable
 
 
 c  keyword 'table_out' controls the name of the extra input instruction file
-      elseif (keyword .eq. 'table_out  ') then
+      elseif (keyword == 'table_out  ') then
          read (array,*) f7out
 
 
 c  keyword 'popsyn_out' controls the name of the extra input instruction file
-      elseif (keyword .eq. 'popsyn_out ') then
+      elseif (keyword == 'popsyn_out ') then
          read (array,*) f9out
 
 
 c  keyword 'rawbin_out ' controls the name of the input observed spectrum
-      elseif (keyword .eq. 'rawbin_out ') then
+      elseif (keyword == 'rawbin_out ') then
          read (array,*) f9out
 
 
 c  keyword 'smoobin_out' controls the name of the input observed spectrum
-      elseif (keyword .eq. 'smoobin_out') then
+      elseif (keyword == 'smoobin_out') then
          read (array,*) f10out
 
 
@@ -347,7 +347,7 @@ c           0 = do not print out the atmosphere
 c           1 = print out the standard things about an atmsophere
 c           2 = print standard things and additional stuff like continuous
 c                    opacities, etc.
-      elseif (keyword .eq. 'atmosphere') then
+      elseif (keyword == 'atmosphere') then
          read (array,*) modprintopt
 
 
@@ -355,13 +355,13 @@ c  keyword 'molecules ' controls the molecular equilibrium calculations
 c           0 = do not do molecular equilibrium
 c           1 = do molecular equilibrium but do not print results
 c           2 = do molecular equilibrium and print results
-      elseif (keyword .eq. 'molecules') then
+      elseif (keyword == 'molecules') then
          read (array,*) molopt
-         if     (molopt .eq. 0) then
+         if     (molopt == 0) then
             nchars = 64
             write (array,1009) 
             call getasci (nchars,l0)
-            if (chinfo(1:1) .eq. 'n') then
+            if (chinfo(1:1) == 'n') then
                stop
             else
                molopt = 1
@@ -373,7 +373,7 @@ c  keyword 'molset' controls the choice of which set of molecules will be
 c  used in molecular equilibrium calculations.
 c          1 = the small set involving H, C, N, O, Mg, Ti (DEFAULT)
 c          2 = the large set more useful for very cool stars
-      elseif (keyword .eq. 'molset') then
+      elseif (keyword == 'molset') then
          read (array,*) molset
 
 
@@ -381,7 +381,7 @@ c  keyword 'deviations' controls whether, for synthetic spectrum computations,
 c  an 'obs-comp' plot will be made in addition to the normal spectrum plot
 c           0 = do not plot the obs-comp plot
 c           1 = plot the obs-comp plot
-      elseif (keyword .eq. 'deviations') then
+      elseif (keyword == 'deviations') then
          read (array,*) deviations
 
 
@@ -389,7 +389,7 @@ c  keyword 'lines     ' controls the output of line data
 c           0 = print out nothing about the input lines
 c           1 = print out standard information about the input line list
 c           2 = gory line data print (usually for diagnostic purposes)
-      elseif (keyword .eq. 'lines') then
+      elseif (keyword == 'lines') then
          read (array,*) linprintopt
          linprintalt = linprintopt
 
@@ -397,7 +397,7 @@ c           2 = gory line data print (usually for diagnostic purposes)
 c  keyword 'gfstyle   ' controls the output of line data
 c           0 = base-10 logarithms of the gf values (DEFAULT)
 c           1 = straight gf values
-      elseif (keyword .eq. 'gfstyle') then
+      elseif (keyword == 'gfstyle') then
          read (array,*) gfstyle
 
 
@@ -405,7 +405,7 @@ c  keyword 'contnorm  ' allows multiplicative adjustment of the
 c           continuum; useful probably only for batch syntheses
 c           the numbers employed should be around 1.0;
 c           default is 1.000000
-      elseif (keyword .eq. 'contnorm') then
+      elseif (keyword == 'contnorm') then
          read (array,*) contnorm
 
 
@@ -416,13 +416,13 @@ c     1 = given in following lines as follows
 c xlow         xhi         ylo       yhi
 c vshift       lamshift    obsadd    obsmult
 c smooth-type  FWHM-Gauss  vsini     L.D.C.    FWHM-Macro     FWHM-Loren
-      elseif (keyword .eq. 'plotpars') then
+      elseif (keyword == 'plotpars') then
          read (array,*) iscale
-         if (iscale .ne. 0) then
+         if (iscale /= 0) then
             read (nfparam,*) xlo, xhi, ylo, yhi
             linecount = linecount + 1
             read (nfparam,*) veladd, xadd, yadd, ymult
-            if (xadd .ne. 0.) then
+            if (xadd /= 0.) then
                veladd = 3.0d5*xadd/((xlo+xhi)/2.)
                xadd = 0.
             endif
@@ -436,7 +436,7 @@ c smooth-type  FWHM-Gauss  vsini     L.D.C.    FWHM-Macro     FWHM-Loren
 c keyword 'trudamp     '  should moog use the detailed line damping for
 c                         those transitions that have information stored in
 c                         subroutine trudamp? (Default is *no*)
-      elseif (keyword .eq. 'trudamp') then
+      elseif (keyword == 'trudamp') then
          read (array,*) itru
 
 
@@ -444,7 +444,7 @@ c keyword 'veladjust   '  shoud moog try to do a cross-correlation between
 c                         observed and synthetic spectra and use that to
 c                         align the spectra better in wavelength
 c                         (Default is *no*)
-      elseif (keyword .eq. 'veladjust') then
+      elseif (keyword == 'veladjust') then
          read (array,*) maxshift
 
 
@@ -453,9 +453,9 @@ c          outputs the final spectrum
 c            0 = angs
 c            1 = microns
 c            2 = 1/cm
-      elseif (keyword .eq. 'units') then
+      elseif (keyword == 'units') then
          read (array,*) iunits
-         if (iunits .ne. 0) then
+         if (iunits /= 0) then
             write (*,1010)
             stop
          endif
@@ -465,7 +465,7 @@ c keyword 'iraf       ' allows the user to output a raw spectrum in
 c          a form suitable for IRAF's rtext input command
 c            0 = don't do this, make output the normal way.
 c            1 = make an IRAF-compatible output
-      elseif (keyword .eq. 'iraf') then
+      elseif (keyword == 'iraf') then
          read (array,*) iraf
 
 
@@ -473,14 +473,14 @@ c  keyword 'scat       'allows the user to employ a source function
 c          which has both scattering and absorption components     
 c          0 = NO scattering
 c          1 = scattering
-      elseif (keyword .eq. 'scat') then
+      elseif (keyword == 'scat') then
          read (array,*) scatopt
 
 
 c  keyword 'flux/int  ' choses integrated flux or central intensity
 c           0 = integrated flux calculations
 c           1 = central intensity calculations
-      elseif (keyword .eq. 'flux/int') then
+      elseif (keyword == 'flux/int') then
          read (array,*) fluxintopt
 
 
@@ -505,7 +505,7 @@ c        dampingopt = 3 and dampnum > 10^(-10) --->
 c                             c6 = (c6_NEXTGEN for H I, He I, H2)*dampnum
 c     for molecular lines (lacking a better idea) --->
 c                                        c6 done as in dampingopt = 0
-      elseif (keyword .eq. 'damping') then
+      elseif (keyword == 'damping') then
          read (array,*) dampingopt
 
 
@@ -517,9 +517,9 @@ c           2 = (not implemented yet)
 c           3 = read a true Fits file with the FITSIO package
 c           4 = (not implemented yet)
 c           5 = read a special MONGO style (wavelength, flux pair) file
-      elseif (keyword .eq. 'obspectrum') then
+      elseif (keyword == 'obspectrum') then
          read (array,*) specfileopt
-         if (specfileopt .lt. 0) then
+         if (specfileopt < 0) then
             byteswap = 1
             specfileopt = iabs(specfileopt)
          endif
@@ -527,14 +527,14 @@ c           5 = read a special MONGO style (wavelength, flux pair) file
 
 c   keyword 'histogram' makes histogram plots of observed spectra if
 c   histoyes = 1
-      elseif (keyword .eq. 'histogram') then
+      elseif (keyword == 'histogram') then
          read (array,*) histoyes
 
 
 c  keyword 'terminal  ' gives the sm plotting window type
 c           smterm = a character string of the sm window type (see the 
 c           appropriate sm manual for a list)
-      elseif (keyword .eq. 'terminal') then
+      elseif (keyword == 'terminal') then
          read (array,*) smterm
 
 
@@ -547,7 +547,7 @@ c           For line analyses: # = the minimum number of lines of a
 c                                  species necessary to trigger a plot
 c           For curves-of-growth: 1 = make plots
 c           For flux curves: 1 = make plots
-      elseif (keyword .eq. 'plot') then
+      elseif (keyword == 'plot') then
          read (array,*) plotopt
 
 
@@ -556,7 +556,7 @@ c           # = the number of different syntheses to run
 c               (the next line gives the different abundance factors
 c               to use)
 c  minimum error check:  numatomsyn must equal numisosyn or code will stop
-      elseif (keyword .eq. 'abundances') then
+      elseif (keyword == 'abundances') then
          neq = 0
          numpecatom = 0
          numatomsyn = 0
@@ -573,8 +573,8 @@ c  minimum error check:  numatomsyn must equal numisosyn or code will stop
             enddo
          enddo
          read (array,*) numpecatom,numatomsyn
-         if (numisosyn .ne. 0) then
-            if (numatomsyn .ne. numisosyn) then
+         if (numisosyn /= 0) then
+            if (numatomsyn /= numisosyn) then
                write (array,1002) numatomsyn, numisosyn
                call putasci (77,6)
                stop
@@ -583,7 +583,7 @@ c  minimum error check:  numatomsyn must equal numisosyn or code will stop
          do l=1,numpecatom
             read (nfparam,*) jatom,(deltalogab(kk),kk=1,numatomsyn)
             linecount = linecount + 1
-            if (jatom .eq. 99) then
+            if (jatom == 99) then
                do kk=1,numatomsyn
                   abfactor (kk) = deltalogab(kk)
                enddo
@@ -594,13 +594,13 @@ c  minimum error check:  numatomsyn must equal numisosyn or code will stop
                pec(jatom) = 1
             endif
          enddo
-         if (numpecatom.eq.1 .and. jatom.eq.99) ninetynineflag = 1
+         if (numpecatom==1 .and. jatom==99) ninetynineflag = 1
 
 
 c keyword 'isotopes   ' gives the isotopes used in the line list and their
 c                       abundance relative to the parent spiecies
 c  minimum error check:  numatomsyn must equal numisosyn or code will stop
-      elseif (keyword .eq. 'isotopes') then
+      elseif (keyword == 'isotopes') then
          numiso = 0
          numisosyn = 0
          newnumiso = 0
@@ -614,8 +614,8 @@ c  minimum error check:  numatomsyn must equal numisosyn or code will stop
             enddo
          enddo
          read (array,*) numiso,numisosyn
-         if (numatomsyn .ne. 0) then
-            if (numatomsyn .ne. numisosyn) then
+         if (numatomsyn /= 0) then
+            if (numatomsyn /= numisosyn) then
                write (array,1002) numatomsyn, numisosyn
                call putasci (77,6)
                stop
@@ -630,13 +630,13 @@ c  minimum error check:  numatomsyn must equal numisosyn or code will stop
 c  keyword 'lumratio' gives the ratio of the luminosity of two stars at a
 c                     specific wavelength in a binary star system (used 
 c                     only with driver "binary")
-      elseif (keyword .eq. 'lumratio') then
+      elseif (keyword == 'lumratio') then
          read (array,*) lumratio
 
 
 c  keyword 'deltaradvel' gives the velocity difference between the stars
 c                        binary star system (used only with driver "binary")
-      elseif (keyword .eq. 'deltaradvel') then
+      elseif (keyword == 'deltaradvel') then
          read (array,*) deltaradvel
 
 
@@ -646,14 +646,14 @@ c                       wavelengths, step is the step size in the
 c                       syntheses, and delta is the wavelength range
 c                       to either side of a synthesis point to consider
 c                       for line opacity calculations
-      elseif (keyword .eq. 'synlimits') then
+      elseif (keyword == 'synlimits') then
          read (nfparam,*) start, sstop, step, delta
          oldstart = start
          oldstop  = sstop
          oldstep  = step
          olddelta = delta
          step1000 = 1000.*step
-         if (dble(idnint(step1000))-step1000 .ne. 0.) then
+         if (dble(idnint(step1000))-step1000 /= 0.) then
             write (*,1008) step
             stop
          endif
@@ -664,7 +664,7 @@ c  keyword 'fluxlimits' gives the wavelength parameters for flux curves;
 c                       start and sstop are beginning and ending
 c                       wavelengths, and step is the step size in the
 c                        flux curve
-      elseif (keyword .eq. 'fluxlimits') then
+      elseif (keyword == 'fluxlimits') then
          read (nfparam,*) start, sstop, step
          linecount = linecount + 1
 
@@ -677,7 +677,7 @@ c                       step is the wavelength step size in the
 c                       computations; cogatom is the name of the
 c                       element whose abundance should be varied
 c                       to achieve an EW match with observations.
-      elseif (keyword .eq. 'blenlimits') then
+      elseif (keyword == 'blenlimits') then
          read (nfparam,*) delwave, step, cogatom
          linecount = linecount + 1
 
@@ -692,7 +692,7 @@ c                       for spectrum synthesis curves-of-growth,
 c                       and wavestep is a forced (if desired) step size
 c                       in wavelength along the line (this applies to
 c                       single line computations only
-      elseif (keyword .eq. 'coglimits') then
+      elseif (keyword == 'coglimits') then
          read (nfparam,*) rwlow, rwhigh, rwstep, wavestep, cogatom
          linecount = linecount + 1
 
@@ -700,7 +700,7 @@ c                       single line computations only
 c  keyword 'limits    ' old limits format...tell the user to change the
 c                       keyword and quit.
 
-      elseif (keyword .eq. 'limits') then
+      elseif (keyword == 'limits') then
       write(*,*) 'Warning: keyword changed to *synlimits*, *coglimits*'
       write(*,*) 'for Syntesis and COG calculations.'
       write(*,*) 'Here are the proper formats:'
@@ -713,7 +713,7 @@ c                       keyword and quit.
 
 c   keyword of strong for lines which are to be considered for all of the 
 c   synthesis
-      elseif (keyword .eq. 'strong') then
+      elseif (keyword == 'strong') then
          read (array,*) dostrong
      
 
@@ -721,7 +721,7 @@ c  keyword word of opacit which takes the continuus opacity and scales it
 c  with the form of kaplam(i)= kaplam(i)*((factor*10000)/t(i))
 c  in Opacit.f after it calulates the normal kaplam
 c  if value is <= 0 then it does not do it
-      elseif (keyword .eq. 'opacit') then
+      elseif (keyword == 'opacit') then
          read (array,*) fudge
      
       
@@ -739,33 +739,33 @@ c  loop back to get another parameter
  
 
 c  wrap things up with a few assignments
-98    if (control.eq.'gridsyn' .or. control.eq.'gridplo' .or.
-     .    control.eq.'binary ' .or. control.eq.'abandy ') then
+98    if (control=='gridsyn' .or. control=='gridplo' .or.
+     .    control=='binary ' .or. control=='abandy ') then
          control = 'gridend'
       endif
 
 
 c  assign plotting window type; if no type has been given in the
 c  parameter file, then ask for it
-100   if (smterm .eq. ' ') then
+100   if (smterm == ' ') then
          array = 'GIVE THE SM TERMINAL NAME : '
          nchar = 28
          call getasci (nchar,12)
          smterm = chinfo(1:nchar)
          ivstat = ivcleof(12,1)
       endif
-      if (smterm.eq.'x11' .or. smterm.eq.'X11') then
-         if    (control .eq. 'synth  ' .or.
-     .          control .eq. 'synpop ' .or.
-     .          control .eq. 'synplot' .or.
-     .          control .eq. 'isoplot' .or.
-     .          control .eq. 'gridsyn' .or.
-     .          control .eq. 'gridplo' .or.
-     .          control .eq. 'doflux ' .or.
-     .          control .eq. 'cogsyn ' .or.
-     .          control .eq. 'cog    ' .or.
-     .          control .eq. 'isotop ' .or.
-     .          control .eq. 'binary ') then
+      if (smterm=='x11' .or. smterm=='X11') then
+         if    (control == 'synth  ' .or.
+     .          control == 'synpop ' .or.
+     .          control == 'synplot' .or.
+     .          control == 'isoplot' .or.
+     .          control == 'gridsyn' .or.
+     .          control == 'gridplo' .or.
+     .          control == 'doflux ' .or.
+     .          control == 'cogsyn ' .or.
+     .          control == 'cog    ' .or.
+     .          control == 'isotop ' .or.
+     .          control == 'binary ') then
              smterm = smt1
          else
              smterm = smt2
@@ -774,14 +774,14 @@ c  parameter file, then ask for it
 
 
 c  for syntheses, store the plotting parameters
-      if (control.eq.'synth  ' .or. control.eq.'synplot' .or.
-     .    control.eq.'gridsyn' .or. control.eq.'gridplo' .or.
-     .    control.eq.'binary ' .or. control.eq.'synpop ') then
-         if (oldstart .eq. 0) then
+      if (control=='synth  ' .or. control=='synplot' .or.
+     .    control=='gridsyn' .or. control=='gridplo' .or.
+     .    control=='binary ' .or. control=='synpop ') then
+         if (oldstart == 0) then
             write (*,1011) 
             stop
          endif
-         if (iscale .eq. 0) call plotremember (0)
+         if (iscale == 0) call plotremember (0)
          call plotremember (1)
       endif
 

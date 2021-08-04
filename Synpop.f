@@ -40,11 +40,11 @@ c*****FIRST PASS:  For each model, compute a raw synthetic spectrum;
 c*****the starting do/if loops are for isotopic things only
       xhyd = 10.0**xsolar(1)
       do mmod=1,modtot
-         if (numiso .gt. 0) then
-            if (nisos .gt. 0) then
+         if (numiso > 0) then
+            if (nisos > 0) then
                do k=1,numiso
                   do l=1,nisos
-                     if (isotope(k) .eq. isospecial(l)) then
+                     if (isotope(k) == isospecial(l)) then
                         do m=1,numisosyn
                            isoabund(k,m) = fracspecial(mmod,l)
                         enddo
@@ -59,7 +59,7 @@ c*****read in the model atmospheres and their summary output files
          line = synpre
          num = 80
          call getcount (num,line)
-         if (mmod .lt. 10) then
+         if (mmod < 10) then
             write (line(num+1:num+1),1013) mmod
          else
             write (line(num+1:num+2),1014) mmod
@@ -75,7 +75,7 @@ c*****read in the model atmospheres and their summary output files
          line = modpre
          num = 80
          call getcount (num,line)
-         if (mmod .lt. 10) then
+         if (mmod < 10) then
             write (line(num+1:num+1),1013) mmod
          else
             write (line(num+1:num+2),1014) mmod
@@ -106,7 +106,7 @@ c*****open the line list file and the strong line list file
          nchars = 13
          call infile ('input  ',nflines,'formatted  ',0,nchars,
      .                flines,lscreen)
-         if (dostrong .gt. 0) then
+         if (dostrong > 0) then
             nfslines = 32
             lscreen = 18
             array = 'THE STRONG LINE LIST'
@@ -118,7 +118,7 @@ c*****open the line list file and the strong line list file
 
 c*****do the syntheses
          ncall = 1
-         if (numpecatom .eq. 0 .or. numatomsyn .eq. 0) then
+         if (numpecatom == 0 .or. numatomsyn == 0) then
             isorun = 1
             nlines = 0
             mode = 3
@@ -188,11 +188,11 @@ c*****read back the syntheses, compute the weighted average
             lincount = 0
 50          read (newunit,1001) line
             lincount = lincount + 1
-            if (mmod .eq. 1) write (holdline(j,lincount),1001) line
-            if (line(1:5) .eq. 'MODEL') then
+            if (mmod == 1) write (holdline(j,lincount),1001) line
+            if (line(1:5) == 'MODEL') then
                read (newunit,1001) line
                lincount = lincount + 1
-               if (mmod .eq. 1) write (holdline(j,lincount),1001) line
+               if (mmod == 1) write (holdline(j,lincount),1001) line
                read (line,*) wavemod1, wavemod2, wavestep
                nw1 = nint(1000.*wavemod1)
                nw2 = nint(1000.*wavemod2)
@@ -223,12 +223,12 @@ c     write the average spectrum back to disk.
 
 
 c*****now plot the spectrum
-      if (plotopt.eq.2 .and. specfileopt.gt.0) then
+      if (plotopt==2 .and. specfileopt>0) then
          nfobs = 33
          lscreen = 12
          array = 'THE OBSERVED SPECTRUM'
          nchars = 21
-         if (specfileopt.eq.1 .or. specfileopt.eq.3) then
+         if (specfileopt==1 .or. specfileopt==3) then
             call infile ('input  ',nfobs,'unformatted',2880,nchars,
      .                   fobs,lscreen)
          else
@@ -236,7 +236,7 @@ c*****now plot the spectrum
      .                   fobs,lscreen)
          endif
       endif
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          nf2out = nf9out
          f2out = f9out
          nf2out = 21
@@ -251,7 +251,7 @@ c*****now plot the spectrum
          nchars = 25
          call infile ('output ',nf3out,'formatted  ',0,nchars,
      .                f3out,lscreen)
-         if (f5out .ne. 'optional_output_file') then
+         if (f5out /= 'optional_output_file') then
             nf5out = 26
             lscreen = lscreen + 2
             array = 'POSTSCRIPT PLOT OUTPUT'
@@ -259,7 +259,7 @@ c*****now plot the spectrum
             call infile ('output ',nf5out,'formatted  ',0,nchars,
      .                   f5out,lscreen)
          endif
-         if (plotopt .eq. 3) then
+         if (plotopt == 3) then
             call smooth (-1,ncall)
             choice = 'q'
          else
@@ -268,9 +268,9 @@ c*****now plot the spectrum
 
 
 c*****if needed, loop back with abundance changes
-         if (choice .eq. 'n') then
+         if (choice == 'n') then
             call chabund
-            if (choice .eq. 'q') go to 60
+            if (choice == 'q') go to 60
          endif
       endif
 

@@ -19,18 +19,18 @@ c*****initialize parameters
       write (abitle(1:400),1081)
       write (isoitle(1:240),1082)
       nsyn = 1
-      if (ncall .eq. 1) then
+      if (ncall == 1) then
          gaussflag = 'f'
          rotateflag = 'f'
          lorenflag = 'f'
          macroflag = 'f'
-         if (choice .ne. 'l') addflux = 0.
+         if (choice /= 'l') addflux = 0.
       endif
 
 
 c*****on entering, figure out what kind of smoothing is desired, unless
 c     the default smoothing options have been set for first pass 
-      if (line .gt. 0) then
+      if (line > 0) then
 2        write (array,1007)
          istat = ivwrite (line,3,array,67)
          write (array,1004)
@@ -39,17 +39,17 @@ c     the default smoothing options have been set for first pass
          nchars = 21
          call getasci (nchars,line+2)
          smtype = chinfo(1:1)
-         if (smtype.ne.'n' .and. smtype.ne.'g' .and.
-     .       smtype.ne.'l' .and. smtype.ne.'v' .and.
-     .       smtype.ne.'m' .and. smtype.ne.'c' .and.
-     .       smtype.ne.'d' .and. smtype.ne.'r' .and.
-     .       smtype.ne.'p') go to 2
+         if (smtype/='n' .and. smtype/='g' .and.
+     .       smtype/='l' .and. smtype/='v' .and.
+     .       smtype/='m' .and. smtype/='c' .and.
+     .       smtype/='d' .and. smtype/='r' .and.
+     .       smtype/='p') go to 2
       endif
 
 
 c     if a user-specified variable Gaussian smoothing over the spectral range
 c     is called for, option 'p', branch to a different routine
-      if (smtype .eq. 'p') then
+      if (smtype == 'p') then
          call vargauss (line+1)
          return
       endif
@@ -61,12 +61,12 @@ c     files, and get the synthesis range parameters from the 'dump' file
       rewind nf3out
       do i=1,20
          read (nf2out,1002) array
-         if     (array(1:7).eq.'element' .or.  
-     .       array(1:7).eq.'Changin' .or.
-     .       array(1:7).eq.'ALL abu' .or.
-     .       array(1:7).eq.'Isotopi') then
+         if     (array(1:7)=='element' .or.
+     .       array(1:7)=='Changin' .or.
+     .       array(1:7)=='ALL abu' .or.
+     .       array(1:7)=='Isotopi') then
             cycle
-         elseif (array(1:7).eq.'MODEL: ') then
+         elseif (array(1:7)=='MODEL: ') then
              moditle(1:73) = array(8:80)
             read (nf2out,*) start, sstop, step
             kount = int((sstop - start + (step/4.0) )/step) + 1
@@ -78,21 +78,21 @@ c     files, and get the synthesis range parameters from the 'dump' file
 c*****branch to the desired smoothing function
       write (smitle,1010) smtype
       ism = 11
-      if     (smtype .eq. 'l') then
+      if     (smtype == 'l') then
          lorenflag = 't'
-      elseif (smtype .eq. 'g') then
+      elseif (smtype == 'g') then
          gaussflag = 't'
-      elseif (smtype .eq. 'v') then
+      elseif (smtype == 'v') then
          rotateflag = 't'
-      elseif (smtype .eq. 'c') then
+      elseif (smtype == 'c') then
          rotateflag = 't'
          gaussflag = 't'
-      elseif (smtype .eq. 'm') then
+      elseif (smtype == 'm') then
          macroflag = 't'
-      elseif (smtype .eq. 'd') then
+      elseif (smtype == 'd') then
          macroflag = 't'
          gaussflag = 't'
-      elseif (smtype .eq. 'r') then
+      elseif (smtype == 'r') then
          macroflag = 't'
          rotateflag = 't'
          gaussflag = 't'
@@ -101,27 +101,27 @@ c*****branch to the desired smoothing function
 
 c*****compute a stellar rotational broadening function; this follows 
 c     D. F. Gray, 1976, "The Obs. & Anal. of Stell. Phot", p394-9
-      if (rotateflag .eq. 't') then
+      if (rotateflag == 't') then
 32       array = 'GIVE THE STELLAR vsini [0.0]: '
          nchars = 30
-         if (line .gt. 0) then
+         if (line > 0) then
             call getnum (nchars,line+2,vsini,shortnum)
-            if (vsini .eq. -9999.) vsini = 0.
+            if (vsini == -9999.) vsini = 0.
          endif
-         if (vsini .lt. 0.0) go to 32
+         if (vsini < 0.0) go to 32
          write (smitle(ism+1:ism+13),1011) vsini
          ism = ism + 13
 31       array = 'GIVE THE LIMB DARKENING COEFFICIENT [0.0]: '
          nchars = 43
-         if (line .gt. 0) then
+         if (line > 0) then
             call getnum (nchars,line+2,limbdark,shortnum)
-            if (limbdark .eq. -9999.) limbdark = 0.
+            if (limbdark == -9999.) limbdark = 0.
          endif
-         if (limbdark .lt. 0.0) go to 31
+         if (limbdark < 0.0) go to 31
          write (smitle(ism+1:ism+13),1012) limbdark
          ism = ism + 13
          dlamlim = (start+sstop)/2.*vsini/3.0e5
-         if (step .ge. dlamlim) then
+         if (step >= dlamlim) then
             rotateflag = 'f'
          else
             pi = 3.141527
@@ -131,11 +131,11 @@ c     D. F. Gray, 1976, "The Obs. & Anal. of Stell. Phot", p394-9
             prot0 = c1 + c2
             powerrot = prot0
             jdelrot = idint(dlamlim/step)
-            if (jdelrot .gt. 1000) then
+            if (jdelrot > 1000) then
                write (*,1026) 
                smtype = 'e'
                return
-            elseif (jdelrot .gt. kount/4) then
+            elseif (jdelrot > kount/4) then
                write (*,1028)
                smtype = 'e'
                return
@@ -151,17 +151,17 @@ c     D. F. Gray, 1976, "The Obs. & Anal. of Stell. Phot", p394-9
 
          
 c*****compute a macroturbulent smoothing function (uses subroutine vmacro)
-      if (macroflag .eq. 't') then
+      if (macroflag == 't') then
 51       array = 'GIVE THE MACROTURBULENT VELOCITY [0.0]: '
          nchars = 39
-         if (line .gt. 0) then
+         if (line > 0) then
             call getnum (nchars,line+2,vmac,shortnum)
-            if (vmac .eq. -9999.) vmac = 0.
+            if (vmac == -9999.) vmac = 0.
          endif
-         if (vmac .lt. 0.0) go to 51
+         if (vmac < 0.0) go to 51
          write (smitle(ism+1:ism+13),1013) vmac
          ism = ism + 13
-         if (vmac .eq. 0.) then
+         if (vmac == 0.) then
             macroflag = 'f'
          else
             wavemac = (start+sstop)/2.*vmac/3.0e5
@@ -170,16 +170,16 @@ c*****compute a macroturbulent smoothing function (uses subroutine vmacro)
                wavei = step*i/wavemac
                pmac(i) = vmacro(wavei)
                powermac = powermac + 2.0 *pmac(i)
-               if (pmac(i) .lt. 0.002) then
+               if (pmac(i) < 0.002) then
                   jdelmac = i
                   exit
                endif 
             enddo
-            if (jdelmac .gt. 1000) then
+            if (jdelmac > 1000) then
                write (*,1025) wavemac
                smtype = 'e'
                return
-            elseif (jdelmac .gt. kount/4) then
+            elseif (jdelmac > kount/4) then
                write (*,1022)
                smtype = 'e'
                return
@@ -189,17 +189,17 @@ c*****compute a macroturbulent smoothing function (uses subroutine vmacro)
 
 
 c*****compute a Gaussian smoothing function
-      if (gaussflag .eq. 't') then
+      if (gaussflag == 't') then
 11       array = 'GIVE THE FWHM OF THE GAUSSIAN FUNCTION [0.0]: ' 
          nchars = 46
-         if (line .gt. 0) then
+         if (line > 0) then
             call getnum (nchars,line+2,fwhmgauss,shortnum)
-            if (fwhmgauss .eq. -9999.) fwhmgauss = 0.
+            if (fwhmgauss == -9999.) fwhmgauss = 0.
          endif
-         if (fwhmgauss .lt. 0.0) go to 11
+         if (fwhmgauss < 0.0) go to 11
          write (smitle(ism+1:ism+18),1014) fwhmgauss
          ism = ism + 18
-         if (fwhmgauss .eq. 0.) then
+         if (fwhmgauss == 0.) then
             gaussflag = 'f'
          else
             sigma = fwhmgauss/2.
@@ -208,16 +208,16 @@ c*****compute a Gaussian smoothing function
             do i=1,1000
                p(i) = dexp(-aa*(step*i)**2 )
                power = power + 2*p(i)
-               if (p(i) .lt. 0.02) then
+               if (p(i) < 0.02) then
                   jdel = i
                   exit
                endif
             enddo
-            if (jdel .gt. 1000) then
+            if (jdel > 1000) then
                write (*,1029) sigma
                smtype = 'e'
                return   
-            elseif (jdel .gt. kount/4) then
+            elseif (jdel > kount/4) then
                write (*,1021)
                smtype = 'e'
                return
@@ -227,17 +227,17 @@ c*****compute a Gaussian smoothing function
 
 
 c*****compute a Lorenzian smoothing function
-      if (lorenflag .eq. 't') then
+      if (lorenflag == 't') then
 21       array = 'GIVE THE FWHM OF THE LORENTZIAN FUNCTION [0.0]: '
          nchars = 48
-         if (line .gt. 0) then
+         if (line > 0) then
             call getnum (nchars,line+2,fwhmloren,shortnum)
-            if (fwhmloren .eq. -9999.) fwhmloren = 0.
+            if (fwhmloren == -9999.) fwhmloren = 0.
          endif
-         if (fwhmloren .lt. 0.0) go to 21
+         if (fwhmloren < 0.0) go to 21
          write (smitle(ism+1:ism+20),1015) fwhmloren
          ism = ism + 20
-         if (fwhmloren .eq. 0.) then
+         if (fwhmloren == 0.) then
             lorenflag = 'f'
          else
             sigma = fwhmloren/2.
@@ -245,16 +245,16 @@ c*****compute a Lorenzian smoothing function
             do i=1,1000
                p(i) = ((sigma**2)/((sigma**2)+((step*i)**2)))
                power = power + 2.0 *p(i)
-               if (p(i) .lt. 0.02) then
+               if (p(i) < 0.02) then
                   jdel = i
                   exit
                endif
             enddo    
-            if (jdel .gt. 1000) then
+            if (jdel > 1000) then
                write (*,1030) sigma
                smtype = 'e'
                return  
-            elseif (jdel .gt. kount/4) then
+            elseif (jdel > kount/4) then
                write (*,1031)
                smtype = 'e'
                return
@@ -277,29 +277,29 @@ c*****here is the reading/grabbing of stuff preceding the depth array:
          nisos = 0
          do i=1,20
             read (nf2out,1002,end=2000) array
-            if     (array(1:7).eq.'ALL abu') then
+            if     (array(1:7)=='ALL abu') then
                cycle
-            elseif (array(1:7).eq.'Changin') then
+            elseif (array(1:7)=='Changin') then
                abitle (naboff+1:naboff+23) = '[M/H] FOR ALL ELEMENTS:'
                abitle (naboff+24:naboff+29) = array(32:37)
                cycle
-            elseif (array(1:7).eq.'element') then
+            elseif (array(1:7)=='element') then
                nabunds = nabunds + 1
-               if (control .eq. 'binary ') then
-                  if (nabunds .le. 5) then
+               if (control == 'binary ') then
+                  if (nabunds <= 5) then
                      ioff = naboff + 16*(nabunds-1)
                      abitle(ioff+1:ioff+2) = array(9:10)
                      abitle(ioff+3:ioff+14) = array(26:37)
                      abitle(ioff+15:ioff+16) = '  '
                   endif
                else
-                  if (nabunds .le. 8) then
+                  if (nabunds <= 8) then
                      ioff = naboff + 9*(nabunds-1)
                      abitle(ioff+1:ioff+2) = array(9:10)
                      read (array(26:32),*) abnum
-                     if     (abnum .gt. 0) then
+                     if     (abnum > 0) then
                         write (abchars,1061) abnum
-                     elseif (abnum .le. -10.) then
+                     elseif (abnum <= -10.) then
                         write (abchars,1062) abnum
                      else
                         write (abchars,1063) abnum
@@ -309,20 +309,20 @@ c*****here is the reading/grabbing of stuff preceding the depth array:
                   endif
                endif
                cycle
-            elseif (array(1:7).eq.'Isotopi') then
+            elseif (array(1:7)=='Isotopi') then
                nisos = nisos + 1
-               if (nisos .le. 6) then
+               if (nisos <= 6) then
                   read (array(37:46),1050) ratio
-                  if     (ratio .ge. 1000.) then 
+                  if     (ratio >= 1000.) then
                      write (isochars,1054) int(ratio)
-                  elseif (ratio .ge.  100.) then
+                  elseif (ratio >=  100.) then
                      write (isochars,1051) ratio
-                  elseif (ratio .ge.   10.) then 
+                  elseif (ratio >=   10.) then
                      write (isochars,1052) ratio
                   else
                      write (isochars,1053) ratio
                   endif
-                  if (nsyn .eq. 1) then
+                  if (nsyn == 1) then
                      ioff = 40*(nisos-1) + 5*(nsyn-1)
                      isoitle(ioff+1:ioff+10) = array(23:32)
                      isoitle(ioff+11:ioff+12) = ': '
@@ -334,7 +334,7 @@ c*****here is the reading/grabbing of stuff preceding the depth array:
                      isoitle(ioff+5:ioff+5) = '/'
                   endif
                endif
-            elseif (array(1:7).eq.'MODEL: ') then
+            elseif (array(1:7)=='MODEL: ') then
                read (nf2out,1002) array
                exit
             endif
@@ -349,7 +349,7 @@ c*****here is the actual reading of the depth array
 
 
 c*****here a veiling addition can be added in
-         if (addflux .gt. 0.0) then
+         if (addflux > 0.0) then
              do i=1,kount
                  y(i) = (y(i) + addflux)/(1.0+addflux)
              enddo
@@ -357,7 +357,7 @@ c*****here a veiling addition can be added in
 
 
 c*****apply the rotational broadening if desired
-         if (rotateflag .eq. 't') then
+         if (rotateflag == 't') then
             min = jdelrot + 1
             max = kount - jdelrot
             do i=1,jdelrot
@@ -378,7 +378,7 @@ c*****apply the rotational broadening if desired
 
 
 c*****apply the macroturbulent broadening if desired
-         if (macroflag .eq. 't') then
+         if (macroflag == 't') then
             min = jdelmac + 1
             max = kount - jdelmac
             do i=1,jdelmac
@@ -400,7 +400,7 @@ c*****apply the macroturbulent broadening if desired
 
 c*****apply the Gaussian or Lorenzian smoothing if desired (this
 c     is an either/or situation; only one of these can apply.
-         if (gaussflag .eq. 't' .or. lorenflag .eq. 't') then
+         if (gaussflag == 't' .or. lorenflag == 't') then
             min = jdel + 1
             max = kount - jdel
             do i=1,jdel
@@ -429,7 +429,7 @@ c     been done to the y-array) into the appropriate array
 
 c*****compute the wavelength array; must be done for each synthetic
 c     spectrum because of the way the equivalences were set up
-         if     (iunits .eq. 1) then
+         if     (iunits == 1) then
             do i=1,kount
                xsyn(i) = 1.d-4*(start + (i-1)*step)
             enddo
@@ -443,7 +443,7 @@ c     spectrum because of the way the equivalences were set up
 c*****dump the smoothed spectrum in a MONGO-style set of 
 c     (wavelength,flux) point pairs
          write (nf3out,1005) kount,start,sstop,step
-         if (xsyn(1) .le. 100.0) then
+         if (xsyn(1) <= 100.0) then
             write (nf3out,1009) (xsyn(i),chunk(i,nsyn),i=1,kount)
          else 
             write (nf3out,1008) (xsyn(i),chunk(i,nsyn),i=1,kount)

@@ -11,7 +11,7 @@ c***************************************************************************
 
 
       do i=num,1,-1
-         if (linechars(i:i) .ne. ' ') go to 11
+         if (linechars(i:i) /= ' ') go to 11
       enddo
       num = -1
       return

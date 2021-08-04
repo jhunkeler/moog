@@ -42,8 +42,8 @@ c     first get the header records and search for key parameters
 100   irec = 1
 101   read (unit=nfobs,rec=irec,err=1002,iostat=ierr) head
       call obshead (head,iend,line)
-      if (lount .eq. -1) return
-      if (iend .eq. 0) then
+      if (lount == -1) return
+      if (iend == 0) then
          irec = irec + 1
          go to 101
       endif
@@ -52,13 +52,13 @@ c     first get the header records and search for key parameters
 c     next read the flux array from the file
       nrec = lount/nblock
       ipt = 0
-      if (mod(lount,nblock) .ne. 0) nrec = nrec + 1
+      if (mod(lount,nblock) /= 0) nrec = nrec + 1
       do j=1,nrec
          irec = irec + 1
          jpt = min0(nblock,lount-ipt)
-         if (ibits .eq. 16) then
+         if (ibits == 16) then
             read (unit=nfobs,rec=irec,err=1006,iostat=ierr) int1
-            if (byteswap .eq. 1) then
+            if (byteswap == 1) then
                do k=2,2880,2
                   onebyte = int1(k)
                   int1(k) = int1(k-1)
@@ -68,9 +68,9 @@ c     next read the flux array from the file
             do k=1,jpt
                yobs(ipt+k) = bzero + bscale*real(int2(k))
             enddo
-         elseif (ibits .eq. 32) then
+         elseif (ibits == 32) then
             read (unit=nfobs,rec=irec,err=1006,iostat=ierr) int1
-            if (byteswap .eq. 1) then
+            if (byteswap == 1) then
                do k=4,2880,4
                   onebyte = int1(k)
                   int1(k) = int1(k-3)
@@ -83,9 +83,9 @@ c     next read the flux array from the file
             do k=1,jpt
                yobs(ipt+k) = bzero + bscale*real(int4(k))
             enddo
-         elseif(ibits .eq. -32) then
+         elseif(ibits == -32) then
             read (unit=nfobs,rec=irec,err=1006,iostat=ierr) int1
-            if (byteswap .eq. 1) then
+            if (byteswap == 1) then
                do k=4,2880,4
                   onebyte = int1(k)
                   int1(k) = int1(k-3)
@@ -115,7 +115,7 @@ c     now fill in the wavelength array
       enddo
       lim1obs = 1
       lim2obs = lount
-      if(xobs(2) .lt. xobs(1)) then
+      if(xobs(2) < xobs(1)) then
          do j=1,lount/2
             xtemp = xobs(j)
             ytemp = yobs(j)
@@ -160,7 +160,7 @@ c*****here is a MONGO-style input array
 525   lount = i - 1
       lim1obs = 1
       lim2obs = lount
-      if(xobs(2) .lt. xobs(1)) then
+      if(xobs(2) < xobs(1)) then
          do j=1,lount/2
             xtemp = xobs(j)
             ytemp = yobs(j)

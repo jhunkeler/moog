@@ -15,30 +15,30 @@ c******************************************************************************
 
 c*****if the syntheses need to be redone: first rewind the output files,
 c     then close/reopen line list(s), then rewrite model atmosphere output
-      if (choice .eq. 'n') then
+      if (choice == 'n') then
          call chabund
-         if (choice .eq. 'x') call pltspec (lscreen,ncall)
+         if (choice == 'x') call pltspec (lscreen,ncall)
          rewind nf1out
          rewind nf2out
-         if (nflines .ne. 0) then
+         if (nflines /= 0) then
             close (unit=nflines)
             open (unit=nflines,file=flines,access='sequential',
      .            form='formatted',blank='null',status='old',
      .            iostat=jstat,err=10)
          endif
-         if (nfslines .ne. 0) then
+         if (nfslines /= 0) then
             close (unit=nfslines)
             open (unit=nfslines,file=fslines,access='sequential',
      .            form='formatted',blank='null',status='old',
      .            iostat=jstat,err=10)
          endif
-         if (plotopt .ne. 0) then
+         if (plotopt /= 0) then
             rewind nf3out
          endif
          write (nf1out,1002) modtype
-         if (modprintopt .ge. 1) then
-            if (modtype .eq. 'begn      ' .or.
-     .          modtype .eq. 'BEGN      ') write (nf1out,1003)
+         if (modprintopt >= 1) then
+            if (modtype == 'begn      ' .or.
+     .          modtype == 'BEGN      ') write (nf1out,1003)
             write (nf1out,1102) moditle
             do i=1,ntau
                dummy1(i) = dlog10(pgas(i))
@@ -62,7 +62,7 @@ c     then close/reopen line list(s), then rewrite model atmosphere output
 
 
 c*****now do the syntheses
-      if (numpecatom .eq. 0 .or. numatomsyn .eq. 0) then
+      if (numpecatom == 0 .or. numatomsyn == 0) then
          isynth = 1
          isorun = 1
          nlines = 0

@@ -21,7 +21,7 @@ c     spectra (output), and (if desired) IRAF-style smoothed spectra (output)
       nchars = 19
       call infile ('input  ',nf2out,'formatted  ',0,nchars,
      .             f2out,lscreen)
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          nf3out = 22
          lscreen = lscreen + 2
          array = 'SMOOTHED SYNTHESES OUTPUT'
@@ -35,7 +35,7 @@ c     spectra (output), and (if desired) IRAF-style smoothed spectra (output)
          call infile ('output ',nf5out,'formatted  ',0,nchars,
      .                f5out,lscreen)
       endif
-      if (plotopt .gt. 1) then
+      if (plotopt > 1) then
          nf6out = 27
          lscreen = lscreen + 2
          array = 'SPECTRUM COMPARISON OUTPUT'
@@ -43,7 +43,7 @@ c     spectra (output), and (if desired) IRAF-style smoothed spectra (output)
          call infile ('output ',nf6out,'formatted  ',0,nchars,
      .                f6out,lscreen)
       endif
-      if (iraf .ne. 0) then
+      if (iraf /= 0) then
          nf4out = 23
          lscreen = lscreen + 2
          array = 'IRAF ("rtext") OUTPUT'
@@ -54,12 +54,12 @@ c     spectra (output), and (if desired) IRAF-style smoothed spectra (output)
 
 
 c*****now plot the spectrum
-      if (plotopt.eq.2 .and. specfileopt.gt.0) then
+      if (plotopt==2 .and. specfileopt>0) then
          nfobs = 33               
          lscreen = lscreen + 2
          array = 'THE OBSERVED SPECTRUM'
          nchars = 21
-         if     (specfileopt.eq.1 .or. specfileopt.eq.3) then
+         if     (specfileopt==1 .or. specfileopt==3) then
             call infile ('input  ',nfobs,'unformatted',2880,nchars,
      .                   fobs,lscreen)
          else
@@ -67,7 +67,7 @@ c*****now plot the spectrum
      .                   fobs,lscreen)
          endif
       endif
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          line = 10
          ncall = 1
          call pltspec (line,ncall)

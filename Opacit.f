@@ -62,7 +62,7 @@ c*****sum up all the opacities
 
 
 c*****write out the opacities
-      if (modprintopt .gt. 1) then
+      if (modprintopt > 1) then
          write (nf1out,1001) waveop
          do i=1,ntau
             write (nf1out,1002) i, nint(t(i)), dlog10(kaplam(i)),
@@ -82,10 +82,10 @@ c*****write out the opacities
 
 c*****add in an arbitrary amount of "extra" continuous opacity;
 c     this is a pure fudge factor, so experiment with care
-      if (fudge .gt. 0.0) then
+      if (fudge > 0.0) then
          do i=1,ntau
             kaplam(i) = kaplam(i)*((fudge*10000)/t(i))
-            if (i .eq. 1) then
+            if (i == 1) then
                write(nf1out,1005)
                write(nf1out,1006) fudge
             endif
@@ -94,7 +94,7 @@ c     this is a pure fudge factor, so experiment with care
 
 
 c*****compute an optical depth array at this wavelength, and exit
-      if (modeop .ne. 1) then
+      if (modeop /= 1) then
          do  i=1,ntau
             dummy1(i) = tauref(i)*kaplam(i)/(0.4343*kapref(i))
          enddo
@@ -104,7 +104,7 @@ c*****compute an optical depth array at this wavelength, and exit
          do i=2,ntau
             taulam(i) = taulam(i-1) + taulam(i)
          enddo
-         if (modprintopt .gt. 1) write(nf1out,1004) (taulam(i),i=1,ntau)
+         if (modprintopt > 1) write(nf1out,1004) (taulam(i),i=1,ntau)
          return
       endif
 
@@ -113,7 +113,7 @@ c*****here is the assignment of opacities kaplam to kapref; exit normally
       do i=1,ntau
          kapref(i) = kaplam(i)
       enddo
-      if(modprintopt .lt. 2) return
+      if(modprintopt < 2) return
 
 
 c*****here is an internal tauref check on the externally read in tau scale;

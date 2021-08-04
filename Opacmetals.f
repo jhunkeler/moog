@@ -21,7 +21,7 @@ c******************************************************************************
       data freq1, modcount/0. ,0/
 
 c  initialize some quantities for each new model atmosphere
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             c1240(i) = 5.*dexp(-1.264/tkev(i))
@@ -32,7 +32,7 @@ c  initialize some quantities for each new model atmosphere
 c  initialize some quantities for each new model atmosphere or new frequency;
 c  Luo, D. and Pradhan, A.K. 1989, J.Phys. B, 22, 3377-3395.
 c  Burke, P.G. and Taylor, K.T. 1979, J. Phys. B, 12, 2971-2984.
-      if (modelnum.ne.modcount .or. freq.ne.freq1) then
+      if (modelnum/=modcount .or. freq/=freq1) then
          freq1 = freq
          ryd = 109732.298
          waveno = freq/2.99792458d10
@@ -47,11 +47,11 @@ c  Burke, P.G. and Taylor, K.T. 1979, J. Phys. B, 12, 2971-2984.
 c        P2 3P   1
 c  I AM NOT SURE WHETHER THE CALL TO SEATON IN THE NEXT STATEMENT IS
 c  CORRECT, BUT IT ONLY AFFECTS THINGS BELOW 1100A
-         if (freq .ge. 2.7254d15) x1100 =
+         if (freq >= 2.7254d15) x1100 =
      .      10.**(-16.80-(waveno-90777.000)/3./ryd)*
      .      seaton (2.7254d15,1.219d-17,2.d0,3.317d0)
 c        P2 1D   2
-         if (freq .ge. 2.4196d15) then
+         if (freq >= 2.4196d15) then
             xd0 = 10.**(-16.80-(waveno-80627.760)/3./ryd)
             eeps = (waveno-93917.)*2./9230.
             aa = 22.d-18
@@ -64,7 +64,7 @@ c        P2 1D   2
             x1240 = xd0 + xd1 + xd2
          endif
 c        P2 1S   3
-         if (freq .ge. 2.0761d15) then
+         if (freq >= 2.0761d15) then
             xs0 = 10.**(-16.80-(waveno-69172.400)/3./ryd)
             eeps = (waveno-97700.)*2./2743.
             aa = 68.d-18
@@ -75,7 +75,7 @@ c        P2 1S   3
       endif
 
       do i=1,ntau
-         if (freq .ge. 2.0761d15) then
+         if (freq >= 2.0761d15) then
             aC1(i) = (x1100*9. + x1240*c1240(i) + x1444*c1444(i))*
      .               numdens(3,1,i)/u(6,1,i)
          endif
@@ -130,7 +130,7 @@ c         4000     5000     6000     7000     8000     9000    10000
       data freq1, modcount/0. ,0/
 
 c  initialize some quantities for each new model atmosphere
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             n = max0(min0(6,nint(t(i)/1000.)-3),1)
@@ -140,14 +140,14 @@ c  initialize some quantities for each new model atmosphere
       endif
    
 c  initialize some quantities for each new model atmosphere or new frequency;
-      if (modelnum.ne.modcount .or. freq.ne.freq1) then
+      if (modelnum/=modcount .or. freq/=freq1) then
          freq1 = freq
          do n=1,7
-            if (freq .gt. freqMg(n)) go to 23
+            if (freq > freqMg(n)) go to 23
          enddo
          n = 8
 23       dd = (freqlg-flog(n))/(flog(n+1)-flog(n))
-         if (n .gt. 2) n = 2*n -2
+         if (n > 2) n = 2*n -2
          dd1 = 1.0 - dd
          do it=1,7
             xx(it) = peach(it,n+1)*dd + peach(it,n)*dd1
@@ -155,7 +155,7 @@ c  initialize some quantities for each new model atmosphere or new frequency;
       endif
 
       do i=1,ntau
-         if (freq .ge. 2.997925d+14) then
+         if (freq >= 2.997925d+14) then
             n = nt(i)
             aMg1(i) = dexp(xx(n)*(1.d0-dt(i))+xx(n+1)*dt(i))*
      .                numdens(4,1,i)/u(12,1,i)
@@ -184,7 +184,7 @@ c******************************************************************************
       data freq1, modcount/0. ,0/
 
 c  initialize some quantities for each new model atmosphere
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             c1169(i) = 6.*dexp(-4.43d+0/tkev(i))
@@ -193,14 +193,14 @@ c  initialize some quantities for each new model atmosphere
 
 c  initialize some quantities for each new model atmosphere or new frequency;
 c  there are two edges, one at 824 A and the other at 1169 A
-      if (modelnum.ne.modcount .or. freq.ne.freq1) then
+      if (modelnum/=modcount .or. freq/=freq1) then
          freq1 = freq
-         if (freq .ge. 3.635492d15) then
+         if (freq >= 3.635492d15) then
             x824 = seaton (3.635492d15,1.40d-19,4.d0,6.7d0)
          else
             x824 = 1.d-99
          endif
-         if (freq .ge. 2.564306d15) then
+         if (freq >= 2.564306d15) then
             x1169 = 5.11d-19*(2.564306d15/freq)**3
          else
             x1169 = 1.d-99
@@ -208,7 +208,7 @@ c  there are two edges, one at 824 A and the other at 1169 A
       endif
       
       do i=1,ntau
-         if (x1169 .ge. 1.d-90) then
+         if (x1169 >= 1.d-90) then
             aMg2(i) = (x824*2. + x1169*c1169(i))*
      .                numdens(4,2,i)/u(12,2,i)
          endif
@@ -234,7 +234,7 @@ c******************************************************************************
       include 'Kappa.com'
    
       do i=1,ntau
-         if (freq .ge. 1.443d15) then
+         if (freq >= 1.443d15) then
             aAl1(i) = 6.5d-17*(1.443d15/freq)**5*6.*
      .                numdens(5,1,i)/u(13,1,i)
          endif
@@ -296,7 +296,7 @@ c     3P, 1D, 1S, 1D, 3D, 3F, 1D, 3P
       data freq1, modcount/0. ,0/
 
 c  initialize some quantities for each new model atmosphere
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             n = max0(min0(8,nint(t(i)/1000.)-3),1)
@@ -306,14 +306,14 @@ c  initialize some quantities for each new model atmosphere
       endif
 
 c  initialize some quantities for each new model atmosphere or new frequency
-      if (modelnum.ne.modcount .or. freq.ne.freq1) then
+      if (modelnum/=modcount .or. freq/=freq1) then
          freq1 = freq
          do n=1,9
-            if (freq .gt. freqSi(n)) go to 23
+            if (freq > freqSi(n)) go to 23
          enddo
          n = 10
 23       dd = (freqlg-flog(n))/(flog(n+1)-flog(n))
-         if (n .gt. 2) n = 2*n - 2
+         if (n > 2) n = 2*n - 2
          dd1 = 1.0 - dd
          do it=1,9
             xx(it) = peach(it,n+1)*dd + peach(it,n)*dd1
@@ -321,7 +321,7 @@ c  initialize some quantities for each new model atmosphere or new frequency
       endif
 
       do i=1,ntau
-         if (freq .ge. 2.997925d+14) then
+         if (freq >= 2.997925d+14) then
             n = nt(i)
             aSi1(i) = (dexp(-(xx(n)*(1.-dt(i)) + xx(n+1)*dt(i)))*9.)*
      .                numdens(6,1,i)/u(14,1,i)
@@ -373,7 +373,7 @@ c     2P, 2D, 2P, 2D, 2P
       data freq1, modcount/0., 0/
 
 c  set up some data upon first entrance with a new model atmosphere
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             n = max0(min0(5,nint(t(i)/2000.)-4),1)
@@ -383,15 +383,15 @@ c  set up some data upon first entrance with a new model atmosphere
       endif
 
 c  initialize some quantities for each new model atmosphere or new frequency
-      if (modelnum.ne.modcount .or. freq.ne.freq1) then
+      if (modelnum/=modcount .or. freq/=freq1) then
          freq1 = freq
          do n=1,7
-            if (freq .gt. freqSi(n)) go to 23
+            if (freq > freqSi(n)) go to 23
          enddo
          n = 8
 23       dd = (freqlg-flog(n))/(flog(n+1)-flog(n))
-         if (n .gt. 2) n = 2*n - 2
-         if (n .eq. 14) n = 13
+         if (n > 2) n = 2*n - 2
+         if (n == 14) n = 13
          dd1 = 1.0 - dd
          do it=1,6
             xx(it) = peach(it,n+1)*dd + peach(it,n)*dd1
@@ -399,7 +399,7 @@ c  initialize some quantities for each new model atmosphere or new frequency
       endif
 
       do i=1,ntau
-         if (freq .ge. 7.6869872d14) then
+         if (freq >= 7.6869872d14) then
             n = nt(i)
             aSi2(i) = (dexp(xx(n)*(1.-dt(i)) + xx(n+1)*dt(i))*6.)*
      .             numdens(6,2,i)/u(14,2,i)
@@ -443,7 +443,7 @@ c******************************************************************************
       data freq1, modcount/0., 0/
 
 c  set up some data upon first entrance with a new model atmosphere
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             hkt = 6.6256d-27/(1.38065d-16*t(i))
@@ -455,20 +455,20 @@ c  set up some data upon first entrance with a new model atmosphere
 
 c  initialize some quantities for each new model atmosphere or new frequency;
 c  the absorption begins at 4762 A.
-      if (modelnum.ne.modcount .or. freq.ne.freq1) then
+      if (modelnum/=modcount .or. freq/=freq1) then
          freq1 = freq
          waveno = freq/2.99792458d10
-         if (waveno .ge. 21000.) then
+         if (waveno >= 21000.) then
             do k=1,48
                xsect(k) = 0.
-               if (wno(k) .lt. waveno) xsect(k)= 3.d-18/
+               if (wno(k) < waveno) xsect(k)= 3.d-18/
      .                      (1.+((wno(k)+3000.-waveno)/wno(k)/.1)**4)
             enddo
          endif
       endif
 
       do i=1,ntau
-         if (waveno .ge. 21000.) then
+         if (waveno >= 21000.) then
             do k=1,48
                aFe1(i) = aFe1(i) + xsect(k)*bolt(k,i)*
      .             numdens(7,1,i)/u(26,1,i)

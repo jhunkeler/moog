@@ -21,7 +21,7 @@ c******************************************************************************
       data modcount/0/
 
 c  compute scattering, but only if there is a new model atmosphere.
-      if (modelnum .ne. modcount) then
+      if (modelnum /= modcount) then
          modcount = modelnum
          do i=1,ntau
             sigel(i) = 0.6653d-24*ne(i)

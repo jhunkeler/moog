@@ -26,7 +26,7 @@ c*****Read in the key word to define the model type
       rewind nfmodel
       read (nfmodel,2001) modtype
       write (nf1out,1010) modtype
-      if (modtype .eq. 'begn      ' .or.  modtype .eq. 'BEGN      ') 
+      if (modtype == 'begn      ' .or.  modtype == 'BEGN      ')
      .   write (nf1out,1011)
 
 
@@ -38,7 +38,7 @@ c*****Read the number of depth points
       read (nfmodel,2002) list
       list2 = list(11:)
       read (list2,*) ntau
-      if (ntau .gt. 100) then
+      if (ntau > 100) then
          write (array,1012)
          call prinfo (10)
          stop
@@ -50,7 +50,7 @@ c     MARCS code.  This modtype is called "NEWMARCS".  On each line
 c     the numbers are:
 c     tau(5000), t, pe, pgas, rho,  model microtrubulent velocity,
 c     and mean opacity (cm^2/gm) at the reference wavelength (5000A).
-      if (modtype .eq. 'NEWMARCS  ') then
+      if (modtype == 'NEWMARCS  ') then
          read (nfmodel,*) wavref    
          do i=1,ntau
             read (nfmodel,*) tauref(i),t(i),ne(i),pgas(i),rho(i),
@@ -62,7 +62,7 @@ c     the numbers are:
 c     layer number (not needed), log{tau(Rosseland)} (not needed),
 c     log{tau(5000)}, depth, t, pe, pgas, prad (not read in) and
 c     pturb (not read in)
-      elseif (modtype .eq. 'WEBMARCS') then
+      elseif (modtype == 'WEBMARCS') then
          read (nfmodel,*) wavref
          do i=1,ntau
             read (nfmodel,*) k, dummy1(k), tauref(i), dummy2(k), t(i),
@@ -73,7 +73,7 @@ c     MARCS code.  This modtype is called "WEB2MARC".  On each line
 c     the numbers are:
 c     atmospheric layer number (not needed), log{tau(5000)}, t, 
 c     log(Pe), log(Pgas), rhox
-      elseif (modtype .eq. 'WEB2MARC') then
+      elseif (modtype == 'WEB2MARC') then
          read (nfmodel,*) wavref
          do i=1,ntau
             read (nfmodel,*) k,tauref(i),t(i),ne(i),pgas(i),rhox(i)
@@ -82,7 +82,7 @@ c     OR: Read in a model from the output of the ATLAS code.  This
 c     modtype is called "KURUCZ".  On each line the numbers are:
 c     rhox, t, pgas, ne, and Rosseland mean opacity (cm^2/gm), and
 c     two numbers not used by MOOG.  
-      elseif (modtype .eq. 'KURUCZ    ') then
+      elseif (modtype == 'KURUCZ    ') then
          do i=1,ntau
             read (nfmodel,*) rhox(i),t(i),pgas(i),ne(i),kaprefmass(i)
          enddo
@@ -92,7 +92,7 @@ c     specific wavelength that is read in before the model. MOOG will
 c     need to generate the opacities internally.On each line the numbers 
 c     are: tau, t, pgas, pe, density, mean molecular weight, two numbers
 c     not used by MOOG, and Rosseland mean opacity (cm^2/gm).
-      elseif (modtype .eq. 'NEXTGEN   ') then
+      elseif (modtype == 'NEXTGEN   ') then
          read (nfmodel,*) wavref
          do i=1,ntau
             read (nfmodel,*) tauref(i),t(i),pgas(i),ne(i), rho(i),  
@@ -101,7 +101,7 @@ c     not used by MOOG, and Rosseland mean opacity (cm^2/gm).
 c     OR: Read in a model from the output of the MARCS code.  This modtype
 c     type is called "BEGN".  On each line the numbers are:
 c     tauross, t, log(pg), log(pe), mol weight, and kappaross.
-      elseif (modtype .eq. 'BEGN      ') then
+      elseif (modtype == 'BEGN      ') then
          do i=1,ntau
             read (nfmodel,*) tauref(i),t(i),pgas(i),ne(i),
      .                          molweight(i),  kaprefmass(i)
@@ -109,14 +109,14 @@ c     tauross, t, log(pg), log(pe), mol weight, and kappaross.
 c     OR: Read in a model generated from ATLAS, but without accompanying
 c     opacities.  MOOG will need to generate the opacities internally,
 c     using a reference wavelength that it reads in before the model.
-      elseif (modtype .eq. 'KURTYPE') then
+      elseif (modtype == 'KURTYPE') then
          read (nfmodel,*) wavref    
          do i=1,ntau
             read (nfmodel,*) rhox(i),t(i),pgas(i),ne(i)
          enddo
 c     OR: Read in a model generated from ATLAS, with output generated
 c     in Padova.  The columns are in somewhat different order than normal
-      elseif (modtype .eq. 'KUR-PADOVA') then
+      elseif (modtype == 'KUR-PADOVA') then
          read (nfmodel,*) wavref
          do i=1,ntau
             read (nfmodel,*) tauref(i),t(i),kaprefmass(i),
@@ -125,7 +125,7 @@ c     in Padova.  The columns are in somewhat different order than normal
 c     OR: Read in a generic model that has a tau scale at a specific 
 c     wavelength that is read in before the model.  
 c     MOOG will need to generate the opacities internally.
-      elseif (modtype .eq. 'GENERIC   ') then
+      elseif (modtype == 'GENERIC   ') then
          read (nfmodel,*) wavref    
          do i=1,ntau
             read (nfmodel,*) tauref(i),t(i),pgas(i),ne(i)
@@ -146,7 +146,7 @@ c*****Compute other convenient forms of the temperatures
 
 
 c*****Convert from logarithmic Pgas scales, if needed
-      if (pgas(ntau)/pgas(1) .lt. 10.) then
+      if (pgas(ntau)/pgas(1) < 10.) then
          do i=1,ntau                                                    
             pgas(i) = 10.0**pgas(i)
          enddo
@@ -154,7 +154,7 @@ c*****Convert from logarithmic Pgas scales, if needed
 
 
 c*****Convert from logarithmic Ne scales, if needed
-      if(ne(ntau)/ne(1) .lt. 20.) then
+      if(ne(ntau)/ne(1) < 20.) then
          do i=1,ntau                                                    
             ne(i) = 10.0**ne(i)
          enddo
@@ -162,7 +162,7 @@ c*****Convert from logarithmic Ne scales, if needed
 
 
 c*****Convert from Pe to Ne, if needed
-      if(ne(ntau) .lt. 1.0e7) then
+      if(ne(ntau) < 1.0e7) then
          do i=1,ntau                                                    
             ne(i) = ne(i)/1.38054d-16/t(i)
          enddo
@@ -180,14 +180,14 @@ c*****Read the microturbulence (either a single value to apply to
 c     all layers, or a value for each of the ntau layers). 
 c     Conversion to cm/sec from km/sec is done if needed
       read (nfmodel,2003) (vturb(i),i=1,6)
-      if (vturb(2) .ne. 0.) then
+      if (vturb(2) /= 0.) then
          read (nfmodel,2003) (vturb(i),i=7,ntau) 
       else
          do i=2,ntau                                                    
             vturb(i) = vturb(1)
          enddo
       endif
-      if (vturb(1) .lt. 100.) then
+      if (vturb(1) < 100.) then
          write (moditle(55:62),1008) vturb(1)
          do i=1,ntau
             vturb(i) = 1.0e5*vturb(i)
@@ -204,7 +204,7 @@ c*****solar ones contained in array xsolar.
       list2 = list(11:)
       read (list2,*) natoms,abscale
       write (moditle(63:73),1009) abscale
-      if(natoms .ne. 0) 
+      if(natoms /= 0)
      .         read (nfmodel,*) (element(i),logepsilon(i),i=1,natoms) 
       xhyd = 10.0**xsolar(1)
       xabund(1) = 1.0
@@ -213,7 +213,7 @@ c*****solar ones contained in array xsolar.
          xabund(i) = 10.0**(xsolar(i)+abscale)/xhyd
          xabu(i) = xabund(i)
       enddo
-      if (natoms .ne. 0) then
+      if (natoms /= 0) then
          do i=1,natoms                                                  
             xabund(idint(element(i))) = 10.0**logepsilon(i)/xhyd
             xabu(idint(element(i))) = 10.0**logepsilon(i)/xhyd
@@ -230,17 +230,17 @@ c     in this approximation (maybe make more general some day?)
       enddo
       wtmol = wtnum/(xam(1)*wtden)
       nomolweight = 0
-      if (modtype .eq. 'BEGN      ' .or. modtype .eq. 'NEXTGEN   ') then
+      if (modtype == 'BEGN      ' .or. modtype == 'NEXTGEN   ') then
          nomolweight = 1
       endif
-      if (nomolweight .ne. 1) then
+      if (nomolweight /= 1) then
          do i=1,ntau
              molweight(i) = wtmol
          enddo
       endif
 
 c*****Compute the density 
-      if (modtype .ne. 'NEXTGEN   ') then
+      if (modtype /= 'NEXTGEN   ') then
          do i=1,ntau                                                    
             rho(i) = pgas(i)*molweight(i)*1.6606d-24/(1.38054d-16*t(i))
          enddo
@@ -273,16 +273,16 @@ c     saved.
 
 
 c*****Set up the default molecule list
-      if (molset .eq. 0) then
+      if (molset == 0) then
          nmol = 30
       else
          nmol = 59
       endif
-      if     (molset .eq. 0) then
+      if     (molset == 0) then
          do i=1,110
             amol(i) = smallmollist(i)
          enddo
-      elseif (molset .eq. 1) then
+      elseif (molset == 1) then
          do i=1,110
             amol(i) = largemollist(i)
          enddo
@@ -298,15 +298,15 @@ c     molecular equilibrium if needed.
       read (nfmodel,2002,end=101) list
       list2 = list(11:)
       read (list2,*) moremol
-      if (moremol .ne. 0) then
+      if (moremol /= 0) then
          read (nfmodel,*) (bmol(i),i=1,moremol)
          append = 1
          do k=1,moremol
             do l=1,nmol
-               if (nint(bmol(k)) .eq. nint(amol(l))) 
+               if (nint(bmol(k)) == nint(amol(l)))
      .         append = 0  
             enddo
-            if (append .eq. 1) then 
+            if (append == 1) then
                nmol = nmol + 1
                amol(nmol) = bmol(k)
             endif
@@ -320,13 +320,13 @@ c*****do the general molecular equilibrium
 
 
 c*****SPECIAL NEEDS: for NEWMARCS models, to convert kaprefs to our units
-      if (modtype .eq. 'NEWMARCS  ') then
+      if (modtype == 'NEWMARCS  ') then
          do i=1,ntau
             kapref(i) = kaprefmass(i)*rho(i)
          enddo
 c     SPECIAL NEEDS: for KURUCZ models, to create the optical depth array,
 c     and to convert kaprefs to our units
-      elseif (modtype .eq. 'KURUCZ    ') then
+      elseif (modtype == 'KURUCZ    ') then
          first = rhox(1)*kaprefmass(1)
          tottau = rinteg(rhox,kaprefmass,tauref,ntau,first) 
          tauref(1) = first
@@ -337,18 +337,18 @@ c     and to convert kaprefs to our units
             kapref(i) = kaprefmass(i)*rho(i)
          enddo
 c     SPECIAL NEEDS: for NEXTGEN models, to convert kaprefs to our units
-      elseif (modtype .eq. 'NEXTGEN   ') then
+      elseif (modtype == 'NEXTGEN   ') then
          do i=1,ntau                                                    
             kapref(i) = kaprefmass(i)*rho(i)
          enddo
 c     SPECIAL NEEDS: for BEGN models, to convert kaprefs to our units
-      elseif (modtype .eq. 'BEGN      ') then
+      elseif (modtype == 'BEGN      ') then
          do i=1,ntau                                                    
             kapref(i) = kaprefmass(i)*rho(i)
          enddo
 c     SPECIAL NEEDS: for KURTYPE models, to create internal kaprefs,
 c     and to compute taurefs from the kaprefs converted to mass units
-      elseif (modtype .eq. 'KURTYPE   ') then
+      elseif (modtype == 'KURTYPE   ') then
          call opacit (1,wavref)
          do i=1,ntau                                                    
             kaprefmass(i) = kapref(i)/rho(i)
@@ -360,21 +360,21 @@ c     and to compute taurefs from the kaprefs converted to mass units
             tauref(i) = tauref(i-1) + tauref(i)
          enddo
 c     SPECIAL NEEDS: for NEWMARCS models, to convert kaprefs to our units
-      elseif (modtype .eq. 'KUR-PADOVA') then
+      elseif (modtype == 'KUR-PADOVA') then
          do i=1,ntau
             kapref(i) = kaprefmass(i)*rho(i)
          enddo
 c     SPECIAL NEEDS: for generic models, to create internal kaprefs,
-      elseif (modtype .eq. 'GENERIC   ' .or.
-     .        modtype .eq. 'WEBMARCS  ' .or.
-     .        modtype .eq. 'WEB2MARC  ') then
+      elseif (modtype == 'GENERIC   ' .or.
+     .        modtype == 'WEBMARCS  ' .or.
+     .        modtype == 'WEB2MARC  ') then
          call opacit (1,wavref)
       endif
 
 
 c*****Convert from logarithmic optical depth scales, or vice versa.
 c     xref will contain the log of the tauref
-      if(tauref(1) .lt. 0.) then
+      if(tauref(1) < 0.) then
          do i=1,ntau                                                    
             xref(i) = tauref(i)
             tauref(i) = 10.0**xref(i)
@@ -387,7 +387,7 @@ c     xref will contain the log of the tauref
 
 
 c*****Write information to output files
-      if (modprintopt .lt. 1) return
+      if (modprintopt < 1) return
       write (nf1out,1002) moditle
       do i=1,ntau
          dummy1(i) = dlog10(pgas(i))

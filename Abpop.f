@@ -40,7 +40,7 @@ c*****read in the model atmospheres and their summary output files
          line = synpre
          num = 80
          call getcount (num,line)
-         if (mmod .lt. 10) then
+         if (mmod < 10) then
             write(line(num+1:num+1),1013) mmod
          else
             write(line(num+1:num+2),1014) mmod
@@ -57,7 +57,7 @@ c*****read in the model atmospheres and their summary output files
          line = modpre
          num = 80
          call getcount (num,line)
-         if (mmod .lt. 10) then
+         if (mmod < 10) then
             write(line(num+1:num+1),1013) mmod
          else
             write(line(num+1:num+2),1014) mmod
@@ -83,7 +83,7 @@ c     into 1-line lists for computational efficiency
          call infile ('input  ',nflines,'formatted  ',0,nchars,
      .                flines,lscreen)
          call inlines (1)
-         if (nlines .gt. 1000) then
+         if (nlines > 1000) then
             write (*,1005)
             stop
          endif
@@ -99,7 +99,7 @@ c*****do the curves of growth; store the results
             lim2 = lim1
             waveold = 0.
             call curve
-            if (ncurve .gt. 50) then
+            if (ncurve > 50) then
                nmodcurve(mmod,lim1) = 50
             else
                nmodcurve(mmod,lim1) = ncurve
@@ -128,7 +128,7 @@ c*****set some parameters
 c*****now, inside the 
 c*****define the range of lines for a species
  5       call linlimit
-         if (lim1line .lt. 0) then
+         if (lim1line < 0) then
             call finish (0)
             return
          endif
@@ -171,7 +171,7 @@ c     compute a weighted <EW_calc>
             call ewweighted
             rwlgcal = dlog10(ewmod(lim1)/wave1(lim1))
             do i=2,ntabtot
-               if (rwtab(i) .gt. rwlgcal) then
+               if (rwtab(i) > rwlgcal) then
                   gflgcal = gftab(i-1) + (gftab(i)-gftab(i-1))*
      .                      (rwlgcal-rwtab(i-1))/(rwtab(i)-rwtab(i-1))
                   exit
@@ -179,7 +179,7 @@ c     compute a weighted <EW_calc>
             enddo
             rwlgobs = dlog10(width(lim1)/wave1(lim1))
             do i=2,ntabtot
-               if (rwtab(i) .gt. rwlgobs) then
+               if (rwtab(i) > rwlgobs) then
                   gflgobs = gftab(i-1) + (gftab(i)-gftab(i-1))*
      .                      (rwlgobs-rwtab(i-1))/(rwtab(i)-rwtab(i-1))
                   exit
@@ -188,8 +188,8 @@ c     compute a weighted <EW_calc>
             rwlgerror = rwlgobs - rwlgcal
             diffngf = gflgobs - gflgcal
             deltangf = deltangf + diffngf
-            if (dabs(rwlgerror) .lt. 0.01) exit
-            if (k .eq. 30) then
+            if (dabs(rwlgerror) < 0.01) exit
+            if (k == 30) then
                write (*,1004)
                stop
             endif
@@ -210,7 +210,7 @@ c*****here a plot may be made on the terminal (and paper) if there
 c     are enough lines; then the user will be prompted on some
 c     options concerning what is seen on the plot
 
-      if (plotopt .ne. 0) then
+      if (plotopt /= 0) then
          call blankstring (moditle)
          moditle(1:70) = popitle(1:70)
          moditle(57:80) = 'EW-POPULATION '
@@ -220,15 +220,15 @@ c     options concerning what is seen on the plot
 
 *****quit, or go on to another species?
       array = 'DO ANOTHER SPECIES ([y]/n)? '
-      if (silent .eq. 'n') then 
+      if (silent == 'n') then
          nchars = 28
          call getasci (nchars,maxline)
          choice = chinfo(1:1)
       else
          choice = 'y'
       endif
-      if (choice.eq.'y' .or. nchars.le.0) then
-         if (mode .eq. 2) then
+      if (choice=='y' .or. nchars<=0) then
+         if (mode == 2) then
             go to 5
          else
             call finish (0)

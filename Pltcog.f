@@ -13,7 +13,7 @@ c******************************************************************************
 
 
 c  call up the curve-of-growth plot
-      if (plotopt .eq. 0) return
+      if (plotopt == 0) return
 10    choice = 'y'
       plotroutine = 'term_land_cog '
       lscreen = 12
@@ -28,13 +28,13 @@ c  screen, try a new model atmosphere, or replot?
       nchars = 37
       call getasci (nchars,lscreen)
       choice = chinfo(1:1)
-      if (choice.eq.'n' .or. nchars.le.0) then
+      if (choice=='n' .or. nchars<=0) then
          return
-      elseif (choice .eq. 'h') then
+      elseif (choice == 'h') then
          plotroutine = 'hard_land_cog '
          call makeplot (lscreen)
          go to 10
-      elseif (choice .eq. 'v') then
+      elseif (choice == 'v') then
          write (array,*) 'What is the new microturbulence (km/s)? '
          nchars = 41
          lscreen = lscreen + 2
@@ -48,17 +48,17 @@ c  screen, try a new model atmosphere, or replot?
          rewind nfmodel
          rewind nflines
          return
-      elseif (choice .eq. 'm') then
+      elseif (choice == 'm') then
          return
-      elseif (choice .eq. 'r') then
+      elseif (choice == 'r') then
          go to 10
-      elseif (choice .eq. 'p') then
+      elseif (choice == 'p') then
          array = 'MARK THE POSITION WITH THE CURSOR'
          istat=ivcleof(21,1)
          istat=ivwrite(13,3,array,34)
          call drawcurs
          go to 1
-      elseif (choice .eq. 'f') then
+      elseif (choice == 'f') then
          plotroutine = 'file_land_cog '
          call makeplot (lscreen)
          go to 10

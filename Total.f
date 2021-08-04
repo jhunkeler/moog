@@ -15,7 +15,7 @@ c******************************************************************************
 
 c*****compute the wavelength array 
       ntotal = (sstop - start)/step + 1.3
-      if (ntotal .gt. 5000) then
+      if (ntotal > 5000) then
          write (nf1out,1002) ntotal
          write (nf2out,1002) ntotal
          return
@@ -34,7 +34,7 @@ c*****use the RINTEG routine to do an integration
 
 c*****Then recheck using Simpson's rule
       ntot = ntotal
-      if(ntotal/2*2 - ntotal .eq. 0) ntot = ntotal - 1
+      if(ntotal/2*2 - ntotal == 0) ntot = ntotal - 1
       answer = d(1) + 4.*d(2) + d(ntot)
       ntot = ntot - 2
       do i=3,ntot,2                                                   

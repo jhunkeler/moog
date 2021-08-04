@@ -48,26 +48,26 @@ c*****open and read the model atmosphere
 c*****compute the flux curve
       wave = start
 1     call opacit (2,wave)
-      if (modprintopt .ge. 2) 
+      if (modprintopt >= 2)
      .    write(nf1out,1002) wave,(kaplam(i),i=1,ntau)
       call cdcalc (1)
       first = 0.4343*cd(1)
       flux = rinteg(xref,cd,dummy1,ntau,first)
-      if (flux .le. 0.1) flux = 0.
-      if (iunits .eq. 1) then
+      if (flux <= 0.1) flux = 0.
+      if (iunits == 1) then
          write (nf1out,1003) 1.d-4*wave,flux
       else
          write (nf1out,1004) wave,flux
       endif
       waveinv = 1.0d4/wave
-      if (flux .gt. 0.) then
+      if (flux > 0.) then
          fluxlog = dlog10(flux)
       else
          fluxlog = -1.0
       endif
       write (nf2out,1001) wave, flux, waveinv, fluxlog
       wave = wave + step
-      if (wave .le. sstop) go to 1
+      if (wave <= sstop) go to 1
       call pltflux
 
 

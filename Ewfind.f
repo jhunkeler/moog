@@ -79,7 +79,7 @@ c        call prinfo (lscreen)
          iatom = atom1(lim1)
          xab = dlog10(xabund(iatom)) + 12.
          ich = idint(charge(lim1) + 0.1)
-         if (iatom .lt. 100) then
+         if (iatom < 100) then
             write (array,1003) wave1(lim1), e(lim1,1), 
      .                         dlog10(gf(lim1)), names(iatom), 
      .                         ion(ich), xab, 1000.*widout(lim1)
@@ -123,7 +123,7 @@ c*****(re)compute the line optical depth at line center and the C_d curve
 
 c*****compute layer where continuum optical depth > 1
          do i=1,ntau
-            if (taulam(i) .ge. 1.) then
+            if (taulam(i) >= 1.) then
                xdepthlam1 = xdepth(i-1) + (1.-taulam(i-1))*
      .                (xdepth(i)-xdepth(i-1))/(taulam(i)-taulam(i-1))
                write (nf2out,1013) int(xdepthlam1), i
@@ -133,12 +133,12 @@ c*****compute layer where continuum optical depth > 1
 
 
 c     compute layer where line center optical depth > 1
-10          if (taunu0(ntau) .lt. 1.) then
+10          if (taunu0(ntau) < 1.) then
                write (nf2out,1016)
                go to 20
             endif
             do i=1,ntau
-            if (taunu0(i) .ge. 1.) then
+            if (taunu0(i) >= 1.) then
                xdepthnu01 = xdepth(i-1) + (1.-taunu0(i-1))*
      .                (xdepth(i)-xdepth(i-1))/(taunu0(i)-taunu0(i-1))
                write (nf2out,1014) int(xdepthnu01), i
@@ -149,7 +149,7 @@ c     compute layer where line center optical depth > 1
 
 c     compute layer where line center plus continuum optical depth > 1
 20       do i=1,ntau
-            if (taunu0(i)+taulam(i) .ge. 1.) then
+            if (taunu0(i)+taulam(i) >= 1.) then
                tautot1 = taulam(i-1) + taunu0(i-1)
                tautot2 = taulam(i) + taunu0(i)
                xdepthtot1 = xdepth(i-1) + (1.-tautot1)*
@@ -171,7 +171,7 @@ c     compute layer where line center plus continuum optical depth > 1
          cdinteg = rinteg(xref,dummy1,dummy2,ntau,0.)
          xrefmean = xrefcdinteg/cdinteg
          do i=1,ntau
-            if (xrefmean .le. xref(i)) then
+            if (xrefmean <= xref(i)) then
                xdepthxrefmean = xdepth(i-1) + (xrefmean-xref(i-1))* 
      .                (xdepth(i)-xdepth(i-1))/(xref(i)-xref(i-1))
                write (nf2out,1017) int(xdepthxrefmean), i, tauref(i),
