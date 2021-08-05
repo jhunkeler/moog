@@ -1,10 +1,22 @@
 #!/bin/bash
+CC=${CC:-gcc}
+FC=${FC:-gfortran}
 with_x11="/usr/X11/lib"
 with_sm="/usr/local/sm"
 fflags=(-Wall -Wextra -ff2c -fdefault-double-8 -fdefault-real-8)
-
-gcc_version=$(gcc --version | head -n 1 | awk -F' ' '{ print $3 }')
+gcc_version=$($CC --version | head -n 1 | awk -F' ' '{ print $3 }')
 gcc_major="${gcc_version%%\.*}"
+
+
+function do_help() {
+    printf "Options:
+  --help (-h)   Display this message
+  --prefix      Path to install MOOG
+  --bindir      Path to install MOOG binaries (default: PREFIX/bin)
+  --datadir     Path to install MOOG data files (default: PREFIX/share/moog)
+  --with-x11    Path to X11 library
+  --with-sm     Path to SuperMongo libraries\n"
+}
 
 if (( $gcc_major >= 10 )); then
     fflags+=(--allow-argument-mismatch)
@@ -18,7 +30,7 @@ for x in $@; do
         argv+=($key)
         argv+=($value)
     else
-        argv+=(x)
+        argv+=($x)
     fi
 done
 
@@ -29,6 +41,10 @@ while [[ $i < $nargs ]]; do
     key="${argv[$i]}"
     value="${argv[$i+1]}"
     case "$key" in
+        --help|-h)
+            do_help
+            exit 0
+            ;;
         --prefix)
             prefix="$value"
             (( i++ ))
@@ -57,23 +73,27 @@ done
 [[ -z "${bindir}" ]] && bindir="${prefix}/bin"
 [[ -z "${datadir}" ]] && datadir="${prefix}/share/moog"
 fflags="${fflags[@]}"
+
 sed "s|@PREFIX@|${prefix}|g;\
     s|@BINDIR@|${bindir}|g;\
     s|@DATADIR@|${datadir}|g;\
     s|@FFLAGS@|${fflags}|g;\
     s|@WITH_X11@|${with_x11}|g;\
     s|@WITH_SM@|${with_sm}|g;\
+    s|@FC@|${FC}|g;\
     " Makefile.in > Makefile
 sed "s|@MOOGPATH_DEFAULT@|${datadir}/|" Moog.f.in > Moog.f
 
 printf "
 Configured with:
 
-Installation prefix ... %s
-X11 library ........... %s
-SuperMongo library .... %s
+GCC version ........... $gcc_version
+Fortran compiler ...... $FC
+Installation prefix ... $prefix
+X11 library ........... $with_x11
+SuperMongo library .... $with_sm
 
 Run 'make' to compile
 Run 'make install' to install
+"
 
-" $prefix $with_x11 $with_sm

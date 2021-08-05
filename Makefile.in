@@ -36,7 +36,7 @@ COMMON =  Atmos.com Dummy.com Equivs.com Factor.com Kappa.com Linex.com \
 X11LIB = @WITH_X11@
 SMLIB = @WITH_SM@
 
-FC = gfortran
+FC = @FC@
 FFLAGS = @FFLAGS@
 LDFLAGS = -L$(X11LIB) -lX11 -ltcl -ltk -L$(SMLIB) -lplotsub -ldevices -lutils
 
