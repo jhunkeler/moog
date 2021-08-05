@@ -20,6 +20,9 @@ c     generate a reminder of this necessity
       write (moogpath,1001)
       call get_environment_variable("MOOG_DATA", moogpath)
 
+      if (moogpath == "") then
+          moogpath = "@MOOGPATH_DEFAULT@"
+      endif
 
 c*****What kind of machine are you using?  Possible ones are:
 c     OBSOLETE

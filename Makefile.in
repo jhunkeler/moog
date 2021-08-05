@@ -1,5 +1,9 @@
 #     makefile for MOOG with all of the common block assignments;
 
+PREFIX=@PREFIX@
+BINDIR=@BINDIR@
+DATADIR=@DATADIR@
+
 #     here are the object files
 OBJECTS = Abfind.o Abpop.o Abunplot.o Batom.o Begin.o Binary.o \
 	Binplot.o Binplotprep.o Blankstring.o Blends.o Bmolec.o Boxit.o \
@@ -29,35 +33,47 @@ COMMON =  Atmos.com Dummy.com Equivs.com Factor.com Kappa.com Linex.com \
 	Quants.com Multimod.com Dampdat.com
 
 # the following lines point to some needed libraries
-X11LIB = /usr/X11/lib
-SMLIB = /usr/local/lib
-
-ifeq ($(MODERN_GCC), 1)
-FFLAGS_GCC10PLUS=-fallow-argument-mismatch
-endif
+X11LIB = @WITH_X11@
+SMLIB = @WITH_SM@
 
 FC = gfortran
-FFLAGS = -Wall -Wextra -ff2c -fdefault-double-8 -fdefault-real-8 $(FFLAGS_GCC10PLUS)
+FFLAGS = @FFLAGS@
 LDFLAGS = -L$(X11LIB) -lX11 -ltcl -ltk -L$(SMLIB) -lplotsub -ldevices -lutils
 
 #        here are the compilation and linking commands
 all: MOOG MOOGSILENT
 	@echo -----------------------------------------------------------------
 	@echo
-	@echo Set MOOG_DATA environment variable to path containing file\(s\):
-	@for x in *.dat; \
-		do echo $$x; \
-	done
+	@echo Default MOOG_DATA path is $(DATADIR)
+	@echo
+	@echo To override this behavior set the MOOG_DATA environment variable
+	@echo
+	@echo "BASH:    export MOOG_DATA=/path/to/dat/files"
+	@echo " CSH:    setenv MOOG_DATA /path/to/dat/files"
 	@echo
 	@echo -----------------------------------------------------------------
 
-MOOG:  $(OBJECTS);
+MOOG:  $(OBJECTS)
 	$(FC) -o MOOG $(MOOG_ENTRY) $(OBJECTS) $(FFLAGS) $(LDFLAGS)
 
-MOOGSILENT:  $(OBJECTS) $(MOOGSILENT_ENTRY);
+MOOGSILENT: $(OBJECTS) $(MOOGSILENT_ENTRY);
 	$(FC) -o MOOGSILENT $(MOOGSILENT_ENTRY) $(OBJECTS) $(FFLAGS) $(LDFLAGS)
 
 $(OBJECTS): $(COMMON) $(MOOG_ENTRY) $(MOOGSILENT_ENTRY)
 
+install: all
+	@for x in $(DESTDIR)$(BINDIR) $(DESTDIR)$(DATADIR); do \
+		echo Creating $$x; \
+		mkdir -p $(DESTDIR)$$x; \
+	done;
+	@for x in MOOG MOOGSILENT; do \
+		echo Installing $$x to $(DESTDIR)$(BINDIR); \
+		install -m755 $$x $(DESTDIR)$(BINDIR); \
+	done;
+	@for x in *.dat; do \
+		echo Installing $$x to $(DESTDIR)$(DATADIR); \
+		install -m755 $$x $(DESTDIR)$(DATADIR);\
+	done;
+
 clean:
-	-rm -f *.o MOOG MOOGSILENT
+	-rm -f *.o MOOG MOOGSILENT Makefile Moog.f
