@@ -1,18 +1,22 @@
 # Building
 
 ```
-$ make SMLIB=/path/to/sm/lib
+$ ./configure
+$ make
 ```
 
-If you have GCC v10 or greater, do:
+# Installation
 
 ```
-$ make MODERN_GCC=1 SMLIB=/path/to/sm/lib
+$ ./configure --prefix=$HOME/local/moog --with-sm=$HOME/local/sm/lib
+$ make
+$ make install
 ```
 
-# Executing
+# Run
 
 ```
-$ export MOOG_DATA=`pwd`
-$ ./MOOG [filename.par]
+$ export PATH="$HOME/local/moog/bin:$PATH"
+$ hash -r
+$ MOOG [filename.par]
 ```
