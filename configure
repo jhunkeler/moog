@@ -1,13 +1,4 @@
 #!/bin/bash
-CC=${CC:-gcc}
-FC=${FC:-gfortran}
-with_x11="/usr/X11/lib"
-with_sm="/usr/local/sm"
-fflags=(-Wall -Wextra -ff2c -fdefault-double-8 -fdefault-real-8)
-gcc_version=$($CC --version | head -n 1 | awk -F' ' '{ print $3 }')
-gcc_major="${gcc_version%%\.*}"
-
-
 function do_help() {
     printf "Options:
   --help (-h)   Display this message
@@ -18,10 +9,24 @@ function do_help() {
   --with-sm     Path to SuperMongo libraries\n"
 }
 
+FC=${FC:-gfortran}
+if [[ ! -f "$(which $FC 2>/dev/null)" ]]; then
+    echo "$FC could not be found" >&2
+    exit 1
+fi
+
+with_x11="/usr/X11/lib"
+with_sm="/usr/local/sm"
+fflags=(-Wall -Wextra -ff2c -fdefault-double-8 -fdefault-real-8)
+gcc_version=$($FC --version | head -n 1 | awk -F' ' '{ print $4 }')
+gcc_major="${gcc_version%%\.*}"
+
+# Handle GCC 10 requirements
 if (( $gcc_major >= 10 )); then
     fflags+=(--allow-argument-mismatch)
 fi
 
+# Generate new argv list, with elements split on '='
 argv=()
 for x in $@; do
     if [[ "$x" =~ .*=.* ]]; then
@@ -35,6 +40,7 @@ for x in $@; do
 done
 
 
+# Parse arguments
 i=0
 nargs=${#argv[@]}
 while [[ $i < $nargs ]]; do
@@ -69,11 +75,15 @@ while [[ $i < $nargs ]]; do
     (( i++ ))
 done
 
+# Assign default paths if not modified by the user
 [[ -z "${prefix}" ]] && prefix="/usr/local"
 [[ -z "${bindir}" ]] && bindir="${prefix}/bin"
 [[ -z "${datadir}" ]] && datadir="${prefix}/share/moog"
+
+# Convert fortran flag array to string
 fflags="${fflags[@]}"
 
+# Populate templates
 sed "s|@PREFIX@|${prefix}|g;\
     s|@BINDIR@|${bindir}|g;\
     s|@DATADIR@|${datadir}|g;\
@@ -84,6 +94,7 @@ sed "s|@PREFIX@|${prefix}|g;\
     " Makefile.in > Makefile
 sed "s|@MOOGPATH_DEFAULT@|${datadir}/|" Moog.f.in > Moog.f
 
+# Dump
 printf "
 Configured with:
 
