@@ -5,8 +5,8 @@ function do_help() {
   --prefix      Path to install MOOG
   --bindir      Path to install MOOG binaries (default: PREFIX/bin)
   --datadir     Path to install MOOG data files (default: PREFIX/share/moog)
-  --with-x11    Path to X11 library
-  --with-sm     Path to SuperMongo libraries\n"
+  --with-x11    Path to X11 lib directory
+  --with-sm     Path to SM lib directory\n"
 }
 
 FC=${FC:-gfortran}
@@ -102,7 +102,7 @@ GCC version ........... $gcc_version
 Fortran compiler ...... $FC
 Installation prefix ... $prefix
 X11 library ........... $with_x11
-SuperMongo library .... $with_sm
+SM library ............ $with_sm
 
 Run 'make' to compile
 Run 'make install' to install
