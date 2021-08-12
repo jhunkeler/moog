@@ -12,8 +12,8 @@ c******************************************************************************
       include 'Pstuff.com'
       include 'Equivs.com'
       include 'Multistar.com'
-      real*4 style(1)
-      real*4 yup,ydown
+      real*8 style(1)
+      real*8 yup,ydown
       integer iflip
 
 

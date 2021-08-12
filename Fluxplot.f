@@ -9,8 +9,8 @@ c******************************************************************************
       include 'Dummy.com'
       include 'Pstuff.com'
       real*8 wavep(2000), fluxp(2000)
-      real*4 waveplot(2000), flxplt(2000)
-      real*4 style(1)
+      real*8 waveplot(2000), flxplt(2000)
+      real*8 style(1)
 
 
 c*****dump the data into working arrays

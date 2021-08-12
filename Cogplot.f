@@ -9,8 +9,8 @@ c******************************************************************************
       include 'Linex.com'
       include 'Mol.com'
       include 'Pstuff.com'
-      real*4 gfplot(3000), rwplot(3000)
-      real*4 xfour, style(1)
+      real*8 gfplot(3000), rwplot(3000)
+      real*8 xfour, style(1)
       character*4 ion
 
 
