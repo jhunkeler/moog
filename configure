@@ -9,15 +9,76 @@ function do_help() {
   --with-sm     Path to SM lib directory\n"
 }
 
+dummy_c='#include <stdio.h>
+int main(int argc, char *argv[]) { return 0; }'
+
+function check_lib() {
+    # Purpose:
+    #   Link a dummy C program to a library
+    #
+    # Invocation:
+    #   check_lib X11 /usr/X11/lib
+    #   check_lib X11
+    #
+    # Returns:
+    #   "yes" and 0 on linkage success
+    #   "no" and 1 on linkage failure
+    if [[ $# < 1 ]]; then
+        echo "ERROR: ${FUNCNAME[0]}: Missing library name" >&2
+        return 2
+    fi
+
+    local name="$(mktemp)"
+    local lib="${1}"
+    local libdirs=""
+    for libdir in "${@:2}"; do
+        libdirs+="-L$libdir "
+    done
+
+    echo "$dummy_c" > "$name".c
+    if ! "$CC" -o "${name}" -l"${lib}" $libdirs "${name}".c; then
+        echo "no"
+        rm -f "$name"
+        rm -f "$name".c
+        return 1
+    fi
+    echo "yes"
+    rm -f "$name"
+    rm -f "$name".c
+    return 0
+}
+
+# Determine C compiler's absolute path
+CC=${CC:-gcc}
+CC="$(command -v $CC 2>/dev/null)"
+if [[ ! -f "$CC" ]]; then
+    echo "$CC could not be found" >&2
+    exit 1
+fi
+if [[ -L "$CC" ]]; then
+    CC="$(readlink $CC)"
+fi
+
+# Determine fortran compiler's absolute path
 FC=${FC:-gfortran}
-if [[ ! -f "$(which $FC 2>/dev/null)" ]]; then
+FC="$(command -v $FC 2>/dev/null)"
+if [[ ! -f "$FC" ]]; then
     echo "$FC could not be found" >&2
     exit 1
+fi
+if [[ -L "$FC" ]]; then
+    FC="$(readlink $FC)"
 fi
 
 with_x11="/usr/X11/lib"
 with_sm="/usr/local/sm"
-fflags=(-Wall -Wextra -ff2c -fdefault-double-8 -fdefault-real-8)
+fflags=(
+    -Wall
+    -Wextra
+    -ff2c
+    -fdefault-double-8
+    -fdefault-real-8
+)
 gcc_version="$($FC -v 2>&1 | tail -n 1 | sed -E -n 's/gcc\ version\ ([0-9]+.[0-9]+.[0-9]+).*/\1/p')"
 gcc_major="${gcc_version%%\.*}"
 
@@ -26,7 +87,7 @@ if (( $gcc_major >= 10 )); then
     fflags+=(--allow-argument-mismatch)
 fi
 
-# Generate new argv list, with elements split on '='
+# Generate new argv list, with elements split on '=' or ' '
 argv=()
 for x in $@; do
     if [[ "$x" =~ .*=.* ]]; then
@@ -83,7 +144,7 @@ done
 # Convert fortran flag array to string
 fflags="${fflags[@]}"
 
-# Populate templates
+# Populate build templates
 sed "s|@PREFIX@|${prefix}|g;\
     s|@BINDIR@|${bindir}|g;\
     s|@DATADIR@|${datadir}|g;\
@@ -94,7 +155,14 @@ sed "s|@PREFIX@|${prefix}|g;\
     " Makefile.in > Makefile
 sed "s|@MOOGPATH_DEFAULT@|${datadir}/|" Moog.f.in > Moog.f
 
-# Dump
+state_tcl=$(check_lib tcl)
+state_tk=$(check_lib tk)
+state_x11=$(check_lib X11 $with_x11)
+state_sm_plotsub=$(check_lib plotsub $with_sm)
+state_sm_devices=$(check_lib devices $with_sm)
+state_sm_utils=$(check_lib utils $with_sm)
+
+# Dump information
 printf "
 Configured with:
 
@@ -102,7 +170,13 @@ GCC version ........... $gcc_version
 Fortran compiler ...... $FC
 Installation prefix ... $prefix
 X11 library ........... $with_x11
+X11 works ............. $state_x11
+TCL works ............. $state_tcl
+TK works .............. $state_tk
 SM library ............ $with_sm
+SM (plotsub) works .... $state_sm_plotsub
+SM (devices) works .... $state_sm_devices
+SM (utils) works ...... $state_sm_utils
 
 Run 'make' to compile
 Run 'make install' to install

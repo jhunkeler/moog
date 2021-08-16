@@ -75,5 +75,10 @@ install: all
 		install -m755 $$x $(DESTDIR)$(DATADIR);\
 	done;
 
+.PHONY: clean distclean
+distclean: clean
+	-rm -f Makefile Moog.f
+
 clean:
-	-rm -f *.o MOOG MOOGSILENT Makefile Moog.f
+	-rm -f *.o MOOG MOOGSILENT
+
